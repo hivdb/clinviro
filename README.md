@@ -3,15 +3,15 @@ ClinViro
 
 ClinViro is an open source **L**aboratory **I**nformation **M**anagement **S**ystem (**LIMS**) for HIV genotypic resistance testing. ClinViro is designed for laboratories that use the Stanford HIV Drug Resistance Database (HIVDB) genotypic resistance interpretation system that wish to (1) store the program's results locally and (2) link their sequences and resistance reports to additional data such as sample data, demographic data, clinic/physician name, and clinical trial. ClinViro uses Sierra web service 2.0 to send sequences to the [Stanford HIVDB webserver](https://hivdb.stanford.edu/page/release-notes/) where the data are analyzed and returned in JSON format but not stored. ClinViro compares each new sequence to previous sequences from the same person and to each of the other sequences in the database. These comparisons make it possible to detect PCR contamination and sample mix-up thereby helping labs identify potential critical errors prior to data analysis and reporting. 
 
-Installation
-------------
+Prerequisites
+-------------
 
 We used Docker to provide a standardized environment for running ClinViro. To install the latest version of Docker, please follow the "Get Docker" guideline on the [official website](https://www.docker.com/). The minimum version requirement of Docker for this software is 17.05.
 
-The latest Docker image can be found at [hub.docker.com](https://hub.docker.com/r/hivdb/clinviro/). The current latest version is 0.3.0.
+The latest Docker image can be found at [hub.docker.com](https://hub.docker.com/r/hivdb/clinviro/). The current latest version is 0.3.0. If you are following the [next section](#deployment) to deploy ClinViro, you don't have to do anything to download the image manually.
 
-Run
----
+Deployment
+----------
 
 To start running ClinViro, you just need to create a `docker-compose.yml` file on your server which Docker installed. Here is an example of the `docker-compose.yml` file. The environment variables will be explained after the example.
 
