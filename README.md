@@ -57,7 +57,6 @@ The varibles:
 | `LEGO_EMAIL`            | String     | No        | -                                           | Email address used to fetch SSL certification, required by `USE_SSL=https` |
 | `DATABASE_URI`          | String     | Yes       | `postgrsql+psycopg2://postgres@db/postgres` | SQLAlchemy-compatible URI to access the database                           |
 | `ELASTICSEARCH_HOST`    | String     | Yes       | `es:9200`                                   | URI to access Elasticsearch                                                |
-|
 
 The volumes in `web` container:
 
