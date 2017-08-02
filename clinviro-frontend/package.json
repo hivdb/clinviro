@@ -1,7 +1,7 @@
 {
   "name": "clinviro-frontend",
   "version": "0.3.0",
-  "private": true,
+  "license": "GPL-3.0",
   "dependencies": {
     "classnames": "^2.2.5",
     "copy-to-clipboard": "^3.0.6",
