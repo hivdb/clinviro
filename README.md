@@ -80,6 +80,11 @@ docker-compose up -d
 
 Wait for about 1-2 minutes automatic initialization, then open the `SERVER_NAME` you previously configured. You should be able to see the login window.
 
+You can configure PostgreSQL and/or ElasticSearch by add environment variables to `db` and `es` containers. The documents of the two images used by the containers can be found at:
+
+- https://hub.docker.com/_/postgres/
+- https://hub.docker.com/_/elasticsearch/
+
 
 ### SSL Support
 
