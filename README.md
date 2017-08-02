@@ -1,7 +1,7 @@
 ClinViro
 ========
 
-ClinViro is an open source **L**aboratory **I**nformation **M**anagement **S**ystem (**LIMS**) which is dedicated to HIV genotypic resistance test for laboratories. The software was primarily created for the Stanford Health Care Virology Laboratory and we believed it might be useful for other virology laboratories.
+ClinViro is an open source **L**aboratory **I**nformation **M**anagement **S**ystem (**LIMS**) for HIV genotypic resistance testing. ClinViro is designed for laboratories that use the Stanford HIV Drug Resistance Database (HIVDB) genotypic resistance interpretation system that wish to (1) store the program's results locally and (2) link their sequences and resistance reports to additional data such as sample data, demographic data, clinic/physician name, and clinical trial. ClinViro uses Sierra web service 2.0 to send sequences to the [Stanford HIVDB webserver](https://hivdb.stanford.edu/page/release-notes/) where the data are analyzed and returned in JSON format but not stored. ClinViro compares each new sequence to previous sequences from the same person and to each of the other sequences in the database. These comparisons make it possible to detect PCR contamination and sample mix-up thereby helping labs identify potential critical errors prior to data analysis and reporting. 
 
 Installation
 ------------
