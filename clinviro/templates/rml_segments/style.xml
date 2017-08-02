@@ -1,0 +1,92 @@
+<stylesheet>
+  <paraStyle
+   name="h1"
+   alignment="center"
+   fontName="Courier-Bold"
+   spaceAfter="12"
+   fontSize="14" />
+  <paraStyle
+   name="h2"
+   fontName="Courier-Bold"
+   spaceAfter="7"
+   fontSize="11" />
+  <paraStyle
+   name="h3"
+   fontName="Courier-Bold"
+   spaceAfter="6"
+   fontSize="10" />
+ <paraStyle
+   name="annotation"
+   fontSize="7"
+   fontName="Courier"
+   leading="9" />
+ <paraStyle
+   name="annotation-right"
+   fontSize="7"
+   fontName="Courier"
+   alignment="right"
+   leading="9" />
+ <paraStyle
+   name="normal"
+   fontSize="9"
+   fontName="Courier" />
+ <paraStyle
+   name="footer"
+   fontSize="8"
+   spaceAfter=".1in"
+   fontName="Courier-Oblique" />
+ <paraStyle
+   name="disclaimer"
+   fontSize="9"
+   spaceBefore="9"
+   spaceAfter=".1in"
+   fontName="Courier-Oblique" />
+ <blockTableStyle id="headerAnnotation">
+   <blockTopPadding length="0" start="0,0" stop="-1,-1" />
+   <blockBottomPadding length="0" start="0,0" stop="-1,-1" />
+   <blockLeftPadding length="0" start="0,0" stop="0,-1" />
+   <blockRightPadding length="0" start="-1,0" stop="-1,-1" />
+ </blockTableStyle>
+ <blockTableStyle id="infobox">
+   <blockValign value="top" start="0,0" stop="-1,-1" />
+   <blockTopPadding length="0" start="0,0" stop="-1,-1" />
+   <blockBottomPadding length="0" start="0,0" stop="-1,-1" />
+   <blockLeftPadding length="0" start="0,0" stop="0,-1" />
+   <blockRightPadding length="0" start="-1,0" stop="-1,-1" />
+ </blockTableStyle>
+ <blockTableStyle id="spaceLessTable">
+   <blockTopPadding length="0" start="0,0" stop="-1,-1" />
+   <blockRightPadding length="0" start="0,0" stop="-1,-1" />
+   <blockBottomPadding length="0" start="0,0" stop="-1,-1" />
+   <blockLeftPadding length="0" start="0,0" stop="-1,-1" />
+ </blockTableStyle>
+ <blockTableStyle id="keyValueTable">
+   <blockTopPadding length="0" start="0,0" stop="-1,-1" />
+   <blockRightPadding length="0" start="0,0" stop="-1,-1" />
+   <blockBottomPadding length="0" start="0,0" stop="-1,-1" />
+   <blockLeftPadding length="0" start="0,0" stop="-1,-1" />
+   <blockFont name="Courier-Bold" size="9" start="0,0" stop="0,-1" />
+   <blockFont name="Courier" size="9" start="1,0" stop="1,-1" />
+ </blockTableStyle>
+ <blockTableStyle id="mutScores">
+   <blockRightPadding length=".1in" start="0,0" stop="-1,-1" />
+   <blockLeftPadding length=".1in" start="0,0" stop="-1,-1" />
+   <lineStyle kind="LINEBELOW" start="0,0" stop="-1,0" colorName="black" />
+   <lineStyle kind="LINEAFTER" start="0,1" stop="0,-1" colorName="black" />
+   <blockFont name="Courier-Bold" size="9" start="0,0" stop="-1,0" />
+   <blockFont name="Courier-Bold" size="9" start="0,0" stop="0,-1" />
+   <blockFont name="Courier" size="9" start="1,1" stop="-1,-1" />
+   <blockBackground colorsByRow="0xF2F2F2;None" start="0,1" stop="-1,-1"/>
+   <blockAlignment value="right" start="1,0" stop="-1,-1" />
+ </blockTableStyle>
+ <blockTableStyle id="prevSeqs">
+   <blockRightPadding length=".1in" start="0,0" stop="-1,-1" />
+   <blockLeftPadding length=".1in" start="0,0" stop="-1,-1" />
+   <lineStyle kind="LINEBELOW" start="0,0" stop="-1,0" colorName="black" />
+   <lineStyle kind="LINEAFTER" start="0,1" stop="0,-1" colorName="black" />
+   <blockFont name="Courier-Bold" size="9" start="0,0" stop="-1,0" />
+   <blockFont name="Courier-Bold" size="9" start="0,0" stop="0,-1" />
+   <blockFont name="Courier" size="9" start="1,1" stop="-1,-1" />
+   <blockBackground colorsByRow="0xF2F2F2;None" start="0,1" stop="-1,-1"/>
+ </blockTableStyle>
+</stylesheet>

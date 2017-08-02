@@ -1,0 +1,62 @@
+@value header-bg-color, header-fg-color from '../../colors.css';
+@value header-navbar-bg-color, header-navbar-fg-color, header-navbar-border-color from '../../colors.css';
+
+:local .layout {
+
+}
+
+:local .header {
+  width: 100%;
+  background-color: header-bg-color;
+}
+
+:local .container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:local .headerLink {
+  composes: container;
+  display: block;
+  line-height: 5rem;
+  color: header-fg-color;
+  font-weight: 600;
+  font-family: serif;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
+:local .navbar {
+  background-color: header-navbar-bg-color;
+  border-bottom: 1px solid header-navbar-border-color;
+  line-height: 2;
+  text-transform: uppercase;
+}
+
+:local .navbarList {
+  composes: container;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+  overflow: hidden;
+}
+
+:local .navbarList > li {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+:local .navbarLink {
+  color: header-navbar-fg-color;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+:local .navbarLink:hover {
+  text-decoration: underline;
+}
+
+:local .pullRight {
+  float: right;
+}

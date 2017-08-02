@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml.dtd">
+<document>
+{% macro hr() -%}
+  <hr width="100%" color="silver" thickness="0.5" spaceBefore=".15in" spaceAfter=".15in" />
+{% endmacro -%}
+{% macro keyval_tr(key, value) -%}
+  <tr>
+    <td><para style="normal"><b>{{ key }}</b></para></td>
+    <td><para style="normal">{{ value }}</para></td>
+  </tr>
+{% endmacro %}
+  <docinit>
+    <color id="silver" RGB="#BBBBBB" />
+  </docinit>
+  <template pagesize="letter portrait" leftMargin="0.7in">
+    <pageTemplate id="main">
+      <pageGraphics>
+        <setFont name="Courier" size="9" />
+        <fill color="silver" />
+        <drawCenteredString x="4.25in" y="0.4in">
+          Page <pageNumber /> of <getName id="pageCount" default="1" /> for {% if report_type == 'patient' -%}
+          {{ patient.lastname }}, {{patient.firstname }} ordered by Dr. {{ physician.lastname }}
+          {%- if physician.firstname -%}
+            , {{ physician.firstname }}
+          {%- endif -%} {% elif report_type == 'profsample' -%}
+            proficiency sample {{ source }}: {{ name }} {% endif -%}
+          on {{ received_at }}
+        </drawCenteredString>
+      </pageGraphics>
+      <frame id="mainFrame" x1="0.7in" y1="1in" width="7.09in" height="9.49in" />
+    </pageTemplate>
+  </template>
+  {% include "rml_segments/style.xml" %}
+  <story>
+    <h1 style="h1">HIV-1 {% if test_code == 'AVRT' %}RT/Prot{% elif test_code == 'AVIN' %}Integrase{% endif %} Genotype Antiretroviral Resistance Test</h1>
+    <blockTable colWidths="50%,50%" style="headerAnnotation">
+      <tr>
+        <td><para style="annotation">Stanford Health Care</para></td>
+        <td><para style="annotation-right">3375 Hillview Avenue, Palo Alto, CA 94304</para></td>
+      </tr>
+      <tr>
+        <td><para style="annotation">Tel #: (650)498-5575</para></td>
+        <td><para style="annotation-right">Fax #: (650)723-6918</para></td>
+      </tr>
+      <tr>
+        <td><para style="annotation">Stanford Virology Laboratory</para></td>
+        <td><para style="annotation-right">Benjamin Pinsky, M.D., Ph.D. - Clinical Virology Director</para></td>
+      </tr>
+      <tr>
+        <td><para style="annotation"><![CDATA[ ]]></para></td>
+        <td><para style="annotation-right">Christina S. Kong, M.D. - Medical Director</para></td>
+      </tr>
+      <tr>
+        <td><para style="annotation">
+          {% if amplifiable -%}
+            {{ algorithm.name }} version {{ algorithm.version }}
+            (last updated {{ algorithm.publish_date }})
+          {% else -%}
+            -
+          {% endif -%}
+        </para></td>
+        <td><para style="annotation-right">
+          Report generated at {{ generated_at }}
+        </para></td>
+      </tr>
+    </blockTable>
+    {% if is_regenerated_report -%}
+      <para style="disclaimer">Note: this regenerated report was not the original report.</para>
+    {% endif -%}
+    {{ hr() }}
+    <condPageBreak height="3in" />
+    <blockTable colWidths="50%,50%" style="infobox">
+      <tr>
+        <td>
+          <blockTable colWidths="35%,65%" style="keyValueTable">
+            {% if report_type == 'patient' %}
+              {{ keyval_tr("Last name:", patient.lastname) }}
+              {{ keyval_tr("DOB:", patient.birthday) }}
+              {{ keyval_tr("Clinic:", clinic.name) }}
+              {{ keyval_tr("MRN:", patient.mrid) }}
+              {{ keyval_tr("Test code:", test_code) }}
+              {{ keyval_tr("Collected on:", collected_at) }}
+            {% elif report_type == 'profsample' %}
+              {{ keyval_tr("Name:", name) }}
+              {{ keyval_tr("Received on:", received_at) }}
+              {{ keyval_tr("Entered at:", entered_at) }}
+            {% endif %}
+          </blockTable>
+        </td>
+        <td>
+          <blockTable colWidths="35%,65%" style="keyValueTable">
+            {% if report_type == 'patient' %}
+              {{ keyval_tr("First name:", patient.firstname) }}
+              {{ keyval_tr("Physician:", physician.lastname + (', ' + physician.firstname) if physician.firstname else '') }}
+              {{ keyval_tr("Accession #:", '{} ({})'.format(vnum,  patient.ptnum)) }}
+              {{ keyval_tr("File name:", sequence.filename if sequence else 'N/A') }}
+              {{ keyval_tr("Received on:", received_at) }}
+              {{ keyval_tr("Entered at:", entered_at) }}
+            {% elif report_type == 'profsample' %}
+              {{ keyval_tr("Source:", source) }}
+              {{ keyval_tr("Accession #:", vnum) }}
+              {{ keyval_tr("File name:", sequence.filename if sequence else 'N/A') }}
+            {% endif %}
+          </blockTable>
+        </td>
+      </tr>
+    </blockTable>
+    {{ hr() }}
+    <condPageBreak height="3in" />
+    {% if amplifiable -%}
+      {% for geneseq in sequence.gene_sequences -%}
+        <para style="normal">
+          <b>Sequence includes {{ geneseq.gene }} codons:</b>
+          {{ geneseq.first_aa }} - {{ geneseq.last_aa }}
+        </para>
+      {% endfor -%}
+      <para style="normal">
+        <b># of previous sequences from same person:</b>
+        {% for gene, count in previous_sequences_count.items() -%}
+          {{ gene }}: {{ count }}
+          {%- if not loop.last %};{% endif %}
+        {% endfor -%}
+      </para>
+      <para style="normal">
+        {% if indels|length > 0 -%}
+          <b>{{ indels|length }} indel mutation{% if indels|length > 1 %}s{% endif %}:</b> {{ ', '.join(indels) }}
+        {% else -%}
+          <b># of Indel mutations:</b> 0
+        {% endif -%}
+      </para>
+      <para style="normal">
+        <b>Subtype:</b> {{ sequence.subtype }}
+      </para>
+      {{ hr() }}
+    {% endif -%}
+    {% if amplifiable -%}
+      {% for genedr in drug_resistance -%}
+        <condPageBreak height="2.8in" />
+        <h2 style="h2">
+          Drug Resistance Interpretation: {{ genedr.gene }}
+        </h2>
+        {% for muttype in genedr.mutation_types -%}
+          <para style="normal">
+            <b>{{ muttype.label }}:</b>
+            {% for mut in genedr.mutations if mut.type == muttype.name -%}
+              {{ mut.text -}}
+              {% if not loop.last -%}
+              ,
+              {% endif -%}
+            {% else %}
+              None
+            {% endfor %}
+          </para>
+        {% endfor -%}
+        <spacer length=".1in" />
+        {% for dcresult in genedr.drug_class_results -%}
+          <h3 style="h3">
+            {{ dcresult.drug_class.fullname }}
+          </h3>
+          <blockTable colWidths="30%,70%" style="keyValueTable">
+            {% for dlevel in dcresult.drug_levels -%}
+              <tr>
+                <td>{{ dlevel.drug.fullname }} ({{dlevel.drug.name}})</td>
+                <td>{{ dlevel.level_text }}</td>
+              </tr>
+            {% endfor -%}
+          </blockTable>
+          <spacer length=".1in" />
+        {% endfor -%}
+        {{ hr() }}
+      {% endfor -%}
+    {% endif -%}
+    {% if notes -%}
+      <condPageBreak height="3in" />
+      <h2 style="h2">Notes</h2>
+      <para style="normal">{{ notes|nl2br }}</para>
+      {{ hr() }}
+    {% endif -%}
+    {% if amplifiable -%}
+      {% for genedr in drug_resistance -%}
+        {% if genedr.comments -%}
+          <condPageBreak height="3in" />
+          <h2 style="h2">
+            {{ genedr.gene }} Comments
+          </h2>
+          <ul bulletFontSize="6" bulletOffsetY="-3" bulletType="bullet">
+            {% for cmt in genedr.comments -%}
+              <li>
+                <para style="normal">{{ cmt.text }}</para>
+              </li>
+            {% endfor -%}
+          </ul>
+          {{ hr() }}
+        {% endif -%}
+        <condPageBreak height="2in" />
+        <h2 style="h2">
+          {{ genedr.gene }} Mutation Scores
+        </h2>
+        {% for dcresult in genedr.drug_class_results -%}
+          <condPageBreak height="2in" />
+          <blockTable width="100%" style="mutScores">
+            <tr>
+              <td>{{ dcresult.drug_class.name }}</td>
+              {% for dlevel in dcresult.drug_levels -%}
+                <td>{{ dlevel.drug.name }}</td>
+              {% endfor -%}
+            </tr>
+            {% for mutscore in dcresult.mutation_scores -%}
+            <tr>
+              <td>{{ mutscore.mutations|join(' + ') }}</td>
+              {% for dlevel in dcresult.drug_levels -%}
+                <td>{{ mutscore.drug_scores[dlevel.drug.name] }}</td>
+              {% endfor -%}
+            </tr>
+            {% endfor %}
+            {% if dcresult.mutation_scores|length != 1 -%}
+            <tr>
+              <td>Total</td>
+              {% for dlevel in dcresult.drug_levels -%}
+                <td>{{ dcresult.mutation_scores|map(attribute='drug_scores')|sum(attribute=dlevel.drug.name) }}</td>
+              {% endfor -%}
+            </tr>
+            {% endif -%}
+          </blockTable>
+          <spacer length=".1in" />
+          {{ hr() }}
+        {% endfor -%}
+        {% if previous_sequences[genedr.gene] -%}
+          <condPageBreak height="2in" />
+          <h2 style="h2">
+            Previous {{ genedr.gene }} sequences from same person
+          </h2>
+          <condPageBreak height="2in" />
+          <blockTable colWidths="14%,18%,14%,54%" style="prevSeqs">
+            <tr>
+              <td>Date</td>
+              <td>Accession #</td>
+              <td>Distance %</td>
+              <td>Mutations</td>
+            </tr>
+            {% for seq in previous_sequences[genedr.gene] -%}
+              <tr>
+                <td>{{ seq.collected_at }}</td>
+                <td>{{ seq.vnum }}</td>
+                <td>{{ '%0.2f' % (seq.distance * 100) }}</td>
+                <td><para style="normal">{{ seq.mutations }}</para></td>
+              </tr>
+            {% endfor -%}
+          </blockTable>
+          <spacer length=".15in" />
+          {{ hr() }}
+        {% endif -%}
+      {% endfor -%}
+    {% else -%}
+      <h2 style="h2">No results obtained</h2>
+      <para style="normal">
+        <![CDATA[No DNA band was obtained following viral RNA extraction and RT-PCR. This usually occurs as a result of the sample having a low virus load. It occurs less commonly as a result of viral RNA degradation in transit. Whole blood sample must be spun within 6 hours of collection, and room temperature plasma received within 24 hours. Frozen plasma (<20 deg. Celsius or dry ice) is stable.]]>
+      </para>
+      <spacer length="3in" />
+      {{ hr() }}
+    {% endif -%}
+    <para style="footer">
+      The Genotypic Antiretroviral Resistance Test reports mutations in HIV-1 {% if test_code == 'AVRT' %}protease and RT{% elif test_code == 'AVIN' %}integrase{% else %}protease, RT and/or integrase{% endif %}. Mutations are defined as differences from the wildtype consensus B reference sequence. The interpretation is based on published data in the scientific and medical literature linking mutations and combinations of mutations to phenotypic and clinical drug resistance. The report should be used in conjunction with a patient's clinical history (including past treatments) and with a solid understanding of the principles of antiretroviral treatment (https://www.aidsinfo.nih.gov/guidelines/). A more detailed description of the test interpretation, which includes the consensus B protease and RT sequence, all of the mutation scores, all of the mutation comments, and updates can be found on the Stanford HIV Drug Resistance Database https://hivdb.stanford.edu/page/release-notes/.
+    </para>
+    <para style="footer">
+      Laboratory test performed by Stanford Health Care Virology Laboratory at 3375 Hillview Avenue, Palo Alto, CA 94304. This test was validated and its performance characteristics determined by the Stanford Health Care Virology Laboratory. It has not been cleared or approved by the U.S. Food and Drug Administration. Such approval is not required for tests validated by the performing laboratory.
+    </para>
+    <namedString id="pageCount"><pageNumber /></namedString>
+  </story>
+</document>

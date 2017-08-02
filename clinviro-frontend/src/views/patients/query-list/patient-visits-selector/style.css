@@ -1,0 +1,10 @@
+:local .patientVisitsSelector label {
+  display: inline-block;
+  text-align: right;
+  width: 4rem;
+  margin-right: .4rem;
+}
+
+:local .patientVisitsSelector select {
+  width: 7.2rem;
+}

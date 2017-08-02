@@ -1,0 +1,48 @@
+@value warning-text-color from '../../colors.css';
+
+:local(section.reportSection) {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid gray;
+}
+
+:local(table.headerTable) {
+  width: 100%;
+  max-width: 60rem;
+}
+
+:local(table.keywordTable) > tbody > tr > th {
+  font-weight: 600;
+  padding-right: 1.5rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+:local(.notes) {
+  white-space: pre-wrap;
+}
+
+:local(table.borderedTable) {
+  border-collapse: collapse;
+  border: 1px solid gray;
+  margin-top: 1rem;
+}
+
+:local(table.borderedTable) th, :local(table.borderedTable) td {
+  padding: .5rem 1rem;
+  border: 1px solid gray;
+}
+
+:local(table.borderedTable) th {
+  white-space: nowrap;
+  text-align: left;
+}
+
+:local(.previewButtonContainer) {
+  text-align: center;
+}
+
+:local(.warning) {
+  color: warning-text-color;
+}

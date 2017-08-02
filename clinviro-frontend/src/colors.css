@@ -1,0 +1,72 @@
+/* use http://chir.ag/projects/name-that-color/ */
+@value thunder: #1c1b1c;
+@value scorpion: #605f60;
+@value dustygray: #969696;
+@value silver: #bbbbbb;
+@value mercury: #e3e3e3;
+@value wildsand: #f4f4f4;
+@value tutu: #fffeff;
+@value curiousblue: #1b8ecc;
+@value matisse: #1574a8;
+@value ziggurat: #aecdde;
+@value genoa: #197866;
+@value ironstone: #85453c;
+@value goldenbell: #E28913;
+@value lima: #2FD123;
+@value madang: #C4F5C1;
+
+@value snuff: #E1DFF1;
+@value whitelilac: #F1F0F9;
+@value hawkesblue: #D4E7FC;
+
+@value shadow: #7c6b50;
+@value teak: #AEA266;
+@value buddhagold: #cba800;
+@value softamber: #D4CFB4;
+@value cararra: #F0F0E8;
+@value pampas: #F1F0E9;
+
+@value persianred: #CA402B;
+@value cardinal: #d32424;
+@value redberry: #8c1515;
+@value cinnabar: #e13333;
+
+@value shakespeare: #5ac0cc;
+@value pictonblue: #45D3E3;
+
+:export {
+  main-text-color: thunder;
+  inverse-main-text-color: tutu;
+  trivia-text-color: dustygray;
+  warning-text-color: persianred;
+  read-only-text-color: scorpion;
+  link-text-color: redberry;
+  light-text-color: silver;
+  placeholder-text-color: dustygray;
+  border-color: dustygray;
+  error-border-color: cinnabar;
+  panel-bg-color: mercury;
+  light-panel-bg-color: wildsand;
+  error-fg-color: redberry;
+  header-bg-color: redberry;
+  header-fg-color: tutu;
+  header-navbar-bg-color: cararra;
+  header-navbar-fg-color: redberry;
+  header-navbar-border-color: softamber;
+  table-row-head-color: snuff;
+  table-row-odd-color: tutu;
+  table-row-even-color: whitelilac;
+  table-row-highlight-color: hawkesblue;
+  btn-default-bg-color: wildsand;
+  btn-default-bg-hover-color: mercury;
+  btn-default-border-color: dustygray;
+  btn-primary-bg-color: redberry;
+  btn-primary-bg-hover-color: cardinal;
+  btn-info-bg-color: shakespeare;
+  btn-info-bg-hover-color: pictonblue;
+  btn-info2-bg-color: matisse;
+  btn-info2-bg-hover-color: curiousblue;
+  dialog-bg-color: tutu;
+  dialog-close-fg-color: dustygray;
+  dialog-close-fg-hover-color: thunder;
+}

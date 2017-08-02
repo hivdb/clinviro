@@ -1,0 +1,115 @@
+{% if is_regenerated_report -%}
+*Note: this regenerated report was not the original report.*
+
+&nbsp;
+
+{% endif -%}
+{% if report_type == 'patient' -%}
+- Clinic: {{ clinic.name }}
+- MRN: {{ patient.mrid }}
+{% endif -%}
+{% if amplifiable -%}
+- File Name: {{ sequence.filename }}
+{% endif -%}
+{% if report_type == 'profsample' -%}
+- {{ source }}: {{ name }}
+- Accession #: {{ vnum }}
+{% endif -%}
+- Test Code: {{ test_code }}
+{% if report_type == 'profsample' -%}
+- Received on: {{ received_at }}
+- Entered at: {{ entered_at }}
+- Generated at: {{ generated_at }}
+{% endif -%}
+
+{% if amplifiable -%}
+{% for geneseq in sequence.gene_sequences -%}
+- Sequence includes {{ geneseq.gene }} codons: {{ geneseq.first_aa }} - {{ geneseq.last_aa }}
+{% endfor -%}
+{% if report_type == 'patient' -%}
+- \# of previous sequences from same person:
+{%- for gene, count in previous_sequences_count.items() %} {{ gene }}: {{ count }}
+{%- if not loop.last %};{% endif %}
+{%- endfor %}
+{% endif -%}
+{% if indels|length > 0 -%}
+- Sequence contains {{ indels|length }} indel mutation{% if indels|length > 1 %}s{% endif %}: {{ ', '.join(indels) }}
+{% else -%}
+- \# of Indel mutations: 0
+{% endif -%}
+- Subtype: {{ sequence.subtype }}
+{% if amplifiable -%}
+- Algorithm: {{ algorithm.name }} version {{ algorithm.version }} (last updated {{ algorithm.publish_date }})
+{% endif -%}
+
+{% for genedr in drug_resistance %}
+
+Drug Resistance Interpretation: {{ genedr.gene }}
+----------------------------------
+
+{{ table_mutation_types(genedr) }}
+{% for dcresult in genedr.drug_class_results %}
+  {{ dcresult.drug_class.fullname }}:
+
+{{ table_drug_levels(dcresult.drug_levels) }}
+{% endfor %}
+{% endfor %}
+{% endif -%}
+{% if notes -%}
+Notes
+-----
+
+{{ notes.replace('\n', '\n\n') }}
+{% endif -%}
+{% if amplifiable -%}
+{% for genedr in drug_resistance %}
+
+{% if genedr.comments -%}
+
+{{ genedr.gene }} Comments
+-----------
+{% for cmt in genedr.comments -%}
+- {{ cmt.text }}
+{% endfor -%}
+{% endif %}
+
+
+{{ genedr.gene }} Mutation Scores
+------------------
+{% for dcresult in genedr.drug_class_results %}
+{% if loop.index0 != 0 %}&nbsp;{% endif %}
+
+{{ table_mutation_scores(dcresult) }}
+{% endfor -%}
+{% if report_type == 'patient' and previous_sequences[genedr.gene] %}
+
+Previous {{ genedr.gene }} sequences from same person
+--------------------------------------
+
+{{ table_prev_sequences(previous_sequences[genedr.gene]) }}
+{% endif -%}
+{% endfor %}
+{% else %}
+
+No results obtained
+-------------------
+
+No DNA band was obtained following viral RNA extraction and RT-PCR. This usually occurs as a result of the sample having a low virus load. It occurs less commonly as a result of viral RNA degradation in transit. Whole blood sample must be spun within 6 hours of collection, and room temperature plasma received within 24 hours. Frozen plasma (&lt;20 deg. Celsius or dry ice) is stable.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+{% endif %}
+
+------------------------------------------------
+The Genotypic Antiretroviral Resistance Test reports mutations in HIV-1 {% if test_code == 'AVRT' %}protease and RT{% elif test_code == 'AVIN' %}integrase{% else %}protease, RT and/or integrase{% endif %}. Mutations are defined as differences from the wildtype consensus B reference sequence. The interpretation is based on published data in the scientific and medical literature linking mutations and combinations of mutations to phenotypic and clinical drug resistance. The report should be used in conjunction with a patient's clinical history (including past treatments) and with a solid understanding of the principles of antiretroviral treatment (http://www.aidsinfo.nih.gov/guidelines/). A more detailed description of the test interpretation, which includes the consensus B protease and RT sequence, all of the mutation scores, all of the mutation comments, and updates can be found on the Stanford HIV Drug Resistance Database https://hivdb.stanford.edu/page/release-notes/.
+
+Laboratory test performed by Stanford Health Care Virology Laboratory at 3375 Hillview Avenue, Palo Alto, CA 94304. This test was validated and its performance characteristics determined by the Stanford Health Care Virology Laboratory. It has not been cleared or approved by the U.S. Food and Drug Administration. Such approval is not required for tests validated by the performing laboratory.

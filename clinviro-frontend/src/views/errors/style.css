@@ -1,0 +1,34 @@
+@value panel-bg-color, error-fg-color, border-color, link-text-color from '../../colors.css';
+
+:local .errorBox {
+  display: flex;
+  align-items: center;
+  margin: 4rem auto;
+  max-width: 550px;
+  background-color: panel-bg-color;
+  padding: 2rem;
+  border: 1px solid border-color;
+}
+
+:local .errorBox.narrow {
+  margin: 1rem auto;
+}
+
+:local .errorIcon {
+  font-size: 2rem;
+  margin-right: 1rem;
+  color: error-fg-color;
+}
+
+:local(.errorBox) a {
+  color: link-text-color;
+  text-decoration: none;
+}
+
+:local(.errorBox) a:hover {
+  text-decoration: underline;
+}
+
+:local(.errorMsg) {
+  line-height: 1.5em;
+}

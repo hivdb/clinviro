@@ -1,0 +1,32 @@
+@value table-row-head-color, table-row-highlight-color, table-row-odd-color, table-row-even-color from '../../../colors.css';
+
+:local .queryList {
+  width: 100%;
+}
+
+:local .queryList > thead > tr {
+  background-color: table-row-head-color;
+}
+
+:local .queryList > tbody > tr:nth-child(odd) {
+  background-color: table-row-odd-color;
+}
+
+:local .queryList > tbody > tr:nth-child(even) {
+  background-color: table-row-even-color;
+}
+
+:local .queryList td,
+:local .queryList th {
+  text-align: right;
+  padding: 0 1rem;
+  white-space: nowrap;
+}
+
+:local .queryList tr {
+  line-height: 2;
+}
+
+:local .queryList > tbody > tr:hover {
+  background-color: table-row-highlight-color;
+}

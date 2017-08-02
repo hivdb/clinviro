@@ -1,0 +1,64 @@
+# vim: set ft=nginx:
+server {
+    listen       80;
+    server_name  !SERVER_NAME!;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen       443 ssl http2;
+    server_name  !SERVER_NAME!;
+    root   /app/html;
+    index  index.html index.htm;
+
+    ssl on;
+    ssl_certificate /etc/lego/certificates/!SERVER_NAME!.crt;
+    ssl_certificate_key /etc/lego/certificates/!SERVER_NAME!.key;
+
+    #charset koi8-r;
+    #access_log  /var/log/nginx/log/host.access.log  main;
+
+    rewrite "^/patients" /index.html;
+    rewrite "^/users" /index.html;
+    rewrite "^/positive-controls" /index.html;
+    rewrite "^/proficiency-samples" /index.html;
+    rewrite "^/quality-control-report" /index.html;
+
+    location = /index.html {}
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location = /graphql {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 1200s;
+        proxy_buffers 8 1m;
+        proxy_buffer_size 1m;
+        proxy_busy_buffers_size 1m;
+        client_body_buffer_size 1m;
+    }
+
+    location /depot {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 1200s;
+        proxy_buffers 8 1m;
+        proxy_buffer_size 1m;
+        proxy_busy_buffers_size 1m;
+        client_body_buffer_size 1m;
+    }
+
+}

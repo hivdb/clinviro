@@ -1,0 +1,81 @@
+@value main-text-color, link-text-color, panel-bg-color, light-panel-bg-color from '../../../colors.css';
+
+:local .infobox {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  background-color: light-panel-bg-color;
+  transition: background-color .3s ease;
+  margin: 1rem 0;
+  padding: 1rem;
+  line-height: 1.5;
+  color: main-text-color;
+  text-decoration: none;
+}
+
+:local .infobox:hover {
+  background-color: panel-bg-color;
+}
+
+:local .hoverTip {
+  position: absolute;
+  cursor: pointer;
+  right: 1rem;
+  top: .5rem;
+  font-size: .8rem;
+}
+
+:local .hoverTip a {
+  float: none;
+  color: link-text-color;
+  text-decoration: none;
+}
+
+:local .hoverTip a:hover {
+  text-decoration: underline;
+}
+
+:local .one:not(:first-of-type)::before {
+  content: ', ';
+}
+
+:local .one.hasComma:not(:first-of-type)::before {
+  content: '; ';
+}
+
+:local .cursorPointer {
+  cursor: pointer;
+}
+
+:local .infoboxPlaceholder > div:not(.infoboxPlaceholderContainer) {
+  filter: blur(3px) brightness(5);
+}
+
+:local .infoboxPlaceholderContainer {
+  position: absolute;
+  background-color: rgba(255, 255, 255, .2);
+  left: 5px;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: main-text-color;
+}
+
+:local .infoboxPlaceholderIcon {
+  font-size: 2rem;
+}
+
+:local .infoboxPlaceholderText {
+  font-size: 1.2rem;
+  color: link-text-color;
+}
+
+:local .infoboxPlaceholderText:hover {
+  text-decoration: underline;
+}

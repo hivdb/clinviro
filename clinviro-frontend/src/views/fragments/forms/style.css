@@ -1,0 +1,318 @@
+@value main-text-color, placeholder-text-color, trivia-text-color, read-only-text-color, border-color, error-border-color from '../../../colors.css';
+@value link-text-color, warning-text-color, light-text-color from '../../../colors.css';
+
+@value label-width: 8.5rem;
+@value input-width: 24rem;
+@value narrow-input-width: 12rem;
+@value multiple-input-button-width: 2rem; 
+@value input-horizontal-padding: .4rem;
+
+:local .formHorizontal,
+:local .formInline {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+:local .formGroup {
+  line-height: 2;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 200;
+}
+
+:local .pullRight {
+  float: right;
+}
+
+:local .formGroup label {
+  font-weight: 400;
+}
+
+:local .formInline .formGroup:not(:last-child) {
+  display: inline-block;
+  margin-right: 2rem;
+}
+
+:local .formGroup > label {
+  padding-right: .7rem;
+}
+
+:local .formHorizontal fieldset {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+:local .formHorizontal .formGroup > label {
+  display: inline-block;
+  box-sizing: border-box;
+  width: label-width;
+} 
+
+:local .formHorizontal .formGroup .formGroup > label,
+:local .formHorizontal .formGroup .formGroup .fullWidth {
+  padding-left: 1.5rem;
+}
+
+:local(.formHorizontal .formGroup .joinInput),
+:local(.formHorizontal .formGroup input[type="text"]),
+:local(.formHorizontal .formGroup input[type="email"]),
+:local(.formHorizontal .formGroup input[type="password"]),
+:local(.formHorizontal .formGroup input[type="number"]),
+:local(.formHorizontal .formGroup .inputWrapper) {
+  display: inline-block;
+  width: input-width;
+  box-sizing: border-box;
+}
+
+:local(.formGroup input[type="text"]),
+:local(.formGroup input[type="number"]),
+:local(.formGroup .inputWrapper) {
+  width: narrow-input-width;
+  font-weight: 200;
+}
+
+:local(.formGroup input[type="checkbox"]) {
+  margin: 0 .5rem;
+}
+
+:local(.formGroup .joinInput),
+:local(.formGroup input) {
+  border: 1px solid border-color;
+  padding: 0 input-horizontal-padding;
+  white-space: nowrap;
+}
+
+
+:local(.formGroup input) {
+  line-height: 2;
+  font-size: 1rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+:local(.formGroup input[type="text"]:invalid),
+:local(.formGroup input[type="number"]:invalid) {
+  border-color: error-border-color;
+}
+
+:local(.formGroup input::placeholder) {
+  color: placeholder-text-color;
+}
+
+:local(.formHorizontal .formGroup .multiple) {
+  display: inline-block;
+}
+
+:local(.formHorizontal .formGroup .oneOfMultiple) {
+  display: block;
+  padding: 0 input-horizontal-padding;
+}
+
+:local(.formGroup a) {
+  float: right;
+  color: link-text-color;
+  text-decoration: none;
+}
+
+:local(.formGroup label a), :local(.formGroup a.inline) {
+  float: none;
+}
+
+:local(.formGroup a:hover) {
+  text-decoration: underline;
+}
+
+
+:local(.formHorizontal .formGroup .multiple > input) {
+  width: calc(input-width - multiple-input-button-width - 0.5rem);
+  box-sizing: border-box;
+  margin-right: .5rem;
+}
+
+:local(.formGroup button:not(:first-of-type)) {
+  margin-left: 1rem;
+}
+
+:local(.formGroup .multiple > button) {
+  width: multiple-input-button-width;
+  padding: 0 input-horizontal-padding;
+}
+
+:local .valueViewerGeneral {
+  display: inline-block;
+  border-bottom: 1px solid border-color;
+}
+
+:local .inlineValueViewer {
+  composes: valueViewerGeneral;
+  word-break: break-word;
+  padding: 0 input-horizontal-padding;
+}
+
+:local .valueViewer {
+  composes: valueViewerGeneral;
+  width: input-width;
+  box-sizing: border-box;
+  padding: 0 input-horizontal-padding;
+  position: relative;
+  white-space: pre-wrap;
+}
+
+:local .fullWidth .valueViewer {
+  display: block;
+  width: auto;
+}
+
+:local .valueViewer > span.warning {
+  float: right;
+}
+
+:local .readOnly {
+  color: read-only-text-color;
+}
+
+:local(.valueViewer > a) {
+  position: absolute;
+  bottom: 0;
+  right: input-horizontal-padding;
+}
+
+:local(.formHorizontal .formGroup .valueViewer .oneOfMultiple) {
+  padding: 0;
+}
+
+:local .trivia {
+  color: trivia-text-color;
+  margin-right: 1rem;
+}
+
+:local button + .trivia {
+  margin-left: 1rem;
+}
+
+:local .formGroup .inputWrapper {
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+:local(.inputWrapper) .Select-control,
+:local(.inputWrapper) .is-open .Select-control,
+:local(.inputWrapper) .Select-menu-outer {
+  border-radius: 0;
+  border: 1px solid border-color;
+}
+
+:local(.inputWrapper) .Select-control {
+  height: calc(2rem + 2px);
+  display: inline-table;
+}
+
+:local(.inputWrapper) .Select-input {
+  height: 2rem;
+  vertical-align: top;
+}
+
+:local(.inputWrapper) .Select-placeholder,
+:local(.inputWrapper) .Select--single > .Select-control .Select-value {
+  line-height: inherit;
+}
+
+:local(.inputWrapper) .Select-option {
+  padding: 4px 10px;
+}
+
+:local .formGroup .fileInput input[type="file"] {
+  display: none;  /* >= IE10 */
+}
+
+:local .formGroup .fileInput input[type="text"] {
+  cursor: pointer;
+  background-color: transparent;
+  border-width: 0;
+  outline: none;
+  padding-left: 1rem;
+  position: relative;
+}
+
+:local .formGroup .fileInput input[type="text"]:disabled {
+  cursor: not-allowed;
+}
+
+:local .sequenceForm {
+  padding: 0 1rem;
+}
+
+:local .formHorizontal .sequenceForm .formGroup {
+  width: auto;
+}
+
+:local .formHorizontal .formGroup .fullWidth {
+  display: block;
+  box-sizing: border-box;
+  width: calc(label-width + input-width);
+}
+
+:local .formHorizontal textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .4rem 1rem;
+  font-size: .9rem;
+  line-height: 2;
+  font-weight: 200;
+  resize: vertical;
+}
+
+:local ul.messages {
+  padding: 0 1.5rem;
+}
+
+:local .warning {
+  color: warning-text-color;
+}
+
+:local .invisible {
+  visibility: hidden;
+}
+
+:local a.collapse {
+  font-size: .8rem;
+  margin-right: .4rem;
+}
+
+:local .arrowDown {
+  font-size: 2.5rem;
+  color: light-text-color;
+  padding-left: 2rem;
+}
+
+:local(.mergeFrom) {
+  color: trivia-text-color;
+}
+
+:local(.mergeFrom > svg) {
+  margin: 0 .4rem;
+}
+
+:local(.joinInput) {
+  cursor: text;
+}
+
+:local(.joinInput > span[contenteditable]) {
+  display: inline-block;
+  width: auto;
+  border: none;
+  cursor: text;
+  line-height: 1.5;
+}
+
+:local(.joinInput > span[contenteditable]:empty::before) {
+  content: attr(placeholder);
+  display: inline-block;
+  color: placeholder-text-color;
+}
+
+:local(a.disabled) {
+  opacity: .67;
+  cursor: not-allowed;
+}

@@ -1,0 +1,20 @@
+:local(.buttonContainer) {
+  overflow: hidden;
+}
+
+:local(a + .generationButton) {
+  float: right;
+}
+
+:local(.mainDownloadButton) {
+  margin-right: 1rem;
+}
+
+:local(.disclaimerCheckbox) {
+  margin-top: .5rem;
+  float: right;
+}
+
+:local(.disclaimerCheckboxContainer) {
+  overflow: hidden;
+}

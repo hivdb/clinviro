@@ -1,0 +1,7 @@
+clinviro-frontend/node_modules
+clinviro-frontend/build
+**/__pycache__
+initdb.d/100_cdata.sql
+recyclebin
+data
+local

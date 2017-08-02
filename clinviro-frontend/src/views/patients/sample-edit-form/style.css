@@ -1,0 +1,9 @@
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+:local(.spin > svg) {
+  animation: spin 1.5s linear infinite;
+}

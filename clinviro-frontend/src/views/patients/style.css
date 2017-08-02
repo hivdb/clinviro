@@ -1,0 +1,37 @@
+@value link-text-color, trivia-text-color, warning-text-color from '../../colors.css';
+
+:local .queryListTrivia {
+  color: trivia-text-color;
+  font-size: .8rem;
+}
+
+:local .trivia {
+  color: trivia-text-color;
+  margin-right: 1rem;
+}
+
+:local .warning {
+  color: warning-text-color;
+}
+
+:local a.link {
+  color: link-text-color;
+  text-decoration: none;
+}
+
+:local a.link:hover {
+  text-decoration: underline;
+}
+
+:local div.reportButtons a {
+  margin-right: 0.4rem;
+  white-space: nowrap;
+}
+
+:local div.reportButtons a:last-child {
+  margin-right: 0;
+}
+
+:local div.reportButtons a.icon {
+  padding: 0 0.1rem;
+}

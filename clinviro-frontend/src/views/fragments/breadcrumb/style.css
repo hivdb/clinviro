@@ -1,0 +1,29 @@
+@value link-text-color, read-only-text-color from '../../../colors.css';
+
+:local(.breadcrumb) {
+  margin: 2rem 0 1rem;
+}
+
+:local(.breadcrumb > span:first-child::before) {
+  content: none;
+}
+
+:local(.breadcrumb > span::before) {
+  content: ' ≫ ';
+}
+
+:local(.breadcrumb > span > a) {
+  color: link-text-color;
+  font-weight: 200;
+  text-decoration: none;
+}
+
+:local(.breadcrumb > span.current > a) {
+  color: read-only-text-color;
+  font-weight: 400;
+  pointer-events: none;
+}
+
+:local(.breadcrumb > span:not(.current) > a:hover) {
+  text-decoration: underline;
+}
