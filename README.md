@@ -133,6 +133,76 @@ UPDATE "tbl_users"
     WHERE email='user@example.com';
 ```
 
+### Merge two patient records
+
+It is possible to merge two patient records to a single one.
+
+#### Step 1: Specify target ptnum and ptnum(s) to be merged:
+
+```sql
+SELECT [TARGET_PTNUM] as ptnum INTO TEMP TABLE target_ptnum;
+SELECT [PTNUM_1] as ptnum INTO TEMP TABLE ptnum_to_be_merged;
+
+-- if you have more ptnums
+INSERT INTO ptnum_to_be_merged (ptnum) VALUES (PTNUM_2);
+INSERT INTO ptnum_to_be_merged (ptnum) VALUES (PTNUM_3);
+...
+```
+
+#### Step 2: Update `tbl_medical_records`:
+
+```sql
+INSERT INTO "tbl_medical_records"
+  (mrid, ptnum)
+  SELECT mrid, t.ptnum FROM target_ptnum t, tbl_medical_records mr
+  WHERE
+    EXISTS (
+      SELECT 1 FROM ptnum_to_be_merged d
+      WHERE d.ptnum=mr.ptnum
+    ) AND
+    NOT EXISTS (
+      SELECT 1 FROM tbl_medical_records mr2
+      WHERE mr2.mrid=mr.mrid AND mr2.ptnum=t.ptnum
+    );
+```
+
+#### Step 3: Update `tbl_patient_visits':
+
+```sql
+UPDATE "tbl_patient_visits" v
+  SET ptnum=t.ptnum
+  FROM target_ptnum t
+  WHERE
+    v.ptnum IN (SELECT ptnum FROM ptnum_to_be_merged) AND
+    NOT EXISTS (
+      SELECT 1 FROM tbl_patient_visits v2
+      WHERE
+        v.collected_at=v2.collected_at AND
+        v2.ptnum=t.ptnum
+    );
+```
+
+#### Step 4: Update `tbl_patient_samples`:
+
+```sql
+UPDATE "tbl_patient_samples" s
+  SET patient_visit_id=v.id
+  FROM target_ptnum t, tbl_patient_visits v, tbl_patient_visits v2
+  WHERE
+    v.ptnum=t.ptnum AND v2.id=patient_visit_id AND
+    v.collected_at=v2.collected_at AND
+    v2.ptnum IN (SELECT ptnum FROM ptnum_to_be_merged);
+```
+
+#### Step 5: Delete redundant records
+
+```sql
+DELETE FROM "tbl_patient_samples" s WHERE EXISTS (SELECT 1 FROM tbl_patient_visits v, ptnum_to_be_merged d WHERE v.id=s.patient_visit_id AND v.ptnum=d.ptnum);
+DELETE FROM "tbl_patient_visits" v WHERE v.ptnum IN (SELECT ptnum FROM ptnum_to_be_merged);
+DELETE FROM "tbl_medical_records" mr WHERE mr.ptnum IN (SELECT ptnum FROM ptnum_to_be_merged);
+DELETE FROM "tbl_patients" p WHERE p.ptnum IN (SELECT ptnum FROM ptnum_to_be_merged);
+```
+
 Copyright and Disclaimer
 ------------------------
 
