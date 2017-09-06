@@ -166,7 +166,7 @@ INSERT INTO "tbl_medical_records"
     );
 ```
 
-#### Step 3: Update `tbl_patient_visits':
+#### Step 3: Update `tbl_patient_visits`:
 
 ```sql
 UPDATE "tbl_patient_visits" v
