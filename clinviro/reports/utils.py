@@ -167,6 +167,15 @@ def prepare_prev_sequences(prevseqs, curseq):
     return output
 
 
+def prepare_prev_sequence_dates(prevseqs):
+    dates = set([])
+    for seqresult in prevseqs:
+        header = seqresult['inputSequence']['header']
+        _, collected_at, _ = header.split('|', 2)
+        dates.add(collected_at)
+    return sorted(dates)
+
+
 def prepare_codon_comparison(blast_result, curseq):
     result = OrderedDict([])
     for geneseq in curseq:
@@ -291,6 +300,7 @@ def prepare_sequence_data(sequence, similar_sequence,
         # patient previous sequences
         'previous_sequences': prepare_prev_sequences(
             prev_sequences, data['alignedGeneSequences']),
+        'previous_sequence_dates': prepare_prev_sequence_dates(prev_sequences),
         'previous_sequences_count': count_geneseqs(prev_sequences),
         'similar_sequences': prepare_similar_sequences(
             similar_sequence, data['alignedGeneSequences']),

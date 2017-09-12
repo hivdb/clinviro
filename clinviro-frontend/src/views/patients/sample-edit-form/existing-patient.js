@@ -24,7 +24,6 @@ import {isPatientChanged} from '../comparisons';
 import {UpdatePatient, PreviewPatientReport} from '../../../mutations';
 import PatientSampleEditForm from './index';
 import propTypes from './prop-types';
-import {DATE_FORMAT} from '../../../constants';
 import PreviewWindow from '../../../utils/preview-window';
 
 
@@ -295,31 +294,18 @@ class ExistingPatientSampleEditForm extends React.Component {
       return sum;
     }, 0);
     const addDRMs = findAdditionalDRMs(prevDRMs, DRMs);
-    const prevSeqs = this.getPrevSequences({curReceivedAt});
-    /*if (prevSeqs.length === 0) {
-      this.props.onChange({notes: ''});
-      return;
-    }*/
-    const prevVisitDates = Array.from(
-      new Set(prevSeqs.map(({header}) => (
-        moment(header.split('|')[1]).format(DATE_FORMAT)
-      )))
-    );
-    const plural = prevVisitDates.length > 1;
-    let notes = (
-      `${prevVisitDates.length} previous visit record${plural ?
-        's were' : ' was'} found for this patient: ${plural ?
-        prevVisitDates.slice(0, -1).join(', ') + ' and '
-        : ''}${prevVisitDates[prevVisitDates.length - 1]}`
-    );
+    let notes;
     if (addDRMs.length > 0) {
-      notes += '.';
+      notes = (
+        'Additional drug-resistance mutations found in previous sequences ' +
+        'but not in the current sequence:'
+      );
       const geneDR = await getMutationComments(addDRMs.map(({text}) => text));
       for (const {gene: {name: gene}, commentsByTypes} of geneDR) {
         const typePrefix = {
-          PR: 'PI ',
+          PR: 'PR ',
           RT: '',
-          IN: 'INSTI '
+          IN: 'IN '
         }[gene];
         for (const {mutationType, comments} of commentsByTypes) {
           if (comments.length === 0 || mutationType === 'Other') {
@@ -327,7 +313,7 @@ class ExistingPatientSampleEditForm extends React.Component {
           }
           const plural = comments.length > 1;
           notes += (
-            `\n\nAdditional ${typePrefix}${mutationType} mutation${plural ? 's' : ''}:`
+            `\n\n ${typePrefix}${mutationType} mutation${plural ? 's' : ''}:`
           );
           for (const {text, boundMutation: {text: mut}} of comments) {
             notes += `\n- ${mut}: ${text}`;
@@ -356,7 +342,10 @@ class ExistingPatientSampleEditForm extends React.Component {
       else {
         drClasses = drClasses[0];
       }
-      notes += `, which had no${lenDRMs > 0 ? ' additional': ''} ${drClasses} drug resistance mutations.`;
+      notes = (
+        `No ${lenDRMs > 0 ? ' additional': ''} drug-resistance mutation ` +
+        'were found in previous sequences but not in the current sequence.'
+      );
     }
     this.props.onChange({notes});
   }

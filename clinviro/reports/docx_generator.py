@@ -85,9 +85,11 @@ class DOCXGenerator(AbstractGenerator):
             table.add_row(row)
         return table.draw()
 
-    def table_prev_sequences(self, prevseqs):
+    def table_prev_sequences(self, gene, prevseqs):
         table = Texttable()
-        table.header(['Date', 'Accession #', 'Distance %', 'Mutations'])
+        table.header([
+            'Date', 'Accession #', 'Distance %', '{} Mutations'.format(gene)
+        ])
         for seq in prevseqs:
             # len(cols) == 4
             table.add_row([

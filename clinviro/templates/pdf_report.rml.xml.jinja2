@@ -2,7 +2,7 @@
 <!DOCTYPE document SYSTEM "rml.dtd">
 <document>
 {% macro hr() -%}
-  <hr width="100%" color="silver" thickness="0.5" spaceBefore=".15in" spaceAfter=".15in" />
+  <hr width="100%" color="silver" thickness="0.5" spaceBefore=".1in" spaceAfter=".1in" />
 {% endmacro -%}
 {% macro keyval_tr(key, value) -%}
   <tr>
@@ -109,32 +109,48 @@
     {{ hr() }}
     <condPageBreak height="3in" />
     {% if amplifiable -%}
-      {% for geneseq in sequence.gene_sequences -%}
-        <para style="normal">
-          <b>Sequence includes {{ geneseq.gene }} codons:</b>
-          {{ geneseq.first_aa }} - {{ geneseq.last_aa }}
-        </para>
-      {% endfor -%}
       <para style="normal">
-        <b># of previous sequences from same person:</b>
-        {% for gene, count in previous_sequences_count.items() -%}
-          {{ gene }}: {{ count }}
-          {%- if not loop.last %};{% endif %}
+        <b>Sequence includes:</b>
+        {% for geneseq in sequence.gene_sequences -%}
+          {{ geneseq.gene }} codons
+          {{ geneseq.first_aa }} - {{ geneseq.last_aa }}
+          {%- if loop.length > 1 and not loop.last %}; {% endif -%}
         {% endfor -%}
       </para>
       <para style="normal">
+        <b>
+          {% if previous_sequence_dates|length > 1 -%}
+          {{ previous_sequence_dates|length }} previous test results were found for this patient:
+          {% elif previous_sequence_dates|length > 0 -%}
+          One previous test result was found for this patient:
+          {% else -%}
+          No previous test result was found for this patient.
+          {% endif -%}
+        </b>
+        {% if previous_sequence_dates -%}
+          {% for gene, count in previous_sequences_count.items() -%}
+            {{ gene }}: {{ count }}{% if not loop.last %}; {% endif -%}
+          {% endfor %}
+          ({% for date in previous_sequence_dates %}
+            {%- if loop.length > 1 %}
+              {%- if loop.last %} and {% elif not loop.first %},  {% endif %}
+            {%- endif %}
+            {{- date -}}
+          {% endfor %})
+        {% endif -%}
+      </para>
+      {#<para style="normal">
         {% if indels|length > 0 -%}
           <b>{{ indels|length }} indel mutation{% if indels|length > 1 %}s{% endif %}:</b> {{ ', '.join(indels) }}
         {% else -%}
           <b># of Indel mutations:</b> 0
         {% endif -%}
-      </para>
+      </para>#}
       <para style="normal">
         <b>Subtype:</b> {{ sequence.subtype }}
       </para>
       {{ hr() }}
-    {% endif -%}
-    {% if amplifiable -%}
+
       {% for genedr in drug_resistance -%}
         <condPageBreak height="2.8in" />
         <h2 style="h2">
@@ -170,20 +186,13 @@
         {% endfor -%}
         {{ hr() }}
       {% endfor -%}
-    {% endif -%}
-    {% if notes -%}
-      <condPageBreak height="3in" />
-      <h2 style="h2">Notes</h2>
-      <para style="normal">{{ notes|nl2br }}</para>
-      {{ hr() }}
-    {% endif -%}
-    {% if amplifiable -%}
+
       {% for genedr in drug_resistance -%}
+        <condPageBreak height="3in" />
+        <h2 style="h2">
+          {{ genedr.gene }} Comments
+        </h2>
         {% if genedr.comments -%}
-          <condPageBreak height="3in" />
-          <h2 style="h2">
-            {{ genedr.gene }} Comments
-          </h2>
           <ul bulletFontSize="6" bulletOffsetY="-3" bulletType="bullet">
             {% for cmt in genedr.comments -%}
               <li>
@@ -191,15 +200,40 @@
               </li>
             {% endfor -%}
           </ul>
-          {{ hr() }}
+        {% else -%}
+          <para style="normal">
+            None
+          </para>
         {% endif -%}
-        <condPageBreak height="2in" />
-        <h2 style="h2">
-          {{ genedr.gene }} Mutation Scores
-        </h2>
+        {{ hr() }}
+      {% endfor -%}
+
+    {% else -%}
+      <h2 style="h2">No results obtained</h2>
+      <para style="normal">
+        <![CDATA[No DNA band was obtained following viral RNA extraction and RT-PCR. This usually occurs as a result of the sample having a low virus load. It occurs less commonly as a result of viral RNA degradation in transit. Whole blood sample must be spun within 6 hours of collection, and room temperature plasma received within 24 hours. Frozen plasma (<20 deg. Celsius or dry ice) is stable.]]>
+      </para>
+      <spacer length="3in" />
+      {{ hr() }}
+    {% endif -%}
+
+    {% if notes -%}
+      <condPageBreak height="3in" />
+      <h2 style="h2">Notes</h2>
+      <para style="normal">{{ notes|nl2br }}</para>
+      {{ hr() }}
+    {% endif -%}
+
+    {% if amplifiable -%}
+
+      <condPageBreak height="2in" />
+      <h2 style="h2">
+        {{ drug_resistance|join(' &amp; ', attribute='gene') }} Mutation Scores
+      </h2>
+      {% for genedr in drug_resistance -%}
         {% for dcresult in genedr.drug_class_results -%}
           <condPageBreak height="2in" />
-          <blockTable width="100%" style="mutScores">
+          <blockTable width="100%" alignment="LEFT" style="mutScores">
             <tr>
               <td>{{ dcresult.drug_class.name }}</td>
               {% for dlevel in dcresult.drug_levels -%}
@@ -224,40 +258,41 @@
             {% endif -%}
           </blockTable>
           <spacer length=".1in" />
-          {{ hr() }}
         {% endfor -%}
+      {% endfor -%}
+      {{ hr() }}
+
+      <condPageBreak height="2in" />
+      <h2 style="h2">
+        Previous {{ drug_resistance|join(' &amp; ', attribute='gene') }} mutations
+      </h2>
+      {% if not previous_sequences -%}
+        <para style="normal">
+          None
+        </para>
+      {% endif -%}
+      {% for genedr in drug_resistance -%}
+
         {% if previous_sequences[genedr.gene] -%}
-          <condPageBreak height="2in" />
-          <h2 style="h2">
-            Previous {{ genedr.gene }} sequences from same person
-          </h2>
-          <condPageBreak height="2in" />
-          <blockTable colWidths="14%,18%,14%,54%" style="prevSeqs">
+          <blockTable colWidths="14%,18%,68%" style="prevSeqs">
             <tr>
               <td>Date</td>
               <td>Accession #</td>
-              <td>Distance %</td>
-              <td>Mutations</td>
+              <td>{{ genedr.gene }} Mutations</td>
             </tr>
             {% for seq in previous_sequences[genedr.gene] -%}
               <tr>
                 <td>{{ seq.collected_at }}</td>
                 <td>{{ seq.vnum }}</td>
-                <td>{{ '%0.2f' % (seq.distance * 100) }}</td>
                 <td><para style="normal">{{ seq.mutations }}</para></td>
               </tr>
             {% endfor -%}
           </blockTable>
+          <condPageBreak height="2in" />
           <spacer length=".15in" />
-          {{ hr() }}
         {% endif -%}
+
       {% endfor -%}
-    {% else -%}
-      <h2 style="h2">No results obtained</h2>
-      <para style="normal">
-        <![CDATA[No DNA band was obtained following viral RNA extraction and RT-PCR. This usually occurs as a result of the sample having a low virus load. It occurs less commonly as a result of viral RNA degradation in transit. Whole blood sample must be spun within 6 hours of collection, and room temperature plasma received within 24 hours. Frozen plasma (<20 deg. Celsius or dry ice) is stable.]]>
-      </para>
-      <spacer length="3in" />
       {{ hr() }}
     {% endif -%}
     <para style="footer">

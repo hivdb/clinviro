@@ -29,15 +29,18 @@
  <paraStyle
    name="normal"
    fontSize="9"
+   leading="11"
    fontName="Courier" />
  <paraStyle
    name="footer"
    fontSize="8"
+   leading="10"
    spaceAfter=".1in"
    fontName="Courier-Oblique" />
  <paraStyle
    name="disclaimer"
    fontSize="9"
+   leading="11"
    spaceBefore="9"
    spaceAfter=".1in"
    fontName="Courier-Oblique" />

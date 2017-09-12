@@ -23,72 +23,59 @@
 {% endif -%}
 
 {% if amplifiable -%}
-{% for geneseq in sequence.gene_sequences -%}
-- Sequence includes {{ geneseq.gene }} codons: {{ geneseq.first_aa }} - {{ geneseq.last_aa }}
-{% endfor -%}
-{% if report_type == 'patient' -%}
-- \# of previous sequences from same person:
-{%- for gene, count in previous_sequences_count.items() %} {{ gene }}: {{ count }}
-{%- if not loop.last %};{% endif %}
-{%- endfor %}
-{% endif -%}
-{% if indels|length > 0 -%}
-- Sequence contains {{ indels|length }} indel mutation{% if indels|length > 1 %}s{% endif %}: {{ ', '.join(indels) }}
-{% else -%}
-- \# of Indel mutations: 0
-{% endif -%}
+- Sequence includes: {% for geneseq in sequence.gene_sequences -%}
+{{ geneseq.gene }} codons {{ geneseq.first_aa }} - {{ geneseq.last_aa -}}
+{%     if loop.length > 1 and not loop.last %}; {% endif -%}
+{%   endfor -%}
+{%   if report_type == 'patient' %}
+- 
+{%-    if previous_sequence_dates|length > 1 -%}
+{{' '}}{{     previous_sequence_dates|length }} previous test results were found for this patient:
+{%     elif previous_sequence_dates|length > 0 -%}
+  One previous test result was found for this patient:
+{%     else -%}
+  No previous test result was found for this patient.
+{%     endif -%}
+{%     if previous_sequence_dates -%}
+{%       for gene, count in previous_sequences_count.items() -%}
+{{         gene }}: {{ count }}{% if not loop.last %}; {% endif %}
+{%-      endfor %} (
+{%-      for date in previous_sequence_dates -%}
+{%         if loop.length > 1 -%}
+{%           if loop.last %} and {% elif not loop.first %}, {% endif -%}
+{%         endif -%}
+{{         date -}}
+{%       endfor %})
+{%-    endif -%}
+{%   endif %}
 - Subtype: {{ sequence.subtype }}
-{% if amplifiable -%}
 - Algorithm: {{ algorithm.name }} version {{ algorithm.version }} (last updated {{ algorithm.publish_date }})
-{% endif -%}
 
-{% for genedr in drug_resistance %}
+{%   for genedr in drug_resistance %}
 
 Drug Resistance Interpretation: {{ genedr.gene }}
 ----------------------------------
 
-{{ table_mutation_types(genedr) }}
-{% for dcresult in genedr.drug_class_results %}
-  {{ dcresult.drug_class.fullname }}:
+{{     table_mutation_types(genedr) }}
+{%     for dcresult in genedr.drug_class_results %}
+{{       dcresult.drug_class.fullname }}:
 
-{{ table_drug_levels(dcresult.drug_levels) }}
-{% endfor %}
-{% endfor %}
-{% endif -%}
-{% if notes -%}
-Notes
------
+{{       table_drug_levels(dcresult.drug_levels) }}
+{%     endfor %}
+{%   endfor %}
 
-{{ notes.replace('\n', '\n\n') }}
-{% endif -%}
-{% if amplifiable -%}
-{% for genedr in drug_resistance %}
+{%   for genedr in drug_resistance %}
 
-{% if genedr.comments -%}
-
-{{ genedr.gene }} Comments
+{{     genedr.gene }} Comments
 -----------
-{% for cmt in genedr.comments -%}
-- {{ cmt.text }}
-{% endfor -%}
-{% endif %}
-
-
-{{ genedr.gene }} Mutation Scores
-------------------
-{% for dcresult in genedr.drug_class_results %}
-{% if loop.index0 != 0 %}&nbsp;{% endif %}
-
-{{ table_mutation_scores(dcresult) }}
-{% endfor -%}
-{% if report_type == 'patient' and previous_sequences[genedr.gene] %}
-
-Previous {{ genedr.gene }} sequences from same person
---------------------------------------
-
-{{ table_prev_sequences(previous_sequences[genedr.gene]) }}
-{% endif -%}
-{% endfor %}
+{%     if genedr.comments -%}
+{%       for cmt in genedr.comments -%}
+- {{       cmt.text }}
+{%       endfor -%}
+{%     else -%}
+None
+{%     endif %}
+{%   endfor -%}
 {% else %}
 
 No results obtained
@@ -107,6 +94,39 @@ No DNA band was obtained following viral RNA extraction and RT-PCR. This usually
 &nbsp;
 
 &nbsp;
+{% endif %}
+
+{% if notes -%}
+Notes
+-----
+
+{{   notes.replace('\n', '\n\n') }}
+{% endif -%}
+{% if amplifiable %}
+
+{{   drug_resistance|join(' & ', attribute='gene') }} Mutation Scores
+------------------
+{%   for genedr in drug_resistance %}
+{%     for dcresult in genedr.drug_class_results %}
+{{       table_mutation_scores(dcresult) }}
+
+&nbsp;
+
+{%     endfor -%}
+{%   endfor %}
+
+Previous {{ drug_resistance|join(' & ', attribute='gene') }} Mutations
+---------------------------------------
+{%   if not previous_sequences %}None{% endif -%}
+{%   for genedr in drug_resistance %}
+{%     if report_type == 'patient' and previous_sequences[genedr.gene] %}
+
+{{       table_prev_sequences(genedr.gene, previous_sequences[genedr.gene]) }}
+
+&nbsp;
+
+{%     endif -%}
+{%   endfor %}
 {% endif %}
 
 ------------------------------------------------

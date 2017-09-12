@@ -27,5 +27,7 @@ class PDFGenerator(AbstractGenerator):
 
     def render(self, prepared_data):
         rml = render_template('pdf_report.rml.xml.jinja2', **prepared_data)
+        with open('/tmp/zzz', 'w') as fp:
+            fp.write(rml)
         io = rml2pdf.parseString(rml)
         return io.getvalue()
