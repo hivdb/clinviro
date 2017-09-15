@@ -8,7 +8,7 @@ Prerequisites
 
 We used Docker to provide a standardized environment for running ClinViro. To install the latest version of Docker, please follow the "Get Docker" guideline on the [official website](https://www.docker.com/). The minimum version requirement of Docker for this software is 17.05.
 
-The latest Docker image can be found at [hub.docker.com](https://hub.docker.com/r/hivdb/clinviro/). The current latest version is 0.3.0. If you are following the [next section](#deployment) to deploy ClinViro, you don't have to do anything to download the image manually.
+The latest Docker image can be found at [hub.docker.com](https://hub.docker.com/r/hivdb/clinviro/). The current latest version is 0.3.1. If you are following the [next section](#deployment) to deploy ClinViro, you don't have to do anything to download the image manually.
 
 Deployment
 ----------
