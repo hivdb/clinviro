@@ -14,67 +14,47 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from datetime import datetime
-
-import pytz
 import graphene
 from flask import current_app as app
 from flask_login import login_required
 
 from ..utils import get_numeric_id
-from ..patient_sample import PatientSample
-from ..proficiency_sample import ProficiencySample
-from ..positive_control import PositiveControl
 from ..sample_type import SampleType
 
 db = app.db
 models = app.models
 
 
-class GenerateReport(graphene.ClientIDMutation):
+class DeleteReport(graphene.ClientIDMutation):
 
     class Input:
         type = SampleType(required=True)
         uid = graphene.ID(required=True)
-        is_regenerated_report = graphene.Boolean(required=True)
+        report_ids = graphene.List(graphene.ID, required=True)
 
-    patient_sample = graphene.Field(PatientSample)
-    proficiency_sample = graphene.Field(ProficiencySample)
-    positive_control = graphene.Field(PositiveControl)
+    deleted_report_ids = graphene.List(graphene.ID)
 
     @classmethod
     @login_required
     def mutate_and_get_payload(cls, input_, context, info):
         rtype = input_['type']
         uid = get_numeric_id(input_['uid'])
-        is_regenerated_report = input_['is_regenerated_report']
+        ids = input_['report_ids']
         if rtype == 'patient_sample':
             sample = models.PatientSample.query.get(uid)
         elif rtype == 'proficiency_sample':
             sample = models.ProficiencySample.query.get(uid)
         else:
             sample = models.PositiveControl.query.get(uid)
-
-        if rtype != 'patient_sample' or sample.amplifiable:
-            sierra_result = sample.sierra_result
-            sample.sequence.subtype = sierra_result['subtype']
-            sample.sequence.genes = sierra_result['genes']
-            db.session.flush()
-            sample.generate_reports(
-                datetime.now(pytz.utc), is_regenerated_report)
-        else:
-            sample.generate_reports(
-                datetime.now(pytz.utc),
-                is_regenerated_report=is_regenerated_report)
+        model = models.Report
+        reports = model.query.filter(model.id.in_(ids))
+        deleted = []
+        for report in reports:
+            try:
+                sample.reports.remove(report)
+                db.session.delete(report)  # mark report in `session.deleted`
+                deleted.append(report.id)
+            except ValueError:
+                pass
         db.session.commit()
-        return GenerateReport(
-            patient_sample=(
-                sample if rtype == 'patient_sample' else None
-            ),
-            proficiency_sample=(
-                sample if rtype == 'proficiency_sample' else None
-            ),
-            positive_control=(
-                sample if rtype == 'positive_control' else None
-            )
-        )
+        return DeleteReport(deleted_report_ids=deleted)

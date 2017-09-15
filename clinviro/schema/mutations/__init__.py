@@ -23,6 +23,7 @@ from .update_patient_sample import UpdatePatientSample
 from .create_positive_control import CreatePositiveControl
 from .create_proficiency_sample import CreateProficiencySample
 from .generate_report import GenerateReport
+from .delete_report import DeleteReport
 from .create_physician import CreatePhysician
 from .create_clinic import CreateClinic
 from .user_authorization import LoginUser, LogoutUser
@@ -49,6 +50,9 @@ class Mutation(graphene.ObjectType):
 
     # Used by `*/reports` view
     generate_report = GenerateReport.Field()
+
+    # Used by `*/reports` view
+    delete_report = DeleteReport.Field()
 
     # Used by `fragments/forms/physician-select`
     create_physician = CreatePhysician.Field()

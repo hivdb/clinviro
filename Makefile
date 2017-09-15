@@ -39,6 +39,7 @@ sync-blastdb:
 
 sync-schema:
 	@FLASK_APP=clinviro/__init__.py flask export_relay_schema clinviro-frontend/schema.json
+	@rm -r clinviro-frontend/node_modules/.cache || true
 
 psql-devdb:
 	@psql -h localhost -p 5435 -U postgres
@@ -59,10 +60,12 @@ blastdb:
 shell:
 	@FLASK_APP=clinviro/__init__.py flask shell
 
-run-frontend:
+run-frontend: sync-schema
 	@cd clinviro-frontend; npm start
 
-run: sync-blastdb sync-schema
+_run:
 	@gunicorn -w 4 -b 127.0.0.1:5000 --worker-class aiohttp.worker.GunicornWebWorker clinviro:app
 
-.PHONY: force-build build console devdb psql-devdb dumpdb psql-devdb-migrate dumpdb-without-patients kaiser-report dump-kaiser-patients blastdb shell run
+run: sync-blastdb sync-schema _run
+
+.PHONY: force-build build console devdb psql-devdb dumpdb psql-devdb-migrate dumpdb-without-patients kaiser-report dump-kaiser-patients blastdb shell run _run

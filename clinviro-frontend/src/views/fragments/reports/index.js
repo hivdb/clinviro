@@ -24,10 +24,13 @@ import FaDownload from 'react-icons/lib/fa/download';
 import FaWord from 'react-icons/lib/fa/file-word-o';
 import FaPDF from 'react-icons/lib/fa/file-pdf-o';
 import FaText from 'react-icons/lib/fa/file-text-o';
+import FaTrash from 'react-icons/lib/fa/trash';
 
-import QueryList from '../query-list';
 import Button from '../button';
+import QueryList from '../query-list';
 import {CheckboxInput} from '../forms';
+import {isEditable} from '../../../utils/editable';
+import {DeleteReport} from '../../../mutations';
 import {TIME_FORMAT, BACKEND_URL} from '../../../constants';
 
 import {GenerateReport} from '../../../mutations';
@@ -77,14 +80,16 @@ class BaseReports extends React.Component {
   get aggregatedReports() {
     const {reports} = this.props;
     let elements = {};
-    for (const {contentType, content, createdAt} of reports) {
+    for (const {id, contentType, content, createdAt} of reports) {
       if (content === null) {
         continue;
       }
       const element = elements[createdAt] = elements[createdAt] || {
-        createdAt
+        createdAt,
+        reportIds: []
       };
       element[contentType] = `/depot/${JSON.parse(content).path}`;
+      element.reportIds.push(id);
     }
     return Object.values(elements);
   }
@@ -142,6 +147,36 @@ class BaseReports extends React.Component {
     };
   }
 
+  handleDeleteReport(reportIds) {
+    return () => {
+      const confirmed = confirm(
+        "You are going to delete a report and the operation " +
+        "is not reversible. Please confirm.");
+      if (!confirmed) {
+        return;
+      }
+      const {type, uid} = this.props;
+      const onSuccess = () => {
+        this.props.onUpdate();
+      };
+      this.props.relay.commitUpdate(
+        new DeleteReport({type, uid, reportIds}),
+        {onSuccess}
+      );
+
+    };
+  }
+
+  renderDeleteButton(reportIds) {
+    return <Button
+      btnSize="small"
+      btnStyle="default"
+      title="Delete this report"
+      onClick={this.handleDeleteReport(reportIds)}>
+       <FaTrash />
+    </Button>;
+  }
+
   render() {
     const {type} = this.props;
     const {aggregatedReports: elements} = this;
@@ -157,6 +192,13 @@ class BaseReports extends React.Component {
         name: contentType,
         title: CONTENT_TYPE_LABELS[contentType],
         valueDecorator: this.renderDownloadButton(contentType)
+      });
+    }
+    if (isEditable() && elements.length > 1) {
+      columns.push({
+        name: 'reportIds',
+        title: 'Operation',
+        valueDecorator: this.renderDeleteButton.bind(this)
       });
     }
     const formExtras = <div>
@@ -202,6 +244,7 @@ export default Relay.createContainer(
     fragments: {
       reports: () => Relay.QL`
         fragment on Report @relay(plural: true) {
+          id
           contentType
           content
           createdAt

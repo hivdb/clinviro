@@ -27,12 +27,13 @@ import CreateClinic from './create-clinic';
 import LoginUser from './login-user';
 import LogoutUser from './logout-user';
 import GenerateReport from './generate-report';
+import DeleteReport from './delete-report';
 import PreviewPatientReport from './preview-patient-report';
 import PreviewProficiencySampleReport from './preview-proficiency-sample-report';
 
 export {
   CreatePatient, UpdatePatient, CreatePatientVisit,
   CreatePhysician, CreateClinic, LoginUser, LogoutUser,
-  GenerateReport, CreatePositiveControl, UpdatePatientSample,
+  GenerateReport, DeleteReport, CreatePositiveControl, UpdatePatientSample,
   CreateProficiencySample, PreviewPatientReport,
   PreviewProficiencySampleReport};

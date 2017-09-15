@@ -3158,7 +3158,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "ControlSequenceType",
+                "name": "SampleType",
                 "ofType": null
               }
             }
@@ -3280,7 +3280,7 @@
         "inputFields": null,
         "interfaces": null,
         "kind": "ENUM",
-        "name": "ControlSequenceType",
+        "name": "SampleType",
         "possibleTypes": null
       },
       {
@@ -3483,6 +3483,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "GenerateReportPayload",
+              "ofType": null
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "DeleteReportInput",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "deleteReport",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteReportPayload",
               "ofType": null
             }
           },
@@ -4754,7 +4781,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "ReportType",
+                "name": "SampleType",
                 "ofType": null
               }
             }
@@ -4805,31 +4832,108 @@
       },
       {
         "description": null,
-        "enumValues": [
+        "enumValues": null,
+        "fields": [
           {
+            "args": [],
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "patient_sample"
+            "name": "deletedReportIds",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
           },
           {
+            "args": [],
             "deprecationReason": null,
             "description": null,
             "isDeprecated": false,
-            "name": "proficiency_sample"
-          },
-          {
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
-            "name": "positive_control"
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
           }
         ],
-        "fields": null,
         "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "DeleteReportPayload",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "type",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "SampleType",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "uid",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "reportIds",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          }
+        ],
         "interfaces": null,
-        "kind": "ENUM",
-        "name": "ReportType",
+        "kind": "INPUT_OBJECT",
+        "name": "DeleteReportInput",
         "possibleTypes": null
       },
       {

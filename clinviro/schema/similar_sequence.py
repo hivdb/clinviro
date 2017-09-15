@@ -21,18 +21,14 @@ from .patient_sample import PatientSample
 from .positive_control import PositiveControl
 from .proficiency_sample import ProficiencySample
 from .utils import get_numeric_id
+from .sample_type import SampleType
 
 db = app.db
 models = app.models
 
 
 class SimilarSequence(graphene.ObjectType):
-    type = graphene.Enum(
-        'ControlSequenceType',
-        [('patient_sample',) * 2,
-         ('proficiency_sample',) * 2,
-         ('positive_control',) * 2]
-    )(required=True)
+    type = SampleType(required=True)
     patient_sample = graphene.Field(PatientSample)
     positive_control = graphene.Field(PositiveControl)
     proficiency_sample = graphene.Field(ProficiencySample)
