@@ -201,6 +201,9 @@ def prepare_codon_comparison(blast_result, curseq):
 
 def prepare_similar_sequences(similar_sequences, curseq):
     output = []
+    # alignment is a heavy job, should only be called when generating reports
+    blastdb = app.models.blastdb
+    blastdb.BlastResult.populate_alignments(similar_sequences)
     for r in similar_sequences:
         one = OrderedDict([
             ('type', r.type)

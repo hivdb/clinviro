@@ -30,9 +30,11 @@ import './index.css';
 const URL = `${BACKEND_URL}/graphql`;
 const environment = new Relay.Environment();
 Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(URL, {
+  fetchTimeout: 1200000,
   credentials: 'include'
 }));
 environment.injectNetworkLayer(new Relay.DefaultNetworkLayer(URL, {
+  fetchTimeout: 1200000,
   credentials: 'include'
 }));
 

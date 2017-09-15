@@ -40,7 +40,7 @@ export const sequenceShape = PropTypes.shape({
   ),
   subtype: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    distancePcnt: PropTypes.number
+    distancePcnt: PropTypes.string
   }),
   fileName: PropTypes.string
 });

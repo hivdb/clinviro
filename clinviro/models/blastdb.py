@@ -254,5 +254,4 @@ def query_sequence(naseq, min_pident=98.5, limit=100):
     results = sorted(
         [_process_line(line) for line in stdout.splitlines()],
         key=lambda k: -k.pident)
-    BlastResult.populate_alignments(results)
     return results
