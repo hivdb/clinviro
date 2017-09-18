@@ -32,10 +32,10 @@
 {%-    if previous_sequence_dates|length > 1 -%}
 {{' '}}{{     previous_sequence_dates|length }} previous test results were found for this patient:
 {%     elif previous_sequence_dates|length > 0 -%}
-  One previous test result was found for this patient:
+{{' '}}One previous test result was found for this patient:
 {%     else -%}
-  No previous test result was found for this patient.
-{%     endif -%}
+{{' '}}No previous test result was found for this patient.
+{%-    endif -%}
 {%     if previous_sequence_dates -%}
 {%       for gene, count in previous_sequences_count.items() -%}
 {{         gene }}: {{ count }}{% if not loop.last %}; {% endif %}

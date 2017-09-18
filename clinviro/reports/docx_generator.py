@@ -90,6 +90,7 @@ class DOCXGenerator(AbstractGenerator):
         table.header([
             'Date', 'Accession #', 'Distance %', '{} Mutations'.format(gene)
         ])
+        table.set_cols_dtype(['t'] * 4)
         for seq in prevseqs:
             # len(cols) == 4
             table.add_row([
