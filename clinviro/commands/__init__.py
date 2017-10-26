@@ -20,8 +20,9 @@ from . import importptid
 from . import ptnum2ptid
 from . import export_relay_schema
 from . import import_old_reports
+from . import make_indel_report
 from . import patients
 
 __all__ = ['makeblastdb', 'export2hivdb', 'importptid',
            'ptnum2ptid', 'export_relay_schema',
-           'import_old_reports', 'patients']
+           'import_old_reports', 'patients', 'make_indel_report']
