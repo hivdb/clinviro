@@ -49,11 +49,13 @@ def make_indel_report(start_date, stop_date, output):
         # TODO: this can be much faster if retrieve sierra result in batches
         data = sample.sierra_result['data']
         indels = []
-        for muts in data['drugResistance'][0]['mutationsByTypes']:
-            muts = muts['mutations']
-            for mut in muts:
-                if mut['isIndel']:
-                    indels.append(mut['text'])
+        for dr in data['drugResistance']:
+            gene = dr['gene']['name']
+            for muts in dr['mutationsByTypes']:
+                muts = muts['mutations']
+                for mut in muts:
+                    if mut['isIndel']:
+                        indels.append('{}:{}'.format(gene, mut['text']))
         if indels:
             output.write(
                 ('\t'.join(['{}'] * 7) + '\n')

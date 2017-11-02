@@ -343,8 +343,8 @@ class ExistingPatientSampleEditForm extends React.Component {
         drClasses = drClasses[0];
       }
       notes = (
-        `No ${lenDRMs > 0 ? ' additional': ''} drug-resistance mutation ` +
-        'were found in previous sequences but not in the current sequence.'
+        `The previous sequence(s) had no ${lenDRMs > 0 ? ' additional': ''} ` +
+        'drug-resistance mutations.'
       );
     }
     this.props.onChange({notes});
