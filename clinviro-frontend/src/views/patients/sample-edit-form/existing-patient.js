@@ -343,7 +343,7 @@ class ExistingPatientSampleEditForm extends React.Component {
         drClasses = drClasses[0];
       }
       notes = (
-        `The previous sequence(s) had no ${lenDRMs > 0 ? ' additional': ''} ` +
+        `The previous sequence(s) had no${lenDRMs > 0 ? ' additional': ''} ` +
         'drug-resistance mutations.'
       );
     }
