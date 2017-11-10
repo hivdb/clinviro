@@ -61,4 +61,5 @@ server {
         client_body_buffer_size 1m;
     }
 
+    include /etc/nginx/snippets/clinviro.*.conf;
 }
