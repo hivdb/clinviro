@@ -308,7 +308,7 @@ class ExistingPatientSampleEditForm extends React.Component {
           IN: 'IN '
         }[gene];
         for (const {mutationType, comments} of commentsByTypes) {
-          if (comments.length === 0 || mutationType === 'Other') {
+          if (comments.length === 0 || mutationType === 'Dosage' || mutationType === 'Other') {
             continue;
           }
           const plural = comments.length > 1;
