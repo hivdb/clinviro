@@ -1,8 +1,12 @@
-## 0.3.2-dev
+## 0.3.2 (11/14/2017)
 
 - Added this CHANGELOG.md file.
 - Fixed a layout error in Word template in sequence summary section.
 - Fixed a numeric precision issue in Word template caused by the default setting of Texttable.
+- Added a script to generate overall reports for sequences contained indels.
+- Tweaked the sentences of Notes for Physician.
+- Supported adding site configurations (nginx) through `--volumes` parameter of `docker run`.
+- Fixed a bug that failed to generate Notes for Physician if a dosage comment was present.
 
 ## 0.3.1 (09/15/2017)
 

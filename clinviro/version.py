@@ -16,5 +16,5 @@
 
 from datetime import datetime
 
-VERSION = '0.3.1'
-VERSION_DATE = datetime(2017, 9, 15)
+VERSION = '0.3.2'
+VERSION_DATE = datetime(2017, 11, 14)

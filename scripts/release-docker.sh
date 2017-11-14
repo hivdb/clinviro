@@ -15,5 +15,3 @@ docker tag hivdb/clinviro:latest hivdb/clinviro:$1
 
 docker push hivdb/clinviro:latest
 docker push hivdb/clinviro:$1
-
-
