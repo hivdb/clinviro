@@ -204,6 +204,78 @@ DELETE FROM "tbl_medical_records" mr WHERE mr.ptnum IN (SELECT ptnum FROM ptnum_
 DELETE FROM "tbl_patients" p WHERE p.ptnum IN (SELECT ptnum FROM ptnum_to_be_merged);
 ```
 
+### Delete patient records
+
+#### Step 1: Specify target ptnum(s):
+
+```sql
+SELECT [PTNUM_1] as ptnum INTO TEMP TABLE ptnum_to_be_deleted;
+
+-- if you have more ptnums
+INSERT INTO ptnum_to_be_deleted (ptnum) VALUES (PTNUM_2);
+INSERT INTO ptnum_to_be_deleted (ptnum) VALUES (PTNUM_3);
+...
+```
+
+#### Step 2: Store foreign keys:
+
+```sql
+SELECT v.id as id
+  INTO TEMP TABLE visit_to_be_deleted
+  FROM "tbl_patient_visits" v, "ptnum_to_be_deleted" d
+  WHERE v.ptnum=d.ptnum;
+
+SELECT s.id as id
+  INTO TEMP TABLE sample_to_be_deleted
+  FROM "tbl_patient_samples" s, "visit_to_be_deleted" vd
+  WHERE s.patient_visit_id=vd.id;
+
+SELECT sr.report_id as id
+  INTO TEMP TABLE report_to_be_deleted
+  FROM "tbl_patient_sample_reports" sr, "sample_to_be_deleted" sd
+  WHERE sr.patient_sample_id=sd.id;
+
+SELECT s.sequence_id as id
+  INTO TEMP TABLE seq_to_be_deleted
+  FROM "tbl_patient_samples" s, "sample_to_be_deleted" sd
+  WHERE s.id=sd.id;
+```
+
+#### Step 3: Remove relationship
+
+```sql
+UPDATE "tbl_patient_samples" s
+  SET sequence_id=null
+  WHERE EXISTS (SELECT 1 FROM "sample_to_be_deleted" sd WHERE sd.id=s.id);
+```
+
+#### Step 4: Deletion
+
+```sql
+DELETE FROM "tbl_patient_sample_reports" sr WHERE
+  EXISTS (
+    SELECT 1 FROM "sample_to_be_deleted" sd WHERE sd.id=sr.patient_sample_id
+  );
+
+DELETE FROM "tbl_reports" r WHERE
+  EXISTS (SELECT 1 FROM "report_to_be_deleted" rd WHERE rd.id=r.id);
+
+DELETE FROM "tbl_sequences" seq WHERE
+  EXISTS (SELECT 1 FROM "seq_to_be_deleted" sqd WHERE sqd.id=seq.id);
+
+DELETE FROM "tbl_patient_samples" s WHERE
+  EXISTS (SELECT 1 FROM "sample_to_be_deleted" sd WHERE sd.id=s.id);
+
+DELETE FROM "tbl_patient_visits" v WHERE
+  EXISTS (SELECT 1 FROM "visit_to_be_deleted" vd WHERE vd.id=v.id);
+
+DELETE FROM "tbl_medical_records" mr WHERE
+  EXISTS (SELECT 1 FROM "ptnum_to_be_deleted" pd WHERE pd.ptnum=mr.ptnum);
+
+DELETE FROM "tbl_patients" p WHERE
+  EXISTS (SELECT 1 FROM "ptnum_to_be_deleted" pd WHERE pd.ptnum=p.ptnum);
+```
+
 Copyright and Disclaimer
 ------------------------
 
