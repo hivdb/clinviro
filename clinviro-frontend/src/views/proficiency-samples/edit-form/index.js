@@ -167,7 +167,7 @@ export default class ProficiencySampleEditForm extends React.Component {
         <SourceSelect
          {...{editableByDefault, readOnly}}
          messages={checkRequired(source, invalid)}
-         value={source} name="source"
+         value={source} name="source" label="First name/Source"
          onChange={this.handlePropChange('source')} />
         <TextInput
          {...{editableByDefault, readOnly}}

@@ -70,7 +70,9 @@ class PatientsField(SQLAlchemyConnectionField):
             args.get('birthday_start'),
             args.get('birthday_end'))
         if 'name_fuzzymatch' in args:
-            ptnums = model.search(args['name_fuzzymatch'], ptnums_only=True)
+            first = args.get('first', 10)
+            ptnums = model.search(
+                args['name_fuzzymatch'], limit=first, ptnums_only=True)
             if not ptnums:
                 return []
             patients = query.filter(model.ptnum.in_(ptnums)).all()

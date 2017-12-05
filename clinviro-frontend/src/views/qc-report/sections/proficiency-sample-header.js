@@ -24,8 +24,8 @@ export default class ProficiencySampleReportHeader extends React.Component {
 
   render() {
     const {
-      name, source, vnum, algorithm,
-      received_at, entered_at, generated_at
+      name, source, vnum, algorithm, sequence,
+      received_at, entered_at, generated_at, generated_by
     } = this.props;
 
     return (
@@ -41,8 +41,8 @@ export default class ProficiencySampleReportHeader extends React.Component {
              </span>
            )
          }, {
-           name: 'Generated on:',
-           value: generated_at
+           name: 'Generated at:',
+           value: generated_by ? `${generated_at} (by ${generated_by})` : generated_at
          }, {
            name: '\xa0',
            value: '\xa0'
@@ -65,8 +65,8 @@ export default class ProficiencySampleReportHeader extends React.Component {
            name: 'Entered at:',
            value: entered_at
          }, {
-           name: '\xa0',
-           value: '\xa0'
+           name: 'Filename:',
+           value: (sequence && sequence.filename) || 'N/A'
          }
        ]} />
     );

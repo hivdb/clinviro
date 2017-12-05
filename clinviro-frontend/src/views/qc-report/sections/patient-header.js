@@ -26,7 +26,7 @@ export default class PatientReportHeader extends React.Component {
     const {
       patient, clinic, physician, test_code,
       vnum, collected_at, received_at, entered_at,
-      generated_at, amplifiable, sequence
+      generated_at, generated_by, amplifiable, sequence
     } = this.props;
     let algorithm;
     if (amplifiable) {
@@ -46,8 +46,8 @@ export default class PatientReportHeader extends React.Component {
              </span>
              : 'N/A')
          }, {
-           name: 'Generated on:',
-           value: generated_at
+           name: 'Generated at:',
+           value: generated_by ? `${generated_at} (by ${generated_by})` : generated_at
          }, {
            name: '\xa0',
            value: '\xa0'

@@ -1,3 +1,10 @@
+## 0.3.3-dev
+
+- Changed proficiency sample edit form label "Source" to "First name/Source".
+- Display user email who generated the current report on QC report.
+- Display filename on QC report of proficiency sample.
+- Improved the patient search API to return more result than just 10.
+
 ## 0.3.2 (11/14/2017)
 
 - Added this CHANGELOG.md file.
