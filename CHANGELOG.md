@@ -4,6 +4,7 @@
 - Display user email who generated the current report on QC report.
 - Display filename on QC report of proficiency sample.
 - Improved the patient search API to return more result than just 10.
+- Fixed a bug which could cause previous sequences not loaded.
 
 ## 0.3.2 (11/14/2017)
 
