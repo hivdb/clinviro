@@ -245,7 +245,7 @@ class ExistingPatientSampleEditForm extends React.Component {
     const result = [];
     for (const {node: visit} of this.patient.visits.edges) {
       const {collectedAt} = visit;
-      for (const {vnum, amplifiable, sequence, receivedAt} of visit.samples) {
+      for (const {vnum, amplifiable, sequence, testCode, receivedAt} of visit.samples) {
         if (!amplifiable) {
           continue;
         }
@@ -257,7 +257,7 @@ class ExistingPatientSampleEditForm extends React.Component {
           continue;
         }
         result.push({
-          header: `${vnum}|${collectedAt}`,
+          header: `${vnum}|${collectedAt}|${testCode}`,
           sequence: naseq
         });
       }

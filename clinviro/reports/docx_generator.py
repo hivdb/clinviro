@@ -141,7 +141,7 @@ class DOCXGenerator(AbstractGenerator):
             os.symlink('/dev/stdout', stdoutdocx)
             p = Popen([app.config['CMD_PANDOC'],
                        '-f', 'markdown+grid_tables',
-                       '-o', stdoutdocx, '--reference-docx',
+                       '-o', stdoutdocx, '--reference-doc',
                        app.config['PANDOC_REFERENCE_DOCX']],
                       stdout=PIPE, stdin=PIPE, stderr=PIPE)
             stdout, _ = p.communicate(mdtext)

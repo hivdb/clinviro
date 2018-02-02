@@ -151,7 +151,7 @@ def prepare_prev_sequences(prevseqs, curseq):
     curseq = {geneseq['gene']['name']: geneseq for geneseq in curseq}
     for seqresult in prevseqs:
         header = seqresult['inputSequence']['header']
-        vnum, collected_at, entered_at = header.split('|', 2)
+        vnum, collected_at, entered_at, _ = header.split('|', 3)
 
         for geneseq in seqresult['alignedGeneSequences']:
             gene = geneseq['gene']['name']
@@ -172,7 +172,7 @@ def prepare_prev_sequence_dates(prevseqs):
     dates = set([])
     for seqresult in prevseqs:
         header = seqresult['inputSequence']['header']
-        _, collected_at, _ = header.split('|', 2)
+        _, collected_at, _, _ = header.split('|', 3)
         dates.add(collected_at)
     return sorted(dates)
 

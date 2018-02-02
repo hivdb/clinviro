@@ -147,10 +147,11 @@ class PatientSample(db.Model):
                     continue
                 seq = prev_sample.sequence
                 seq = {
-                    'header': '{}|{}|{}'.format(
+                    'header': '{}|{}|{}|{}'.format(
                         prev_sample.vnum,
                         prev_visit.collected_at.strftime('%m/%d/%Y'),
-                        prev_sample.entered_at.strftime('%m/%d/%Y')
+                        prev_sample.entered_at.strftime('%m/%d/%Y'),
+                        prev_sample.test_code
                     ),
                     'sequence': seq.naseq
                 }
