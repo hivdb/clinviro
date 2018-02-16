@@ -49,7 +49,7 @@ alignedGeneSequences {
   alignedNAs
   alignedAAs
 }
-bestMatchingGenotype {
+bestMatchingSubtype {
   displayWithoutDistance
   distancePcnt
 }
@@ -116,7 +116,7 @@ def sequence_analysis(vnum, naseq):
         'header': vnum,
         'sequence': naseq
     }], QUERY_SEQUENCE_ANALYSIS)
-    result['subtype'] = data['bestMatchingGenotype']['displayWithoutDistance']
+    result['subtype'] = data['bestMatchingSubtype']['displayWithoutDistance']
     result['genes'] = sorted(
         [geneseq['gene']['name']
          for geneseq in data['alignedGeneSequences']])

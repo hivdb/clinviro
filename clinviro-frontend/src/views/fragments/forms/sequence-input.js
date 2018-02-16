@@ -56,7 +56,7 @@ async function getSequenceMeta(header, sequence) {
           viewer {
             sequenceAnalysis(sequences: [$sequence]) {
               availableGenes { name }
-              bestMatchingGenotype {
+              bestMatchingSubtype {
                 name: displayWithoutDistance,
                 distancePcnt
               }
@@ -77,7 +77,7 @@ async function getSequenceMeta(header, sequence) {
   );
   const subtype = (
     data.viewer.sequenceAnalysis[0]
-    .bestMatchingGenotype
+    .bestMatchingSubtype
   );
   return {genes, subtype};
 }
