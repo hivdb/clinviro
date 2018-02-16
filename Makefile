@@ -68,4 +68,4 @@ _run:
 
 run: sync-blastdb sync-schema _run
 
-.PHONY: force-build build console devdb psql-devdb dumpdb psql-devdb-migrate dumpdb-without-patients kaiser-report dump-kaiser-patients blastdb shell run _run
+.PHONY: force-build build console devdb psql-devdb dumpdb psql-devdb-migrate dumpdb-without-patients blastdb shell run _run
