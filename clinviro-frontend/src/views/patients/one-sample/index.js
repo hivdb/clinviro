@@ -34,6 +34,7 @@ import {UpdatePatientSample, PreviewPatientReport} from '../../../mutations';
 import PreviewWindow from '../../../utils/preview-window';
 import {getReportURL} from '../utils';
 
+import style from '../style.css';
 import {style as formStyle} from '../../fragments/forms';
 
 class OnePatientSample extends React.Component {
@@ -195,7 +196,7 @@ class OnePatientSample extends React.Component {
     const {isChanged, redirectToNew} = this;
     const {viewer, visitId} = this.props;
     const readOnly = !isEditable();
-    const {ptnum, samples, sampleId, isApproved, ...props} = this.state;
+    const {ptnum, samples, sampleId, isApproved, testCode, ...props} = this.state;
     const extraCount = samples.length;
 
     return <div>
@@ -226,18 +227,25 @@ class OnePatientSample extends React.Component {
         <h1>View patient visit &amp; sample</h1>
         <p>
           View and/or edit patient visit &amp; sample.
-          <Button
-           className={formStyle.pullRight}
-           to={`/patients/patient-${ptnum}/visits/${visitId}/sample-${sampleId}/reports`}
-           btnStyle="info">
-            Download Report
-          </Button>
+          {testCode == 'AVRT' || testCode == 'AVIN' ?
+           <Button
+            className={formStyle.pullRight}
+            to={`/patients/patient-${ptnum}/visits/${visitId}/sample-${sampleId}/reports`}
+            btnStyle="info">
+             Download Report
+           </Button> : [
+             <br key="br" />,
+             'This is an archived sample and no report is available. Please visit ',
+             <a className={style.link} key="a" href="/archived_reports/">
+               <strong>{location.origin}/archived_reports/</strong>
+             </a>, ' for archived report(s).'
+           ]}
         </p>
       </Col></Row>
       <Row>
         <Col sm={12} md={7}>
           <ExistingPatientSampleEditForm
-           {...{viewer, ptnum, sampleId, ...props}}
+           {...{viewer, ptnum, sampleId, testCode, ...props}}
            allowManualApprovement={!isApproved}
            onChange={this.handleChange.bind(this)}
            showReset={isChanged}

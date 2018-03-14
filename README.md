@@ -134,6 +134,32 @@ UPDATE "tbl_users"
     WHERE email='user@example.com';
 ```
 
+### Merge two physician records
+
+```sql
+SELECT [TARGET_PHYSICIAN_ID] as physician_id INTO TEMP TABLE target_physician;
+SELECT [PHYSICIAN_ID_1] as physician_id INTO TEMP TABLE physician_to_be_merged;
+
+-- if you have more physicians
+INSERT INTO physician_to_be_merged (physician_id) VALUES ([PHYSICIAN_ID_2]);
+INSERT INTO physician_to_be_merged (physician_id) VALUES ([PHYSICIAN_ID_3]);
+
+UPDATE tbl_patient_samples s
+  SET physician_id=t.physician_id
+  FROM target_physician t, physician_to_be_merged m
+  WHERE m.physician_id=s.physician_id;
+
+DELETE FROM tbl_physicians WHERE id IN (SELECT physician_id FROM physician_to_be_merged);
+
+-- optional
+UPDATE tbl_physicians p
+  SET
+     lastname=[NEW_LAST_NAME],
+     firstname=[NEW_FIRST_NAME]
+  FROM target_physician t
+  WHERE p.id=t.physician_id;
+```
+
 ### Merge two patient records
 
 It is possible to merge two patient records to a single one.
