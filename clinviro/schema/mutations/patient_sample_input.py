@@ -18,8 +18,8 @@ import graphene
 from graphene.types.datetime import DateTime
 from flask import current_app as app
 
+from ..enums import SpecimenType
 from ..utils import get_numeric_id
-from ...models.common import SPECIMEN_TYPE_CHOICES
 
 db = app.db
 models = app.models
@@ -28,8 +28,7 @@ models = app.models
 class PatientSampleInput(graphene.InputObjectType):
 
     test_code = graphene.String(required=True)
-    specimen_type = graphene.Enum.from_enum(
-        SPECIMEN_TYPE_CHOICES)(required=True)
+    specimen_type = SpecimenType(required=True)
     sequence = graphene.String()
     filename = graphene.String()
     vnum = graphene.String(required=True)

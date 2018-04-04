@@ -50,8 +50,8 @@ class PatientsField(SQLAlchemyConnectionField):
         )
 
     @classmethod
-    def get_query(cls, model, context, info, args):
-        query = Patient.get_query(context)
+    def get_query(cls, model, info, **args):
+        query = Patient.get_query(info)
         if 'ptnums' in args:
             ptnums = args['ptnums']
             if ptnums:

@@ -22,6 +22,7 @@ from .create_patient_visit import CreatePatientVisit
 from .update_patient_sample import UpdatePatientSample
 from .create_positive_control import CreatePositiveControl
 from .create_proficiency_sample import CreateProficiencySample
+from .update_proficiency_sample import UpdateProficiencySample
 from .generate_report import GenerateReport
 from .delete_report import DeleteReport
 from .create_physician import CreatePhysician
@@ -47,6 +48,7 @@ class Mutation(graphene.ObjectType):
 
     create_positive_control = CreatePositiveControl.Field()
     create_proficiency_sample = CreateProficiencySample.Field()
+    update_proficiency_sample = UpdateProficiencySample.Field()
 
     # Used by `*/reports` view
     generate_report = GenerateReport.Field()

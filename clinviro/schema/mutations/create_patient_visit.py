@@ -72,20 +72,21 @@ class CreatePatientVisit(graphene.ClientIDMutation):
     patient_visit = graphene.Field(PatientVisit)
     patient_sample = graphene.Field(PatientSample)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
-        patient = models.Patient.query.get(input_['ptnum'])
-        sample = create_patient_sample(
-            patient, input_['mrid'],
-            input_['collected_at'], input_['sample'])
-        visit = sample.visit
+    def mutate_and_get_payload(
+            root, info, ptnum, mrid, collected_at,
+            sample, client_mutation_id=None):
+        patient = models.Patient.query.get(ptnum)
+        sampleobj = create_patient_sample(
+            patient, mrid, collected_at, sample)
+        visit = sampleobj.visit
 
-        sample.generate_reports(sample.entered_at)
+        sampleobj.generate_reports(sampleobj.entered_at)
         db.session.commit()
 
         models.blastdb.makeblastdb_incr()
         return CreatePatientVisit(
             updated_patient=visit.patient,
             patient_visit=visit,
-            patient_sample=sample)
+            patient_sample=sampleobj)

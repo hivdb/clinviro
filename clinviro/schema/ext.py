@@ -16,23 +16,32 @@
 
 from flask import current_app as app
 
+from graphene import Enum
 from graphene.types.json import JSONString
 from graphene.types.datetime import DateTime
-from graphene_sqlalchemy.converter import convert_sqlalchemy_type
+from graphene_sqlalchemy.converter import (get_column_doc,
+                                           is_column_nullable,
+                                           convert_sqlalchemy_type)
 from depot.fields.sqlalchemy import UploadedFileField
-from sqlalchemy_utils import ArrowType
+from sqlalchemy_utils import ChoiceType
 
 
 @convert_sqlalchemy_type.register(app.db.Date)
 @convert_sqlalchemy_type.register(app.db.DateTime)
 def convert_column_to_datetime(type, column, registry=None):
     return DateTime(
-        description=getattr(column, 'doc', None),
-        required=not(getattr(column, 'nullable', True)))
+        description=get_column_doc(column),
+        required=not(is_column_nullable(column)))
 
 
 @convert_sqlalchemy_type.register(UploadedFileField)
 def convert_depot_column_to_string(type, column, registry=None):
     return JSONString(
-        description=getattr(column, 'doc', None),
-        required=not(getattr(column, 'nullable', True)))
+        description=get_column_doc(column),
+        required=not(is_column_nullable(column)))
+
+
+@convert_sqlalchemy_type.register(ChoiceType)
+def convert_column_to_enum(type, column, registry=None):
+    name = '{}_{}'.format(column.table.name, column.name).upper()
+    return Enum(name, type.choices, description=get_column_doc(column))()

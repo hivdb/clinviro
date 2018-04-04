@@ -42,9 +42,9 @@ class UpdatePatient(graphene.ClientIDMutation):
 
     patient = graphene.Field(Patient)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         patient = db.session.query(models.Patient).get(input_['ptnum'])
         for column in ('lastname', 'firstname', 'birthday'):
             setattr(patient, column, input_[column])

@@ -22,7 +22,7 @@ from datetime import datetime
 from collections import OrderedDict
 
 from flask import current_app as app
-from flask_login import current_user
+# from flask_login import current_user
 from ..codonutils import translate_codon
 
 TZ = pytz.timezone(app.config['HUMAN_TIMEZONE'])
@@ -357,7 +357,7 @@ def prepare_data(sample, created_at, data, is_regenerated_report):
         'report_type': 'patient',
         'is_regenerated_report': is_regenerated_report,
         'generated_at': created_at.astimezone(TZ).strftime('%m/%d/%Y %H:%M'),
-        'generated_by': current_user.email,
+        # 'generated_by': current_user.email,
         'patient': {
             'ptnum': patient.ptnum,
             'lastname': patient.lastname,
@@ -402,7 +402,7 @@ def prepare_posctl_data(posctl, created_at, data, is_regenerated_report):
         'is_regenerated_report': is_regenerated_report,
         'generated_at': (created_at.astimezone(TZ)
                          .strftime('%m/%d/%Y %H:%M')),
-        'generated_by': current_user.email,
+        # 'generated_by': current_user.email,
         'note': posctl.note,
         'lot_number': posctl.lot_number,
         'test_code': posctl.test_code,
@@ -429,7 +429,7 @@ def prepare_profsample_data(
         'report_type': 'profsample',
         'is_regenerated_report': is_regenerated_report,
         'generated_at': created_at.astimezone(TZ).strftime('%m/%d/%Y %H:%M'),
-        'generated_by': current_user.email,
+        # 'generated_by': current_user.email,
         'name': profsample.name,
         'source': profsample.source,
         'vnum': profsample.vnum,

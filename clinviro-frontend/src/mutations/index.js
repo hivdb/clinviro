@@ -22,6 +22,7 @@ import CreatePatientVisit from './create-patient-visit';
 import UpdatePatientSample from './update-patient-sample';
 import CreatePositiveControl from './create-positive-control';
 import CreateProficiencySample from './create-proficiency-sample';
+import UpdateProficiencySample from './update-proficiency-sample';
 import CreatePhysician from './create-physician';
 import CreateClinic from './create-clinic';
 import LoginUser from './login-user';
@@ -35,5 +36,5 @@ export {
   CreatePatient, UpdatePatient, CreatePatientVisit,
   CreatePhysician, CreateClinic, LoginUser, LogoutUser,
   GenerateReport, DeleteReport, CreatePositiveControl, UpdatePatientSample,
-  CreateProficiencySample, PreviewPatientReport,
+  CreateProficiencySample, UpdateProficiencySample, PreviewPatientReport,
   PreviewProficiencySampleReport};

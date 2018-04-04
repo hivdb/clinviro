@@ -29,6 +29,8 @@ import ProficiencySampleEditForm from '../edit-form';
 import {DATE_FORMAT} from '../../../constants';
 import {isEditable} from '../../../utils/editable';
 import {style as formStyle} from '../../fragments/forms';
+import {UpdateProficiencySample, PreviewProficiencySampleReport} from '../../../mutations';
+import PreviewWindow from '../../../utils/preview-window';
 
 import {isProficiencySampleChanged} from '../comparisons';
 
@@ -66,7 +68,8 @@ class OneProficiencySample extends React.Component {
         genes: sequence.genes,
         fileName: sequence.filename
       },
-      notes, labnotes, receivedAt
+      notes, labnotes, receivedAt,
+      disabled: false
     };
   }
 
@@ -93,36 +96,42 @@ class OneProficiencySample extends React.Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault();
-    /*const {id} = this.props;
-    const {note, lotNumber, testCode, sequence, labnotes, receivedAt} = this.state;
-    const newMrids = mrids.filter(mrid => initialMrids.indexOf(mrid) === -1);
-    const mergeMrids = initialMrids.map(mrid => {
-      if (mrid in mergedMRIDs) {
-        // merged MRIDs
-        return {mridFrom: mrid, mridTo: mergedMRIDs[mrid]};
-      }
-      else if (mrids.indexOf(mrid) === -1) {
-        // deleted MRIDs
-        return {mridFrom: mrid, mridTo: null};
-      }
-      else { return false; }
-    }).filter(n => n !== false);
-
-    const {
-      viewer: {
-        patients: {
-          edges: [{
-            node: patient
-          }]
-        }
-      }
-    } = this.props;
-
+    e && e.preventDefault();
+    const previewWindow = new PreviewWindow();
+    const onSuccess = response => {
+      const {id, latestReports} = response.updateProficiencySample.updatedProficiencySample;
+      const [{content}] = latestReports.filter(r => r.contentType === 'json');
+      previewWindow.setLocation(
+        '/quality-control-report?data_url=/depot/' + JSON.parse(content).path
+      );
+      this.context.router.push({
+        pathname: `/proficiency-samples/profsample-${id}`
+      });
+    }; 
+    const {id} = this.props;
+    this.setState({disabled: true});
     this.props.relay.commitUpdate(
-      new UpdatePatient({patient, ptnum, lastname, firstname,
-                         birthday, newMrids, mergeMrids})
-    );*/
+      new UpdateProficiencySample({id, ...this.state}),
+      {onSuccess}
+    );
+  }
+
+  handlePreview() {
+    const previewWindow = new PreviewWindow();
+    const onSuccess = response => {
+      const blob = new Blob([response.previewProficiencySampleReport.data], {type: 'application/json'});
+      const objectURL = URL.createObjectURL(blob);
+      previewWindow.setLocation(
+        `/quality-control-report?data_url=${encodeURIComponent(objectURL)}`,
+        this.handleSubmit.bind(this)
+      );
+      this.setState({disabled: false});
+    };
+    this.setState({disabled: true});
+    this.props.relay.commitUpdate(
+      new PreviewProficiencySampleReport(this.state),
+      {onSuccess}
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -169,12 +178,13 @@ class OneProficiencySample extends React.Component {
            {...this.state}
            editableByDefault={false}
            submitText="Apply"
-           showSubmit={isChanged}
+           showPreview={isChanged}
            showReset={isChanged}
            readOnly={readOnly}
            onSubmit={this.handleSubmit.bind(this)}
            onChange={this.handleChange.bind(this)}
-           onReset={this.handleReset.bind(this)} />
+           onReset={this.handleReset.bind(this)}
+           onPreview={this.handlePreview.bind(this)} />
         </Col>
       </Row>
     </div>;

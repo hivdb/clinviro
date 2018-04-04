@@ -42,9 +42,9 @@ class PreviewPatientReport(graphene.ClientIDMutation):
 
     data = graphene.types.json.JSONString()
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         with db.session.no_autoflush:
             if input_.get('ptnum'):
                 patient = models.Patient.query.get(input_['ptnum'])

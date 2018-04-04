@@ -15,6 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import graphene
+from ..models.common import SPECIMEN_TYPE_CHOICES
+
+SpecimenType = graphene.Enum(
+    'SpecimenType',
+    SPECIMEN_TYPE_CHOICES)
 
 SampleType = graphene.Enum(
     'SampleType',

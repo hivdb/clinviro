@@ -21,7 +21,7 @@ from .patient_sample import PatientSample
 from .positive_control import PositiveControl
 from .proficiency_sample import ProficiencySample
 from .utils import get_numeric_id
-from .sample_type import SampleType
+from .enums import SampleType
 
 db = app.db
 models = app.models

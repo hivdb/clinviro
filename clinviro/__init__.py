@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from aiohttp import web
+from aiohttp_wsgi import WSGIHandler
+
 from .app import init_app
 from . import settings  # noqa
 from .version import VERSION
@@ -21,3 +24,7 @@ from .version import VERSION
 __version__ = VERSION
 
 app = init_app()
+
+wsgi_handler = WSGIHandler(app)
+aioapp = web.Application()
+aioapp.router.add_route("*", "/{path_info:.*}", wsgi_handler)

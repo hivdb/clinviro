@@ -6,26 +6,26 @@ RUN npm install
 COPY clinviro-frontend /app
 RUN npm run build
 
-FROM ubuntu:xenial
+FROM ubuntu:artful
 ENV LANG C.UTF-8
-COPY requirements.txt /tmp/
-ARG BLASTVERSION=2.6.0
-ARG LEGOVERSION=0.4.0
+COPY requirements.all.txt /tmp/
+ARG BLASTVERSION=2.7.1
+ARG LEGOVERSION=0.4.1
 RUN apt-get update -q && \
     apt-get install --no-install-recommends texlive -qy && \
     apt-get install -qy \
-      python3.5 postgresql-client-9.5 bash cron \
+      python3.6 postgresql-client-9.6 bash cron \
       pandoc nginx-full lmodern \
-      git python3.5-dev netcat-traditional \
+      git python3.6-dev netcat-traditional \
       build-essential tar \
       libpq-dev xz-utils \
       curl libffi-dev \
       libfreetype6-dev libjpeg-dev libwebp-dev \
       libpng12-dev liblcms2-dev libopenjpeg-dev zlib1g-dev \
       libxml2-dev libxslt1-dev && \
-    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.5 - && \
-    pip3.5 install -r /tmp/requirements.txt && \
-    rm -r /tmp/requirements.txt && \
+    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
+    pip3.6 install -r /tmp/requirements.all.txt && \
+    rm -r /tmp/requirements.all.txt && \
     rm -rf /root/.cache && \
     curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLASTVERSION}/ncbi-blast-${BLASTVERSION}+-x64-linux.tar.gz -o /tmp/blast.tar.gz && \
     cd /tmp; tar xvf blast.tar.gz && \
@@ -38,7 +38,7 @@ RUN apt-get update -q && \
     rm -rf /tmp/lego.tar.xz /tmp/lego && \
     mkdir -p /etc/lego && \
     apt-get remove -qy \
-      git python3.5-dev \
+      git python3.6-dev \
       build-essential \
       libpq-dev xz-utils \
       curl libffi-dev \
@@ -51,7 +51,7 @@ RUN echo "5 */1 * * * /app/crontab-blast.sh" > /tmp/_cron && \
     echo "4 4 * * * /app/crontab-es.sh" > /tmp/_cron && \
     echo "3 3 * * 7 /app/crontab-lego.sh" >> /tmp/_cron && \
     echo "0 0 * * * /app/crontab-logrotate.sh" >> /tmp/_cron && \
-    ln -s python3.5 /usr/bin/python && \
+    ln -s python3.6 /usr/bin/python && \
     cat /tmp/_cron | crontab - && rm /tmp/_cron && \
     mkdir -p /app/logs
 WORKDIR /app

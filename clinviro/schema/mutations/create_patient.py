@@ -38,17 +38,19 @@ class CreatePatient(graphene.ClientIDMutation):
 
     patient = graphene.Field(Patient)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(
+            root, info, lastname, firstname, birthday,
+            mrids, client_mutation_id=None):
         new_patient = models.Patient(
-            lastname=input_['lastname'],
-            firstname=input_['firstname'],
-            birthday=input_['birthday'],
+            lastname=lastname,
+            firstname=firstname,
+            birthday=birthday,
             created_at=datetime.now(pytz.utc)
         )
         db.session.add(new_patient)
-        for mrid in input_['mrids']:
+        for mrid in mrids:
             new_patient.medical_records.append(
                 models.MedicalRecord(mrid=mrid)
             )

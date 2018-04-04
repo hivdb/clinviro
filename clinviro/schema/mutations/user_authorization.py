@@ -27,15 +27,16 @@ class LoginUser(graphene.ClientIDMutation):
 
     user_authenticated = graphene.Boolean()
 
-    @classmethod
-    def mutate_and_get_payload(cls, input_, context, info):
+    @staticmethod
+    def mutate_and_get_payload(
+            root, info, email, password, client_mutation_id=None):
         user = (app.models.User.query
-                .filter_by(email=input_['email'])
+                .filter_by(email=email)
                 .one_or_none())
         if not user:
             return LoginUser(user_authenticated=False)
         prevhash = user.password.hash
-        if user.password != input_['password']:
+        if user.password != password:
             return LoginUser(user_authenticated=False)
         login_user(user)
         if prevhash != user.password.hash:
@@ -47,7 +48,7 @@ class LogoutUser(graphene.ClientIDMutation):
 
     user_authenticated = graphene.Boolean()
 
-    @classmethod
-    def mutate_and_get_payload(cls, input_, context, info):
+    @staticmethod
+    def mutate_and_get_payload(root, info, client_mutation_id=None):
         logout_user()
         return LogoutUser(user_authenticated=False)

@@ -51,8 +51,8 @@ class PositiveControlsField(SQLAlchemyConnectionField):
         )
 
     @classmethod
-    def get_query(cls, model, context, info, args):
-        query = PositiveControl.get_query(context)
+    def get_query(cls, model, info, **args):
+        query = PositiveControl.get_query(info)
         if 'ids' in args:
             ids = map(get_numeric_id, args['ids'])
             if ids:

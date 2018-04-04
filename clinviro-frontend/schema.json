@@ -972,12 +972,16 @@
             "isDeprecated": false,
             "name": "edges",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "PatientEdge",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PatientEdge",
+                  "ofType": null
+                }
               }
             }
           }
@@ -1118,22 +1122,6 @@
         "description": null,
         "enumValues": null,
         "fields": [
-          {
-            "args": [],
-            "deprecationReason": null,
-            "description": "Alias of ptnum",
-            "isDeprecated": false,
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            }
-          },
           {
             "args": [],
             "deprecationReason": null,
@@ -1290,6 +1278,22 @@
                 "ofType": null
               }
             }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "Alias of ptnum",
+            "isDeprecated": false,
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
           }
         ],
         "inputFields": null,
@@ -1305,7 +1309,7 @@
         "possibleTypes": null
       },
       {
-        "description": "\n    The `DateTime` scalar type represents a DateTime\n    value as specified by\n    [iso8601](https://en.wikipedia.org/wiki/ISO_8601).\n    ",
+        "description": "The `DateTime` scalar type represents a DateTime\nvalue as specified by\n[iso8601](https://en.wikipedia.org/wiki/ISO_8601).",
         "enumValues": null,
         "fields": null,
         "inputFields": null,
@@ -1351,12 +1355,16 @@
             "isDeprecated": false,
             "name": "edges",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "PatientVisitEdge",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PatientVisitEdge",
+                  "ofType": null
+                }
               }
             }
           }
@@ -1586,13 +1594,9 @@
             "isDeprecated": false,
             "name": "specimenType",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "SPECIMEN_TYPE_CHOICES",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "TBL_PATIENT_SAMPLES_SPECIMEN_TYPE",
+              "ofType": null
             }
           },
           {
@@ -1620,6 +1624,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "physician UID, a foreign key to tbl_physicians",
+            "isDeprecated": false,
+            "name": "physicianId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": "clinic UID, a foreign key to tbl_clinics",
+            "isDeprecated": false,
+            "name": "clinicId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
               "ofType": null
             }
           },
@@ -1754,30 +1782,6 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": "physician UID, a foreign key to tbl_physicians",
-            "isDeprecated": false,
-            "name": "physicianId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
-            }
-          },
-          {
-            "args": [],
-            "deprecationReason": null,
-            "description": "clinic UID, a foreign key to tbl_clinics",
-            "isDeprecated": false,
-            "name": "clinicId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
-            }
-          },
-          {
-            "args": [],
-            "deprecationReason": null,
             "description": "Latest reports (if existing)",
             "isDeprecated": false,
             "name": "latestReports",
@@ -1824,7 +1828,7 @@
         "inputFields": null,
         "interfaces": null,
         "kind": "ENUM",
-        "name": "SPECIMEN_TYPE_CHOICES",
+        "name": "TBL_PATIENT_SAMPLES_SPECIMEN_TYPE",
         "possibleTypes": null
       },
       {
@@ -2291,12 +2295,16 @@
             "isDeprecated": false,
             "name": "edges",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "ClinicEdge",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ClinicEdge",
+                  "ofType": null
+                }
               }
             }
           }
@@ -2479,12 +2487,16 @@
             "isDeprecated": false,
             "name": "edges",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "PhysicianEdge",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PhysicianEdge",
+                  "ofType": null
+                }
               }
             }
           }
@@ -2561,12 +2573,16 @@
             "isDeprecated": false,
             "name": "edges",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "PositiveControlEdge",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PositiveControlEdge",
+                  "ofType": null
+                }
               }
             }
           }
@@ -2687,13 +2703,9 @@
             "isDeprecated": false,
             "name": "specimenType",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "SPECIMEN_TYPE_CHOICES",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "TBL_POSITIVE_CONTROLS_SPECIMEN_TYPE",
+              "ofType": null
             }
           },
           {
@@ -2806,6 +2818,23 @@
         "possibleTypes": null
       },
       {
+        "description": "specimen type",
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "plasma"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "TBL_POSITIVE_CONTROLS_SPECIMEN_TYPE",
+        "possibleTypes": null
+      },
+      {
         "description": null,
         "enumValues": null,
         "fields": [
@@ -2832,12 +2861,16 @@
             "isDeprecated": false,
             "name": "edges",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "ProficiencySampleEdge",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ProficiencySampleEdge",
+                  "ofType": null
+                }
               }
             }
           }
@@ -3255,7 +3288,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "An enumeration.",
         "enumValues": [
           {
             "deprecationReason": null,
@@ -3456,6 +3489,33 @@
             "type": {
               "kind": "OBJECT",
               "name": "CreateProficiencySamplePayload",
+              "ofType": null
+            }
+          },
+          {
+            "args": [
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UpdateProficiencySampleInput",
+                    "ofType": null
+                  }
+                }
+              }
+            ],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "updateProficiencySample",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateProficiencySamplePayload",
               "ofType": null
             }
           },
@@ -4141,7 +4201,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "SPECIMEN_TYPE_CHOICES",
+                "name": "SpecimenType",
                 "ofType": null
               }
             }
@@ -4256,6 +4316,23 @@
         "interfaces": null,
         "kind": "INPUT_OBJECT",
         "name": "PatientSampleInput",
+        "possibleTypes": null
+      },
+      {
+        "description": "An enumeration.",
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "plasma"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "SpecimenType",
         "possibleTypes": null
       },
       {
@@ -4487,7 +4564,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "SPECIMEN_TYPE_CHOICES",
+                "name": "SpecimenType",
                 "ofType": null
               }
             }
@@ -4706,6 +4783,196 @@
         "interfaces": null,
         "kind": "INPUT_OBJECT",
         "name": "CreateProficiencySampleInput",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": [
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "updatedProficiencySample",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProficiencySample",
+              "ofType": null
+            }
+          },
+          {
+            "args": [],
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "kind": "OBJECT",
+        "name": "UpdateProficiencySamplePayload",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "name",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "source",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "vnum",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "testCode",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "sequence",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "filename",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "notes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "labnotes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "receivedAt",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "DateTime",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "manuallyApproved",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": null,
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            }
+          }
+        ],
+        "interfaces": null,
+        "kind": "INPUT_OBJECT",
+        "name": "UpdateProficiencySampleInput",
         "possibleTypes": null
       },
       {

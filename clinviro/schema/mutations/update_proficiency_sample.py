@@ -21,6 +21,7 @@ import graphene
 from flask_login import login_required
 from flask import current_app as app
 
+from ..utils import get_numeric_id
 from ..proficiency_sample import ProficiencySample
 from .proficiency_sample_input import (ProficiencySampleInput,
                                        sample_input_to_args)
@@ -30,29 +31,38 @@ models = app.models
 
 
 def create_proficiency_sample(input_):
-    sample_args = sample_input_to_args(input_)
-    profsample = models.ProficiencySample(
-        entered_at=datetime.now(pytz.utc),
-        **sample_args
-    )
+    profsample = models.ProficiencySample(sample_input_to_args(input_))
 
     # generate report
     profsample.set_sequence(input_['sequence'], input_.get('filename'))
     return profsample
 
 
-class CreateProficiencySample(graphene.ClientIDMutation):
+class UpdateProficiencySample(graphene.ClientIDMutation):
 
-    Input = ProficiencySampleInput
-    proficiency_sample = graphene.Field(ProficiencySample)
+    class Input(ProficiencySampleInput):
+        id = graphene.ID(required=True)
+        manually_approved = graphene.Boolean()
+
+    updated_proficiency_sample = graphene.Field(ProficiencySample)
 
     @staticmethod
     @login_required
     def mutate_and_get_payload(root, info, **input_):
-        profsample = create_proficiency_sample(input_)
-        db.session.add(profsample)
-        db.session.flush()
-        profsample.generate_reports(profsample.entered_at)
+        profsample = (models.ProficiencySample
+                      .query.get(get_numeric_id(input_['id'])))
+        sample_args = sample_input_to_args(input_)
+        for key, val in sample_args.items():
+            setattr(profsample, key, val)
+
+        # regenerate report
+        profsample.set_sequence(
+            input_.get('sequence'), input_.get('filename'))
+        profsample.generate_reports(
+            datetime.now(pytz.utc),
+            manually_approved=input_.get('manually_approved', False)
+        )
         db.session.commit()
+
         models.blastdb.makeblastdb_incr()
-        return CreateProficiencySample(proficiency_sample=profsample)
+        return UpdateProficiencySample(updated_proficiency_sample=profsample)

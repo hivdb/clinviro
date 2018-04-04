@@ -21,8 +21,8 @@ import graphene
 from flask_login import login_required
 from flask import current_app as app
 
+from ..enums import SpecimenType
 from ..positive_control import PositiveControl
-from ...models.common import SPECIMEN_TYPE_CHOICES
 
 db = app.db
 models = app.models
@@ -34,17 +34,16 @@ class CreatePositiveControl(graphene.ClientIDMutation):
         note = graphene.String(required=True)
         lot_number = graphene.String(required=True)
         test_code = graphene.String(required=True)
-        specimen_type = graphene.Enum.from_enum(
-            SPECIMEN_TYPE_CHOICES)(required=True)
+        specimen_type = SpecimenType(required=True)
         sequence = graphene.String(required=True)
         filename = graphene.String()
         labnotes = graphene.String()
 
     positive_control = graphene.Field(PositiveControl)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         posctl = models.PositiveControl(
             note=input_['note'],
             lot_number=input_['lot_number'],

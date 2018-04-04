@@ -30,9 +30,9 @@ class PreviewProficiencySampleReport(graphene.ClientIDMutation):
     Input = ProficiencySampleInput
     data = graphene.types.json.JSONString()
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         with db.session.no_autoflush:
             profsample = create_proficiency_sample(input_)
             json_report = profsample.generate_reports(

@@ -99,8 +99,8 @@ class PatientVisitsField(SQLAlchemyConnectionField):
         )
 
     @classmethod
-    def get_query(cls, model, context, info, args):
-        query = PatientVisit.get_query(context)
+    def get_query(cls, model, info, **args):
+        query = PatientVisit.get_query(info)
         query = query.options(db.joinedload('patient'))
         if 'ids' in args:
             ids = map(get_numeric_id, args['ids'])

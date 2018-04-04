@@ -54,8 +54,8 @@ class ProficiencySamplesField(SQLAlchemyConnectionField):
         )
 
     @classmethod
-    def get_query(cls, model, context, info, args):
-        query = ProficiencySample.get_query(context)
+    def get_query(cls, model, info, **args):
+        query = ProficiencySample.get_query(info)
         if 'ids' in args:
             ids = map(get_numeric_id, args['ids'])
             if ids:

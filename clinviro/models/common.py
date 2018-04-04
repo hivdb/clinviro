@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from enum import Enum
+
+GENE_CHOICES = [
+    ('PR', 'PR'),
+    ('RT', 'RT'),
+    ('IN', 'IN'),
+]
 
 
-class GENE_CHOICES(Enum):
-    PR = 'PR'
-    RT = 'RT'
-    IN = 'IN'
-
-
-class SPECIMEN_TYPE_CHOICES(Enum):
-    plasma = 'plasma'
+SPECIMEN_TYPE_CHOICES = [
+    ('plasma', 'plasma'),
+]
 
 
 def escape_like_query(pattern, escape='\\'):

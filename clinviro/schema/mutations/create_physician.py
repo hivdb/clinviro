@@ -32,9 +32,9 @@ class CreatePhysician(graphene.ClientIDMutation):
 
     physician = graphene.Field(Physician)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         new_physician = models.Physician(
             lastname=input_['lastname'],
             firstname=input_['firstname']

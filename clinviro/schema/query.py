@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import graphene
-from graphene import relay, resolve_only_args
+from graphene import relay
 from graphene.types.datetime import DateTime
 from flask_login import login_required, current_user
 
@@ -88,8 +88,7 @@ class Viewer(graphene.ObjectType):
         pass
 
     @login_required
-    @resolve_only_args
-    def resolve_similar_sequences(self, sequence_id=None,
+    def resolve_similar_sequences(self, info, sequence_id=None,
                                   naseq=None, entered_before=None,
                                   remove_positive_controls=False,
                                   ptnum_exclude=None):

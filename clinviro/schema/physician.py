@@ -41,8 +41,8 @@ class PhysiciansField(SQLAlchemyConnectionField):
         )
 
     @classmethod
-    def get_query(self, model, context, info, args):
-        query = Physician.get_query(context)
+    def get_query(self, model, info, **args):
+        query = Physician.get_query(info)
         if 'name_prefix' in args:
             names = split_person_name(args['name_prefix'])
             for prefix in names:

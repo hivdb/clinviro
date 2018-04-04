@@ -42,8 +42,8 @@ class ClinicsField(SQLAlchemyConnectionField):
         )
 
     @classmethod
-    def get_query(self, model, context, info, args):
-        query = Clinic.get_query(context)
+    def get_query(self, model, info, **args):
+        query = Clinic.get_query(info)
 
         if 'name_prefix' in args:
             query.filter(prefixed_with(model.name, args['name_prefix']))

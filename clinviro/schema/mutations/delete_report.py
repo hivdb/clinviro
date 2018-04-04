@@ -19,7 +19,7 @@ from flask import current_app as app
 from flask_login import login_required
 
 from ..utils import get_numeric_id
-from ..sample_type import SampleType
+from ..enums import SampleType
 
 db = app.db
 models = app.models
@@ -34,9 +34,9 @@ class DeleteReport(graphene.ClientIDMutation):
 
     deleted_report_ids = graphene.List(graphene.ID)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         rtype = input_['type']
         uid = get_numeric_id(input_['uid'])
         ids = input_['report_ids']

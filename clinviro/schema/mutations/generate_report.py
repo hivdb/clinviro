@@ -25,7 +25,7 @@ from ..utils import get_numeric_id
 from ..patient_sample import PatientSample
 from ..proficiency_sample import ProficiencySample
 from ..positive_control import PositiveControl
-from ..sample_type import SampleType
+from ..enums import SampleType
 
 db = app.db
 models = app.models
@@ -42,9 +42,9 @@ class GenerateReport(graphene.ClientIDMutation):
     proficiency_sample = graphene.Field(ProficiencySample)
     positive_control = graphene.Field(PositiveControl)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         rtype = input_['type']
         uid = get_numeric_id(input_['uid'])
         is_regenerated_report = input_['is_regenerated_report']

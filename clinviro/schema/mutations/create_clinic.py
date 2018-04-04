@@ -31,13 +31,10 @@ class CreateClinic(graphene.ClientIDMutation):
 
     clinic = graphene.Field(Clinic)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
-        new_clinic = models.Clinic(
-            name=input_['name'],
-            is_active=True
-        )
+    def mutate_and_get_payload(root, info, name, client_mutation_id=None):
+        new_clinic = models.Clinic(name=name, is_active=True)
         db.session.add(new_clinic)
         db.session.commit()
         return CreateClinic(clinic=new_clinic)

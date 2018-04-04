@@ -46,9 +46,9 @@ class UpdatePatientSample(graphene.ClientIDMutation):
     updated_patient_visit = graphene.Field(PatientVisit)
     updated_patient_sample = graphene.Field(PatientSample)
 
-    @classmethod
+    @staticmethod
     @login_required
-    def mutate_and_get_payload(cls, input_, context, info):
+    def mutate_and_get_payload(root, info, **input_):
         sample = models.PatientSample.query.get(get_numeric_id(input_['id']))
         visit = sample.visit
         if 'mrid' in input_:
