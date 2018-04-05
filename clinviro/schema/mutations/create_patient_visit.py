@@ -18,7 +18,7 @@ from datetime import datetime
 
 import pytz
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from flask_login import login_required
 from flask import current_app as app
 
@@ -37,14 +37,14 @@ def create_patient_sample(patient, mrid, collected_at, sample_input):
     visit = (db.session
              .query(models.PatientVisit)
              .filter_by(mrid=mrid, patient=patient,
-                        collected_at=collected_at.date())
+                        collected_at=collected_at)
              .one_or_none())
     if not visit:
         # else create a new one
         visit = models.PatientVisit(
             mrid=mrid,
             patient=patient,
-            collected_at=collected_at.date())
+            collected_at=collected_at)
         db.session.add(visit)
 
     # create new sample
@@ -65,7 +65,7 @@ class CreatePatientVisit(graphene.ClientIDMutation):
     class Input:
         ptnum = graphene.ID(required=True)
         mrid = graphene.String()
-        collected_at = DateTime(required=True)
+        collected_at = Date(required=True)
         sample = PatientSampleInput(required=True)
 
     updated_patient = graphene.Field(Patient)

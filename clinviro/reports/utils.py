@@ -375,7 +375,7 @@ def prepare_data(sample, created_at, data, is_regenerated_report):
             'firstname': sample.physician.firstname
         },
         'test_code': sample.test_code,
-        'specimen_type': sample.specimen_type.name,
+        'specimen_type': sample.specimen_type.value,
         'vnum': sample.vnum,
         'collected_at': visit.collected_at.strftime('%m/%d/%Y'),
         'received_at': (sample.received_at.strftime('%m/%d/%Y')
@@ -406,7 +406,7 @@ def prepare_posctl_data(posctl, created_at, data, is_regenerated_report):
         'note': posctl.note,
         'lot_number': posctl.lot_number,
         'test_code': posctl.test_code,
-        'specimen_type': posctl.specimen_type.name,
+        'specimen_type': posctl.specimen_type.value,
         'entered_at': (posctl.entered_at
                        .astimezone(TZ)
                        .strftime('%m/%d/%Y %H:%M')),

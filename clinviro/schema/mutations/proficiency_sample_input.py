@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 
 
 def sample_input_to_args(input_):
@@ -26,7 +26,7 @@ def sample_input_to_args(input_):
         'test_code': input_['test_code'],
         'notes': input_.get('notes'),
         'labnotes': input_.get('labnotes'),
-        'received_at': input_['received_at'].date()
+        'received_at': input_['received_at']
     }
 
 
@@ -39,4 +39,4 @@ class ProficiencySampleInput:
     filename = graphene.String()
     notes = graphene.String()
     labnotes = graphene.String()
-    received_at = DateTime(required=True)
+    received_at = Date(required=True)

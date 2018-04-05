@@ -18,7 +18,7 @@ from datetime import datetime
 
 import pytz
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from flask_login import login_required
 from flask import current_app as app
 
@@ -38,7 +38,7 @@ class UpdatePatientSample(graphene.ClientIDMutation):
     class Input:
         id = graphene.ID(required=True)
         mrid = graphene.String()
-        collected_at = DateTime()
+        collected_at = Date()
         sample = PatientSampleInput(required=True)
         manually_approved = graphene.Boolean()
 
@@ -54,7 +54,7 @@ class UpdatePatientSample(graphene.ClientIDMutation):
         if 'mrid' in input_:
             visit.mrid = input_['mrid']
         if 'collected_at' in input_:
-            visit.collected_at = input_['collected_at'].date()
+            visit.collected_at = input_['collected_at']
 
         # update sample
         sample_input = input_['sample']

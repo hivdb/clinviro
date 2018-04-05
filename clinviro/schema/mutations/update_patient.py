@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from flask_login import login_required
 from flask import current_app as app
 
@@ -36,7 +36,7 @@ class UpdatePatient(graphene.ClientIDMutation):
         ptnum = graphene.ID(required=True)
         lastname = graphene.String(required=True)
         firstname = graphene.String(required=True)
-        birthday = DateTime(required=True)
+        birthday = Date(required=True)
         new_mrids = graphene.List(graphene.String, required=True)
         merge_mrids = graphene.List(MergeMRID, required=True)
 

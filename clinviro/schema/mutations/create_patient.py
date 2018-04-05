@@ -18,7 +18,7 @@ from datetime import datetime
 
 import pytz
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from flask_login import login_required
 from flask import current_app as app
 
@@ -33,7 +33,7 @@ class CreatePatient(graphene.ClientIDMutation):
     class Input:
         lastname = graphene.String(required=True)
         firstname = graphene.String(required=True)
-        birthday = DateTime(required=True)
+        birthday = Date(required=True)
         mrids = graphene.List(graphene.String, required=True)
 
     patient = graphene.Field(Patient)

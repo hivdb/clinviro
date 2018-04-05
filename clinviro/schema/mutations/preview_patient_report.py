@@ -18,7 +18,7 @@ from datetime import datetime
 
 import pytz
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from flask_login import login_required
 from flask import current_app as app
 
@@ -35,9 +35,9 @@ class PreviewPatientReport(graphene.ClientIDMutation):
         ptnum = graphene.ID(required=False)
         lastname = graphene.String(required=True)
         firstname = graphene.String(required=True)
-        birthday = DateTime(required=True)
+        birthday = Date(required=True)
         mrid = graphene.String()
-        collected_at = DateTime(required=True)
+        collected_at = Date(required=True)
         sample = PatientSampleInput(required=True)
 
     data = graphene.types.json.JSONString()
@@ -50,6 +50,7 @@ class PreviewPatientReport(graphene.ClientIDMutation):
                 patient = models.Patient.query.get(input_['ptnum'])
             else:
                 patient = models.Patient(
+                    ptnum=-0xff,
                     created_at=datetime.now(pytz.utc)
                 )
             for key in ('lastname', 'firstname', 'birthday'):

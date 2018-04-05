@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import graphene
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from flask import current_app as app
 
 from ..enums import SpecimenType
@@ -38,7 +38,7 @@ class PatientSampleInput(graphene.InputObjectType):
     clinic_id = graphene.ID(required=True)
     notes = graphene.String()
     labnotes = graphene.String()
-    received_at = DateTime()
+    received_at = Date()
 
 
 def sample_input_to_args(input_):
@@ -51,7 +51,7 @@ def sample_input_to_args(input_):
         'clinic': models.Clinic.query.get(
             get_numeric_id(input_['clinic_id'])),
         'amplifiable': input_['amplifiable'],
-        'received_at': input_['received_at'].date(),
+        'received_at': input_['received_at'],
         'notes': input_['notes'],
         'labnotes': input_['labnotes']
     }

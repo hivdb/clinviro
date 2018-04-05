@@ -18,7 +18,7 @@ from flask import current_app as app
 
 from graphene import Enum
 from graphene.types.json import JSONString
-from graphene.types.datetime import DateTime
+from graphene.types.datetime import Date
 from graphene_sqlalchemy.converter import (get_column_doc,
                                            is_column_nullable,
                                            convert_sqlalchemy_type)
@@ -27,9 +27,8 @@ from sqlalchemy_utils import ChoiceType
 
 
 @convert_sqlalchemy_type.register(app.db.Date)
-@convert_sqlalchemy_type.register(app.db.DateTime)
 def convert_column_to_datetime(type, column, registry=None):
-    return DateTime(
+    return Date(
         description=get_column_doc(column),
         required=not(is_column_nullable(column)))
 
@@ -43,5 +42,9 @@ def convert_depot_column_to_string(type, column, registry=None):
 
 @convert_sqlalchemy_type.register(ChoiceType)
 def convert_column_to_enum(type, column, registry=None):
+    """A bug from graphene_sqlalchemy prevented any Enum
+
+    The Enum class must be instantiated here
+    """
     name = '{}_{}'.format(column.table.name, column.name).upper()
     return Enum(name, type.choices, description=get_column_doc(column))()
