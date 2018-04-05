@@ -42,7 +42,6 @@ class UpdateProficiencySample(graphene.ClientIDMutation):
 
     class Input(ProficiencySampleInput):
         id = graphene.ID(required=True)
-        manually_approved = graphene.Boolean()
 
     updated_proficiency_sample = graphene.Field(ProficiencySample)
 
@@ -58,10 +57,7 @@ class UpdateProficiencySample(graphene.ClientIDMutation):
         # regenerate report
         profsample.set_sequence(
             input_.get('sequence'), input_.get('filename'))
-        profsample.generate_reports(
-            datetime.now(pytz.utc),
-            manually_approved=input_.get('manually_approved', False)
-        )
+        profsample.generate_reports(datetime.now(pytz.utc))
         db.session.commit()
 
         models.blastdb.makeblastdb_incr()

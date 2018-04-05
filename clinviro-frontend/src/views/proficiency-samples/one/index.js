@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Relay from 'react-relay/classic';
 import moment from 'moment';
 import {Row, Col} from 'react-flexbox-grid';
@@ -35,6 +36,12 @@ import PreviewWindow from '../../../utils/preview-window';
 import {isProficiencySampleChanged} from '../comparisons';
 
 class OneProficiencySample extends React.Component {
+
+  static contextTypes = {
+    router: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }).isRequired
+  }
 
   constructor() {
     super(...arguments);
