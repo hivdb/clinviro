@@ -82,3 +82,11 @@
   border-color: btn-info2-bg-hover-color;
   color: inverse-main-text-color;
 }
+
+:local(.btn.marRight) {
+  margin-right: 0.4rem;
+}
+
+:local(.btn.marLeft) {
+  margin-left: 0.4rem;
+}

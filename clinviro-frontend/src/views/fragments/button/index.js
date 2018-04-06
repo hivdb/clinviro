@@ -32,6 +32,7 @@ export default class Button extends React.Component {
     onClick: PropTypes.func,
     btnStyle: PropTypes.oneOf(BUTTON_STYLES).isRequired,
     btnSize: PropTypes.oneOf(BUTTON_SIZES).isRequired,
+    margin: PropTypes.string.isRequired,
     className: PropTypes.string,
     href: PropTypes.string,
     to: PropTypes.string,
@@ -42,6 +43,7 @@ export default class Button extends React.Component {
 
   static defaultProps = {
     btnStyle: 'default',
+    margin: '',
     btnSize: 'normal',
     disabled: false,
     type: 'button',
@@ -49,10 +51,16 @@ export default class Button extends React.Component {
   }
 
   render() {
-    const {
-      btnStyle, btnSize, href, to, className, type, ...props} = this.props;
+    let {
+      btnStyle, btnSize, href, to, margin, className, type, ...props} = this.props;
+    margin = margin.toLowerCase().replace(' ', '').split(',');
     props.className = classNames(
-      style.btn, style[`${btnStyle}Btn`], style[`${btnSize}SzBtn`], className);
+      style.btn,
+      style[`${btnStyle}Btn`],
+      style[`${btnSize}SzBtn`],
+      margin.indexOf('left') > -1 ? style.marLeft : null,
+      margin.indexOf('right') > -1 ? style.marRight : null,
+      className);
     if (href) {
       return <a href={href} {...props} />;
     } else if (to) {

@@ -24,7 +24,6 @@ import {FormHorizental, FormButtons, TextInput, ReadOnlyInput, sequenceShape,
         checkMessagesOnSubmit, style as formStyle} from '../../fragments/forms';
 import {checkRequired} from '../validators';
 import {TEST_CODE_OPTIONS} from '../../../constants';
-import SourceSelect from '../source-select';
 
 
 export default class ProficiencySampleEditForm extends React.Component {
@@ -83,7 +82,14 @@ export default class ProficiencySampleEditForm extends React.Component {
         value = value ? (value.value || value.label) : null;
       }
       const props = {};
-      props[propName] = value;
+      if (propName === 'sourceAndName') {
+        const [source, name] = value.split(', ');
+        props.source = source;
+        props.name = name;
+      }
+      else {
+        props[propName] = value;
+      }
       this.props.onChange(props);
     };
   }
@@ -161,14 +167,13 @@ export default class ProficiencySampleEditForm extends React.Component {
        onSubmit={this.handleSubmit.bind(this)}>
         <TextInput
          {...{editableByDefault, readOnly}}
-         messages={checkRequired(name, invalid)}
-         value={name} name="name"
-         onChange={this.handlePropChange('name')} />
-        <SourceSelect
-         {...{editableByDefault, readOnly}}
-         messages={checkRequired(source, invalid)}
-         value={source} name="source" label="First name/Source"
-         onChange={this.handlePropChange('source')} />
+         value={`${source || ''}, ${name || ''}`}
+         messages={checkRequired(`${source}${name}`, invalid)}
+         delimiter=", "
+         placeholder={['Source', 'Sample ID']}
+         name="sourceAndName"
+         label="Sample"
+         onChange={this.handlePropChange('sourceAndName')} />
         <TextInput
          {...{editableByDefault, readOnly}}
          messages={checkRequired(vnum, invalid)}

@@ -1,0 +1,9 @@
+@value trivia-text-color from '../../../colors.css';
+
+:local .empty {
+  color: trivia-text-color;
+}
+
+:local .viewerInner {
+  margin-top: 2rem;
+}

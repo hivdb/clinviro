@@ -24,6 +24,7 @@ import momentPropTypes from 'react-moment-proptypes';
 
 import Button from '../../fragments/button';
 import Breadcrumb from '../../fragments/breadcrumb';
+import SequenceViewer from '../../fragments/sequence-viewer';
 import {FormGroup, style as formStyle} from '../../fragments/forms';
 import QueryList from '../../fragments/query-list';
 import {DATE_FORMAT} from '../../../constants';
@@ -47,8 +48,26 @@ class ProficiencySampleQueryList extends React.Component {
     receivedBefore: momentPropTypes.momentObj
   };
 
+  constructor() {
+    super(...arguments);
+    this.state = {
+      mutationsDialogSequence: null
+    };
+  }
+
+  openMutationsDialog(mutationsDialogSequence) {
+    return () => {
+      this.setState({mutationsDialogSequence});
+    };
+  }
+
+  closeMutationsDialog() {
+    this.setState({mutationsDialogSequence: null});
+  }
+
   render() {
     const editable = isEditable();
+    const {mutationsDialogSequence} = this.state;
     const {
       source, vnumPrefix, receivedBefore,
       viewer: {proficiencySamples: connection},
@@ -88,13 +107,19 @@ class ProficiencySampleQueryList extends React.Component {
       valueDecorator: v => moment(v).format(DATE_FORMAT)
     }, {
       name: 'options',
-      valueDecorator: (v, {id}) => (
+      valueDecorator: (v, {id, sequence}) => [
         <Button
+         onClick={this.openMutationsDialog(sequence.naseq)}
+         key={1} btnSize="small" margin="right">
+          Mutations
+        </Button>,
+        <Button
+         key={2}
          to={`/proficiency-samples/profsample-${id}`}
          btnSize="small">
           View{editable ? ' / Edit' : null}
         </Button>
-      )
+      ]
     }];
 
     const formExtras = <FormGroup className={formStyle.pullRight}>
@@ -119,6 +144,10 @@ class ProficiencySampleQueryList extends React.Component {
        }]} />
       <h1>Proficiency sample list</h1>
       <QueryList {...{elements, params, columns, pathname, formExtras}} />
+      {mutationsDialogSequence ?
+       <SequenceViewer
+        onClose={this.closeMutationsDialog.bind(this)}
+        sequence={mutationsDialogSequence} /> : null}
     </div>;
   }
 
@@ -176,6 +205,7 @@ export default Relay.createContainer(
                 testCode
                 sequence {
                   subtype
+                  naseq
                 }
                 receivedAt
               }

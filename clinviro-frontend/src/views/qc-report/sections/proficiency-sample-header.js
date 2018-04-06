@@ -50,7 +50,7 @@ export default class ProficiencySampleReportHeader extends React.Component {
            name: '\xa0',
            value: '\xa0'
          }, {
-           name: 'Name:',
+           name: 'Sample ID:',
            value: name
          }, {
            name: 'Source:',
