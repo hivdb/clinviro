@@ -6,23 +6,32 @@ RUN npm install
 COPY clinviro-frontend /app
 RUN npm run build
 
+FROM ubuntu:artful AS pybuilder
+ENV LANG C.UTF-8
+COPY requirements.all.txt /tmp/
+RUN apt-get update -q && \
+    apt-get install -qy \
+      python3.6 postgresql-client-9.6 \
+      git python3.6-dev build-essential tar \
+      libpq-dev xz-utils curl libffi-dev \
+      libfreetype6-dev libjpeg-dev libwebp-dev \
+      libpng-dev liblcms2-dev libopenjp2-7-dev zlib1g-dev \
+      libxml2-dev libxslt1-dev && \
+    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
+    pip3.6 wheel -r /tmp/requirements.all.txt
+
 FROM ubuntu:artful
 ENV LANG C.UTF-8
 COPY requirements.all.txt /tmp/
+COPY --from=pybuilder /root/.cache /root/.cache
 ARG BLASTVERSION=2.7.1
 ARG LEGOVERSION=0.4.1
 RUN apt-get update -q && \
     apt-get install --no-install-recommends texlive -qy && \
     apt-get install -qy \
       python3.6 postgresql-client-9.6 bash cron \
-      pandoc nginx-full lmodern \
-      git python3.6-dev netcat-traditional \
-      build-essential tar \
-      libpq-dev xz-utils \
-      curl libffi-dev \
-      libfreetype6-dev libjpeg-dev libwebp-dev \
-      libpng12-dev liblcms2-dev libopenjpeg-dev zlib1g-dev \
-      libxml2-dev libxslt1-dev && \
+      pandoc nginx-full lmodern netcat-traditional \
+      git tar curl && \
     curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
     pip3.6 install -r /tmp/requirements.all.txt && \
     rm -r /tmp/requirements.all.txt && \
@@ -37,14 +46,7 @@ RUN apt-get update -q && \
     cp /tmp/lego/lego_linux_amd64 /usr/local/bin/lego && \
     rm -rf /tmp/lego.tar.xz /tmp/lego && \
     mkdir -p /etc/lego && \
-    apt-get remove -qy \
-      git python3.6-dev \
-      build-essential \
-      libpq-dev xz-utils \
-      curl libffi-dev \
-      libfreetype6-dev libjpeg-dev libwebp-dev \
-      libpng12-dev liblcms2-dev libopenjpeg-dev zlib1g-dev \
-      libxml2-dev libxslt1-dev && \
+    apt-get remove -qy curl git && \
     apt-get autoremove -qy && \
     rm /etc/nginx/sites-enabled/*
 RUN echo "5 */1 * * * /app/crontab-blast.sh" > /tmp/_cron && \
