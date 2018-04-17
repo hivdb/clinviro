@@ -43,6 +43,10 @@ class User(db.Model):
         db.DateTime(timezone=True), nullable=False, index=True,
         doc='date and time this user was created')
 
+    audit_logs = db.relationship(
+        'AuditLog', back_populates='user',
+        doc='all operations have been performed by this user')
+
     @property
     def is_active(self):
         return True

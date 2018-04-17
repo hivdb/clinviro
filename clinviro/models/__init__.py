@@ -25,6 +25,7 @@ from .proficiency_sample import ProficiencySample
 from .report import Report
 from .sequence import Sequence
 from .user import User
+from .audit_log import AuditLog
 from .common import escape_like_query
 from . import sierra
 from . import blastdb
@@ -41,6 +42,7 @@ __all__ = [
     'Report',
     'Sequence',
     'User',
+    'AuditLog',
     'sierra',
     'escape_like_query',
     'blastdb',
