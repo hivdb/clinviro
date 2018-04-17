@@ -14,13 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import pytz
+from datetime import datetime
 from sqlalchemy_utils.types.choice import ChoiceType
 from flask import current_app as app
+from flask_login import current_user
 
 db = app.db
 
 OPERATION_TYPE_CHOICES = [
-    ('ADD', 'ADD'),
+    ('CREATE', 'CREATE'),
     ('MODIFY', 'MODIFY'),
     ('DELETE', 'DELETE'),
 ]
@@ -35,6 +38,8 @@ TARGET_CHOICES = [
     ('POSITIVE_CONTROL', 'POSITIVE_CONTROL'),
     ('POSITIVE_CONTROL_REPORT', 'POSITIVE_CONTROL_REPORT'),
     ('USER', 'USER'),
+    ('CLINIC', 'CLINIC'),
+    ('PHYSICIAN', 'PHYSICIAN'),
 ]
 
 
@@ -54,9 +59,9 @@ class AuditLog(db.Model):
     target = db.Column(
         ChoiceType(TARGET_CHOICES, db.Unicode(32)),
         nullable=False, doc='operation target')
-    description = db.Column(
-        db.Unicode(1024), nullable=False,
-        doc='description text')
+    payload = db.Column(
+        db.UnicodeText(), nullable=False,
+        doc='structured data of this log')
     created_at = db.Column(
         db.DateTime(timezone=True), nullable=False, index=True,
         doc='date and time this log was created')
@@ -64,3 +69,14 @@ class AuditLog(db.Model):
     user = db.relationship(
         'User', back_populates='audit_logs',
         doc='user who performed this operation')
+
+    def __init__(self, user, operation_type, target, payload):
+        self.user = user
+        self.operation_type = operation_type
+        self.target = target
+        self.payload = payload
+        self.created_at = datetime.now(pytz.utc)
+
+    @classmethod
+    def for_current_user(cls, operation_type, target, payload):
+        return cls(current_user, operation_type, target, payload)

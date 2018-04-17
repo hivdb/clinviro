@@ -39,7 +39,7 @@ def upgrade():
         sa.Column('user_id', sa.Integer(), nullable=False),
         sa.Column('operation_type', sa.Unicode(8), nullable=False),
         sa.Column('target', sa.Unicode(32), nullable=False),
-        sa.Column('description', sa.Unicode(1024), nullable=False),
+        sa.Column('payload', sa.UnicodeText(), nullable=False),
         sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(['user_id'], ['tbl_users.id'], ),
         sa.PrimaryKeyConstraint('id')

@@ -36,5 +36,11 @@ class CreateClinic(graphene.ClientIDMutation):
     def mutate_and_get_payload(root, info, name, client_mutation_id=None):
         new_clinic = models.Clinic(name=name, is_active=True)
         db.session.add(new_clinic)
+        db.session.flush()
+        log = models.AuditLog.for_current_user(
+            'CREATE', 'CLINIC',
+            {'clinic_id': new_clinic.id, 'clinic_name': name}
+        )
+        db.session.add(log)
         db.session.commit()
         return CreateClinic(clinic=new_clinic)
