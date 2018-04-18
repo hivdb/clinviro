@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import json
 from flask import Flask
 
 from .app import app_extension
@@ -29,8 +30,28 @@ def register_config(app: Flask) -> Flask:
 @app_extension
 def register_db(app: Flask) -> Flask:
     from flask_sqlalchemy import SQLAlchemy
+    from sqlalchemy_utils.types.choice import Choice
     from flask_alembic import Alembic
-    app.db = SQLAlchemy(app)
+
+    def ext_default(v):
+        if hasattr(v, 'isoformat'):
+            return v.isoformat()
+        elif isinstance(v, Choice):
+            return v.value
+        return v
+
+    def json_dumps(d):
+        return json.dumps(d, default=ext_default)
+
+    class CVSQLAlchemy(SQLAlchemy):
+
+        def apply_driver_hacks(self, app, info, options):
+            options['json_serializer'] = json_dumps
+            return (
+                super(CVSQLAlchemy, self)
+                .apply_driver_hacks(app, info, options))
+
+    app.db = CVSQLAlchemy(app)
     Alembic(app)
     return app
 

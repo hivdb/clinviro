@@ -52,9 +52,9 @@ class CreatePatient(graphene.ClientIDMutation):
         db.session.add(new_patient)
         db.session.flush()
         payload = {
-            'patient_id': new_patient.id,
-            'patient_name': new_patient.fullname,
-            'patient_birthday': new_patient.birthday,
+            'ptnum': new_patient.ptnum,
+            'fullname': new_patient.fullname,
+            'birthday': new_patient.birthday,
             'mrids': []
         }
 

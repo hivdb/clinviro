@@ -4962,16 +4962,6 @@
           {
             "defaultValue": null,
             "description": null,
-            "name": "manuallyApproved",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            }
-          },
-          {
-            "defaultValue": null,
-            "description": null,
             "name": "clientMutationId",
             "type": {
               "kind": "SCALAR",

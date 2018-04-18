@@ -40,5 +40,14 @@ class CreatePhysician(graphene.ClientIDMutation):
             firstname=input_['firstname']
         )
         db.session.add(new_physician)
+        db.session.flush()
+        log = models.AuditLog.for_current_user(
+            'CREATE', 'PHYSICIAN',
+            payload={
+                'physician_id': new_physician.id,
+                'name': new_physician.name
+            }
+        )
+        db.session.add(log)
         db.session.commit()
         return CreatePhysician(physician=new_physician)

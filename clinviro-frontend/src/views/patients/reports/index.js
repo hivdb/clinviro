@@ -54,17 +54,14 @@ class PatientReports extends React.Component {
     return null;
   }
 
-  get reports() {
-    return this.currentSample.reports;
-  }
-
   handleReportsUpdate() {
     this.props.relay.forceFetch();
   }
 
   render() {
     const {ptnum, visitId, sampleId} = this.props;
-    const {patient, visit, reports, currentSample} = this;
+    const {patient, visit, currentSample} = this;
+    const {reports} = currentSample;
     return <div>
       <Row><Col sm={12}>
         <Breadcrumb

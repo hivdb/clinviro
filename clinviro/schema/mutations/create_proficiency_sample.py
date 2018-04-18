@@ -53,6 +53,19 @@ class CreateProficiencySample(graphene.ClientIDMutation):
         db.session.add(profsample)
         db.session.flush()
         profsample.generate_reports(profsample.entered_at)
+        log = models.AuditLog.for_current_user(
+            'CREATE', 'PROFICIENCY_SAMPLE',
+            payload={
+                'proficiency_sample_id': profsample.id,
+                'name': profsample.name,
+                'source': profsample.source,
+                'vnum': profsample.vnum,
+                'test_code': profsample.test_code,
+                'received_at': profsample.received_at,
+                'entered_at': profsample.entered_at
+            }
+        )
+        db.session.add(log)
         db.session.commit()
         models.blastdb.makeblastdb_incr()
         return CreateProficiencySample(proficiency_sample=profsample)

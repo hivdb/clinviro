@@ -32,11 +32,9 @@ TARGET_CHOICES = [
     ('PATIENT', 'PATIENT'),
     ('PATIENT_VISIT', 'PATIENT_VISIT'),
     ('PATIENT_SAMPLE', 'PATIENT_SAMPLE'),
-    ('PATIENT_SAMPLE_REPORT', 'PATIENT_SAMPLE_REPORT'),
     ('PROFICIENCY_SAMPLE', 'PROFICIENCY_SAMPLE'),
-    ('PROFICIENCY_SAMPLE_REPORT', 'PROFICIENCY_SAMPLE_REPORT'),
     ('POSITIVE_CONTROL', 'POSITIVE_CONTROL'),
-    ('POSITIVE_CONTROL_REPORT', 'POSITIVE_CONTROL_REPORT'),
+    ('REPORT', 'REPORT'),
     ('USER', 'USER'),
     ('CLINIC', 'CLINIC'),
     ('PHYSICIAN', 'PHYSICIAN'),
@@ -60,8 +58,7 @@ class AuditLog(db.Model):
         ChoiceType(TARGET_CHOICES, db.Unicode(32)),
         nullable=False, doc='operation target')
     payload = db.Column(
-        db.UnicodeText(), nullable=False,
-        doc='structured data of this log')
+        db.JSON(), nullable=False, doc='structured data of this log')
     created_at = db.Column(
         db.DateTime(timezone=True), nullable=False, index=True,
         doc='date and time this log was created')

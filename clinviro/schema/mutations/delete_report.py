@@ -56,5 +56,17 @@ class DeleteReport(graphene.ClientIDMutation):
                 deleted.append(report.id)
             except ValueError:
                 pass
+        log = models.AuditLog.for_current_user(
+            'DELETE', 'REPORT',
+            payload={
+                'sample_type': rtype,
+                'sample_id': uid,
+                'reports': [{
+                    'report_id': r.id,
+                    'created_at': r.created_at
+                } for r in reports]
+            }
+        )
+        db.session.add(log)
         db.session.commit()
         return DeleteReport(deleted_report_ids=deleted)

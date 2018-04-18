@@ -66,6 +66,21 @@ class GenerateReport(graphene.ClientIDMutation):
             sample.generate_reports(
                 datetime.now(pytz.utc),
                 is_regenerated_report=is_regenerated_report)
+        db.session.flush()
+        reports = sample.latest_reports
+        log = models.AuditLog.for_current_user(
+            'CREATE', 'REPORT',
+            payload={
+                'sample_type': rtype,
+                'sample_id': uid,
+                'is_regenerated_report': is_regenerated_report,
+                'reports': [{
+                    'report_id': r.id,
+                    'created_at': r.created_at
+                } for r in reports]
+            }
+        )
+        db.session.add(log)
         db.session.commit()
         return GenerateReport(
             patient_sample=(

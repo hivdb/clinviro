@@ -57,6 +57,16 @@ class CreatePositiveControl(graphene.ClientIDMutation):
         posctl.set_sequence(input_['sequence'], input_.get('filename'))
         db.session.flush()
         posctl.generate_reports(posctl.entered_at)
+        log = models.AuditLog.for_current_user(
+            'CREATE', 'POSITIVE_CONTROL',
+            payload={
+                'positive_control_id': posctl.id,
+                'lot_number': posctl.lot_number,
+                'test_code': posctl.test_code,
+                'entered_at': posctl.entered_at
+            }
+        )
+        db.session.add(log)
         db.session.commit()
         models.blastdb.makeblastdb_incr()
         return CreatePositiveControl(positive_control=posctl)

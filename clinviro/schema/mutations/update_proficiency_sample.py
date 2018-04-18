@@ -50,14 +50,47 @@ class UpdateProficiencySample(graphene.ClientIDMutation):
     def mutate_and_get_payload(root, info, **input_):
         profsample = (models.ProficiencySample
                       .query.get(get_numeric_id(input_['id'])))
+        payload = {
+            'proficiency_sample_id': profsample.id,
+            'changed_fields': []
+        }
         sample_args = sample_input_to_args(input_)
         for key, val in sample_args.items():
-            setattr(profsample, key, val)
+            old_value = getattr(profsample, key)
+            if old_value != val:
+                payload['changed_fields'].append({
+                    'field': key,
+                    'old_value': old_value,
+                    'new_value': val
+                })
+                setattr(profsample, key, val)
 
+        old_naseq = None
+        old_filename = None
+        naseq = input_.get('sequence')
+        filename = input_.get('filename')
+        if profsample.sequence:
+            old_naseq = profsample.sequence.naseq
+            old_filename = profsample.sequence.filename
+        if old_naseq != naseq:
+            payload['changed_fields'].append({
+                'field': 'sequence_naseq',
+                'old_value': old_naseq,
+                'new_value': naseq
+            })
+        if old_filename != filename:
+            payload['changed_fields'].append({
+                'field': 'sequence_filename',
+                'old_value': old_filename,
+                'new_value': filename
+            })
         # regenerate report
-        profsample.set_sequence(
-            input_.get('sequence'), input_.get('filename'))
+        profsample.set_sequence(naseq, filename)
         profsample.generate_reports(datetime.now(pytz.utc))
+        log = models.AuditLog.for_current_user(
+            'MODIFY', 'PROFICIENCY_SAMPLE', payload
+        )
+        db.session.add(log)
         db.session.commit()
 
         models.blastdb.makeblastdb_incr()

@@ -46,13 +46,25 @@ class UpdatePatient(graphene.ClientIDMutation):
     @login_required
     def mutate_and_get_payload(root, info, **input_):
         patient = db.session.query(models.Patient).get(input_['ptnum'])
+        payload = {'ptnum': patient.ptnum, 'changed_fields': []}
         for column in ('lastname', 'firstname', 'birthday'):
-            setattr(patient, column, input_[column])
+            old_value = getattr(patient, column)
+            new_value = input_[column]
+            if old_value != new_value:
+                payload['changed_fields'].append({
+                    'field': column,
+                    'old_value': old_value,
+                    'new_value': new_value
+                })
+                setattr(patient, column, new_value)
+        old_mrids = [m.mrid for m in patient.medical_records]
+        new_mrids = set(old_mrids)
         if input_['new_mrids']:
             for mrid in input_['new_mrids']:
                 patient.medical_records.append(
                     models.MedicalRecord(mrid=mrid)
                 )
+                new_mrids.add(mrid)
             db.session.commit()
         delete_mrids = set()
         if input_['merge_mrids']:
@@ -66,6 +78,17 @@ class UpdatePatient(graphene.ClientIDMutation):
             for mr in patient.medical_records:
                 if mr.mrid in delete_mrids:
                     db.session.delete(mr)
+            new_mrids -= delete_mrids
+        old_mrids = tuple(sorted(old_mrids))
+        new_mrids = tuple(sorted(new_mrids))
+        if old_mrids != new_mrids:
+            payload['changed_fields'].append({
+                'field': 'mrids',
+                'old_value': old_mrids,
+                'new_value': new_mrids
+            })
+        log = models.AuditLog.for_current_user('MODIFY', 'PATIENT', payload)
+        db.session.add(log)
         db.session.commit()
         patient.update_index()
         return UpdatePatient(patient=patient)

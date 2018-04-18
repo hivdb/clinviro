@@ -83,6 +83,24 @@ class CreatePatientVisit(graphene.ClientIDMutation):
         visit = sampleobj.visit
 
         sampleobj.generate_reports(sampleobj.entered_at)
+        db.session.flush()
+        log = models.AuditLog.for_current_user(
+            'CREATE', 'PATIENT_SAMPLE',
+            payload={
+                'ptnum': patient.ptnum,
+                'patient_visit_id': visit.id,
+                'patient_sample_id': sampleobj.id,
+                'vnum': sampleobj.vnum,
+                'physician': sampleobj.physician.name,
+                'clinic': sampleobj.clinic.name,
+                'test_code': sampleobj.test_code,
+                'amplifiable': sampleobj.amplifiable,
+                'collected_at': visit.collected_at,
+                'received_at': sampleobj.received_at,
+                'entered_at': sampleobj.entered_at
+            }
+        )
+        db.session.add(log)
         db.session.commit()
 
         models.blastdb.makeblastdb_incr()

@@ -39,7 +39,7 @@ class CreateClinic(graphene.ClientIDMutation):
         db.session.flush()
         log = models.AuditLog.for_current_user(
             'CREATE', 'CLINIC',
-            {'clinic_id': new_clinic.id, 'clinic_name': name}
+            payload={'clinic_id': new_clinic.id, 'name': name}
         )
         db.session.add(log)
         db.session.commit()

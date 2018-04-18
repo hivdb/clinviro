@@ -81,7 +81,7 @@ class BaseReports extends React.Component {
     const {reports} = this.props;
     let elements = {};
     for (const {id, contentType, content, createdAt} of reports) {
-      if (content === null) {
+      if (!content) {
         continue;
       }
       const element = elements[createdAt] = elements[createdAt] || {
