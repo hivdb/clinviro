@@ -23,12 +23,14 @@ from .medical_record import MedicalRecord  # noqa
 from .patient_sample import PatientSample  # noqa
 from .report import Report  # noqa
 from .sequence import Sequence  # noqa
+from .user import User  # noqa
 from .clinic import ClinicsField
 from .patient import PatientsField
 from .patient_visit import PatientVisitsField
 from .physician import PhysiciansField
 from .positive_control import PositiveControlsField
 from .proficiency_sample import ProficiencySamplesField
+from .audit_log import AuditLogsField
 from .similar_sequence import (SimilarSequence,
                                fetch_similar_sequences)
 from .version import Version
@@ -43,6 +45,7 @@ class Viewer(graphene.ObjectType):
     physicians = PhysiciansField()
     positive_controls = PositiveControlsField()
     proficiency_samples = ProficiencySamplesField()
+    audit_logs = AuditLogsField()
     viewer = graphene.Field(lambda: Viewer)
     version = graphene.Field(Version)
     user_authenticated = graphene.Boolean()
@@ -85,6 +88,10 @@ class Viewer(graphene.ObjectType):
 
     @login_required
     def resolve_proficiency_samples(self, *args, **kwargs):
+        pass
+
+    @login_required
+    def resolve_audit_logs(self, *args, **kwargs):
         pass
 
     @login_required

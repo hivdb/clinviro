@@ -48,6 +48,19 @@ class User(db.Model):
         doc='all operations have been performed by this user')
 
     @property
+    def masked_email(self):
+        emailuser, domain = self.email.split('@', 1)
+        emailuser = list(emailuser)
+        maskstart = int(len(emailuser) / 30 * 12)
+        maskend = int(len(emailuser) / 30 * 18)
+        emailuser[maskstart:maskend] = ['*'] * (maskend - maskstart + 1)
+        emailuser = ''.join(emailuser)
+        domain = domain.rsplit('.', 1)
+        domain[0] = '*'
+        domain = '.'.join(domain)
+        return '{}@{}'.format(emailuser, domain)
+
+    @property
     def is_active(self):
         return True
 

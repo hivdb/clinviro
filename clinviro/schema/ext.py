@@ -17,13 +17,14 @@
 from flask import current_app as app
 
 from graphene import Enum
+from graphene.types import String
 from graphene.types.json import JSONString
 from graphene.types.datetime import Date
 from graphene_sqlalchemy.converter import (get_column_doc,
                                            is_column_nullable,
                                            convert_sqlalchemy_type)
 from depot.fields.sqlalchemy import UploadedFileField
-from sqlalchemy_utils import ChoiceType
+from sqlalchemy_utils import ChoiceType, EmailType
 
 
 @convert_sqlalchemy_type.register(app.db.Date)
@@ -33,9 +34,17 @@ def convert_column_to_datetime(type, column, registry=None):
         required=not(is_column_nullable(column)))
 
 
+@convert_sqlalchemy_type.register(app.db.JSON)
 @convert_sqlalchemy_type.register(UploadedFileField)
-def convert_depot_column_to_string(type, column, registry=None):
+def convert_json_column_to_string(type, column, registry=None):
     return JSONString(
+        description=get_column_doc(column),
+        required=not(is_column_nullable(column)))
+
+
+@convert_sqlalchemy_type.register(EmailType)
+def convert_email_column_to_string(type, column, registry=None):
+    return String(
         description=get_column_doc(column),
         required=not(is_column_nullable(column)))
 
