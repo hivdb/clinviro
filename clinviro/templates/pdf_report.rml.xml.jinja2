@@ -196,7 +196,7 @@
           <ul bulletFontSize="6" bulletOffsetY="-3" bulletType="bullet">
             {% for cmt in genedr.comments -%}
               <li>
-                <para style="normal">{{ cmt.text }}</para>
+                <para style="normal"><![CDATA[{{ cmt.text }}]]></para>
               </li>
             {% endfor -%}
           </ul>
