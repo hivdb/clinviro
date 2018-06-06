@@ -6,12 +6,12 @@ RUN npm install
 COPY clinviro-frontend /app
 RUN npm run build
 
-FROM ubuntu:artful AS pybuilder
+FROM ubuntu:bionic AS pybuilder
 ENV LANG C.UTF-8
 COPY requirements.all.txt /tmp/
 RUN apt-get update -q && \
     apt-get install -qy \
-      python3.6 postgresql-client-9.6 \
+      python3.6 postgresql-client-10 \
       git python3.6-dev build-essential tar \
       libpq-dev xz-utils curl libffi-dev \
       libfreetype6-dev libjpeg-dev libwebp-dev \
@@ -20,18 +20,18 @@ RUN apt-get update -q && \
     curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
     pip3.6 wheel -r /tmp/requirements.all.txt
 
-FROM ubuntu:artful
+FROM ubuntu:bionic
 ENV LANG C.UTF-8
 COPY requirements.all.txt /tmp/
 COPY --from=pybuilder /root/.cache /root/.cache
 ARG BLASTVERSION=2.7.1
-ARG LEGOVERSION=0.4.1
+ARG LEGOVERSION=1.0.1
 RUN apt-get update -q && \
     apt-get install --no-install-recommends texlive -qy && \
     apt-get install -qy \
-      python3.6 postgresql-client-9.6 bash cron \
+      python3.6 postgresql-client-10 bash cron \
       pandoc nginx-full lmodern netcat-traditional \
-      git tar curl && \
+      git tar curl python3.6-distutils && \
     curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
     pip3.6 install -r /tmp/requirements.all.txt && \
     rm -r /tmp/requirements.all.txt && \
@@ -41,10 +41,10 @@ RUN apt-get update -q && \
     cp /tmp/ncbi-blast-${BLASTVERSION}+/bin/blastn /usr/local/bin && \
     cp /tmp/ncbi-blast-${BLASTVERSION}+/bin/makeblastdb /usr/local/bin && \
     rm -rf /tmp/blast.tar.gz /tmp/ncbi-blast-${BLASTVERSION}+ && \
-    curl -Ls https://github.com/xenolf/lego/releases/download/v${LEGOVERSION}/lego_linux_amd64.tar.xz -o /tmp/lego.tar.xz && \
-    cd /tmp; mkdir -p lego; tar xvf lego.tar.xz -C lego && \
-    cp /tmp/lego/lego_linux_amd64 /usr/local/bin/lego && \
-    rm -rf /tmp/lego.tar.xz /tmp/lego && \
+    curl -Ls https://github.com/xenolf/lego/releases/download/v${LEGOVERSION}/lego_v${LEGOVERSION}_linux_amd64.tar.gz -o /tmp/lego.tar.gz && \
+    cd /tmp; mkdir -p lego; tar xvf lego.tar.gz -C lego && \
+    cp /tmp/lego/lego /usr/local/bin/lego && \
+    rm -rf /tmp/lego.tar.gz /tmp/lego && \
     mkdir -p /etc/lego && \
     apt-get remove -qy curl git && \
     apt-get autoremove -qy && \
