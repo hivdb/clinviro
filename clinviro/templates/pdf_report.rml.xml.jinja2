@@ -84,7 +84,8 @@
             {% elif report_type == 'profsample' %}
               {{ keyval_tr("Name:", name) }}
               {{ keyval_tr("Received on:", received_at) }}
-              {{ keyval_tr("Entered at:", entered_at) }}
+              {#{ keyval_tr("Entered at:", entered_at) }#}
+              {{ keyval_tr("File name:", sequence.filename if sequence else 'N/A') }}
             {% endif %}
           </blockTable>
         </td>
@@ -96,11 +97,12 @@
               {{ keyval_tr("Accession #:", '{} ({})'.format(vnum,  patient.ptnum)) }}
               {{ keyval_tr("File name:", sequence.filename if sequence else 'N/A') }}
               {{ keyval_tr("Received on:", received_at) }}
-              {{ keyval_tr("Entered at:", entered_at) }}
+              {#{ keyval_tr("Entered at:", entered_at) }#}
+              {{ keyval_tr('', '') }}
             {% elif report_type == 'profsample' %}
               {{ keyval_tr("Source:", source) }}
               {{ keyval_tr("Accession #:", vnum) }}
-              {{ keyval_tr("File name:", sequence.filename if sequence else 'N/A') }}
+              {{ keyval_tr('', '') }}
             {% endif %}
           </blockTable>
         </td>

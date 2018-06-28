@@ -87,10 +87,10 @@ export default class PatientReportHeader extends React.Component {
          }, {
            name: 'Collected on:',
            value: collected_at
-         }, {
+         }/*, {
            name: 'Entered at:',
            value: entered_at
-         }
+         }*/
        ]} />
     );
   }

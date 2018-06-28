@@ -85,7 +85,8 @@ export default class SimilarSequencesSection extends React.Component {
             These are past sequences which were found &lt; 1.5% distance from
             current sample.{' '}
             {report_type === 'patient' ? 'Samples of the same patient are excluded.' : null}
-            {report_type === 'posctl' ? 'To prevent overflooding of this report page, only the closest previous positive control is included.' : null}
+            {report_type === 'posctl' ? 'To prevent overflooding of this report page, ' +
+             'only the first 10 closest previous positive control is included.' : null}
           </p>,
           <table key={1} className={style.borderedTable}>
             <thead>

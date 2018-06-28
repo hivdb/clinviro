@@ -59,9 +59,10 @@ export default class QualityControlReport extends React.Component {
        <p><em>
          This sequence has{' '}
          <strong className={style.warning}>{auto_approved ? 'passed' : 'failed'}</strong>{' '}
-         positive control test.
-         (At least one previous positive control was found and the
-          distance to the previous one was lower than 0.001%.)
+         positive control test.{' '}
+         {auto_approved ? 'At least one ' : 'No '}
+         previous (passed) positive control was found with
+         less than 0.001% difference.
        </em></p>
        : null}
       {is_regenerated_report ?

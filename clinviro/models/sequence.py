@@ -44,7 +44,11 @@ class Sequence(db.Model):
         total = Sequence.query.count()
         result = (app.models.blastdb
                   .query_sequence(self.naseq, min_pident, total))
+        # remove self
         result = (r for r in result if r.sequence_id != self.id)
+        # remove failed posctls
+        result = (r for r in result if r.type == 'positive_control' and
+                  r.positive_control.is_approved)
         if entered_before:
             result = (r for r in result if r.entered_at <= entered_before)
         if ptnum_exclude:
@@ -53,15 +57,15 @@ class Sequence(db.Model):
                 str(r.patient_sample.visit.patient.ptnum)
                 != str(ptnum_exclude))
         if remove_positive_controls:
-            # only keep at most one non-ident posctl
+            # only keep at most 10 non-ident posctl
             filtered = []
-            hasone = False
+            posctls = []
             for r in result:
                 if r.type == 'positive_control':
-                    if not hasone:
-                        filtered.append(r)
-                        hasone = True
+                    posctls.append(r)
                 else:
                     filtered.append(r)
-            result = filtered
+            posctls.sort(key=lambda r: -r.pident)
+            result = filtered + posctls[:10]
+            result.sort(key=lambda r: -r.pident)
         return list(result)
