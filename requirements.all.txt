@@ -15,7 +15,7 @@ click-datetime==0.2
 decorator==4.2.1
 elasticsearch==6.2.0
 filedepot==0.5.2
-Flask==0.12.2
+Flask==0.12.3
 Flask-Alembic==2.0.1
 Flask-Cors==3.0.3
 Flask-Elasticsearch==0.2.5
@@ -51,7 +51,7 @@ promise==2.1
 prompt-toolkit==1.0.15
 psycopg2-binary==2.7.4
 ptyprocess==0.5.2
-pycryptodome==3.5.1
+pycryptodome==3.6.6
 Pygments==2.2.0
 PyPDF2==1.26.0
 python-dateutil==2.7.2
