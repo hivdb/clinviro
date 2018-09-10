@@ -46,9 +46,11 @@ class Sequence(db.Model):
                   .query_sequence(self.naseq, min_pident, total))
         # remove self
         result = (r for r in result if r.sequence_id != self.id)
-        # remove failed posctls
-        result = (r for r in result if r.type == 'positive_control' and
-                  r.positive_control.is_approved)
+        # remove failed posctls; IMPORTANT: keep all non-posctl sequences
+        result = (
+            r for r in result if r.type != 'positive_control' or (
+                r.type == 'positive_control' and
+                r.positive_control.is_approved))
         if entered_before:
             result = (r for r in result if r.entered_at <= entered_before)
         if ptnum_exclude:
