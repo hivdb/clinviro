@@ -50,7 +50,7 @@ RUN apt-get update -q && \
     apt-get autoremove -qy && \
     rm /etc/nginx/sites-enabled/*
 RUN echo "5 */1 * * * /app/crontab-blast.sh" > /tmp/_cron && \
-    echo "4 4 * * * /app/crontab-es.sh" > /tmp/_cron && \
+    echo "4 4 * * * /app/crontab-es.sh" >> /tmp/_cron && \
     echo "3 3 * * 7 /app/crontab-lego.sh" >> /tmp/_cron && \
     echo "0 0 * * * /app/crontab-logrotate.sh" >> /tmp/_cron && \
     ln -s python3.6 /usr/bin/python && \
