@@ -420,6 +420,16 @@ def prepare_posctl_data(posctl, created_at, data, is_regenerated_report):
     }
     result.update(prepare_sequence_data(
         posctl.sequence, similar_sequences, [], data))
+
+    for simseq in result['similar_sequences']:
+        # similar sequence with idential amino acids
+        # should also be auto-approved
+        aacmp = []
+        for genecodoncmp in simseq['codon_comparison'].values():
+            aacmp.extend(c['prev_aa'] == c['cur_aa'] for c in genecodoncmp)
+        if all(aacmp):
+            result['auto_approved'] = True
+            break
     return result
 
 
