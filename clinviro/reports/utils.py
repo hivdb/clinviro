@@ -29,7 +29,7 @@ TZ = pytz.timezone(app.config['HUMAN_TIMEZONE'])
 
 
 def parse_int(text):
-    return int(re.sub('^.+?(\d+).+?$', '\g<1>', text))
+    return int(re.sub(r'^.+?(\d+).+?$', r'\g<1>', text))
 
 
 def get_drug_levels(drugs, drug_scores):
@@ -102,7 +102,8 @@ def get_comments(comments_by_types):
         for cmt in comments_by_type['comments']:
             result.append({
                 'triggered_aas': cmt.get('triggeredAAs', ''),
-                'position': cmt.get('boundMutation', {}).get('position', 0),
+                'position':
+                    (cmt.get('boundMutation') or {}).get('position', 0),
                 'text': cmt['text'],
                 'mutation_type': muttype
             })

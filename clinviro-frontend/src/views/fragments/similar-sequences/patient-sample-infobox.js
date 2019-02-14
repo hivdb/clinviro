@@ -31,6 +31,10 @@ class PatientSampleInfobox extends React.Component {
   }
 
   render() {
+    if (!('visit' in this.props.patientSample)) {
+      // still not sure why but this crash the program
+      return null;
+    }
     const {patientSample: {
       vnum, testCode, receivedAt,
       visit: {
