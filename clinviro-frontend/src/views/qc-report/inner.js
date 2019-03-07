@@ -62,7 +62,7 @@ export default class QualityControlReport extends React.Component {
          positive control test.{' '}
          {auto_approved ? 'At least one ' : 'All '}
          previous (passed) positive control
-         {auto_approved ? ' was found with no ' : 's have at least one '}
+         {auto_approved ? ' was found with < 1.5% ' : 's have ≥ 1.5% '}
          amino acid difference.
        </em></p>
        : null}

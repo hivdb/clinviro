@@ -414,7 +414,7 @@ def prepare_posctl_data(posctl, created_at, data, is_regenerated_report):
         'labnotes': posctl.labnotes,
         'auto_approved': any(
             r.type == 'positive_control' and
-            r.pident > 99.999
+            r.pident > 98.5
             for r in similar_sequences
         )
     }
