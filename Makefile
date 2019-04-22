@@ -29,7 +29,7 @@ deves:
 		-d --name=clinviro-deves \
 		--publish 127.0.0.1:9200:9200 \
 		--publish 127.0.0.1:9300:9300 \
-		elasticsearch:5.4-alpine
+		elasticsearch:5-alpine
 
 sync-deves:
 	@FLASK_APP=clinviro/__init__.py flask patients create_index --autoremove

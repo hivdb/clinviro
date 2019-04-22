@@ -26,11 +26,25 @@ export default class SequenceSummarySection extends React.Component {
     const {
       amplifiable, report_type, sequence,
       previous_sequences_count, indels,
-      similar_sequences
+      previous_sequences, similar_sequences,
+      lot_number, entered_at
     } = this.props;
 
     if (!amplifiable) {
       return null;
+    }
+    console.log(previous_sequences);
+    let hasProblemPrevSeqs = false;
+    for (const genePrevSeqs of Object.values(previous_sequences)) {
+      for (const {distance} of genePrevSeqs) {
+        if (distance >= 0.035) {
+          hasProblemPrevSeqs = true;
+          break;
+        }
+      }
+      if (hasProblemPrevSeqs) {
+        break;
+      }
     }
     const {gene_sequences, subtype} = sequence;
     const numIndels = indels.length;
@@ -51,6 +65,18 @@ export default class SequenceSummarySection extends React.Component {
                 .join('; ')}</td>
             </tr>
             : null}
+          {hasProblemPrevSeqs ?
+            <tr>
+              <th></th>
+              <td>
+                At least one of the previous sequences
+                from the same person has a distance ≥ 3.5%
+              </td>
+            </tr> : null}
+          {report_type === 'posctl' ? [
+            <tr key={1}><th>Lot Number:</th><td>{lot_number}</td></tr>,
+            <tr key={2}><th>Entered at:</th><td>{entered_at}</td></tr>
+          ] : null}
           <tr>
             <th># of similar sequences from other persons:</th>
             <td>{similar_sequences.length}</td>

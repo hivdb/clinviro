@@ -1,4 +1,4 @@
-@value panel-bg-color, error-fg-color, border-color, link-text-color from '../../colors.css';
+@value panel-bg-color, error-fg-color, success-fg-color, border-color, link-text-color from '../../colors.css';
 
 :local .errorBox {
   display: flex;
@@ -18,6 +18,12 @@
   font-size: 2rem;
   margin-right: 1rem;
   color: error-fg-color;
+}
+
+:local .successIcon {
+  font-size: 2rem;
+  margin-right: 1rem;
+  color: success-fg-color;
 }
 
 :local(.errorBox) a {

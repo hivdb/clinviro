@@ -27,22 +27,28 @@ export default class ErrorBox extends React.Component {
   static propTypes = {
     narrow: PropTypes.bool.isRequired,
     IconComponent: PropTypes.func.isRequired,
+    success: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired
   }
 
   static defaultProps = {
+    success: false,
     narrow: false
   }
 
   render() {
-    const {narrow, IconComponent, children} = this.props;
+    const {narrow, success, IconComponent, children} = this.props;
     let className = style.errorBox;
     if (narrow) {
       className = classNames(className, style.narrow);
     }
+    let iconCls = style.errorIcon;
+    if (success) {
+      iconCls = style.successIcon;
+    }
     return (
       <div className={className}>
-        {IconComponent ? <IconComponent className={style.errorIcon} /> : null}
+        {IconComponent ? <IconComponent className={iconCls} /> : null}
         <div className={style.errorMsg}>{children}</div>
       </div>
     );

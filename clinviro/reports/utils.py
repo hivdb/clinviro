@@ -271,14 +271,24 @@ def count_geneseqs(sequences):
 
 
 def prepare_auto_approved(data):
+    collected_at = data.get('collected_at', '')
+    if collected_at:
+        collected_at = datetime.strptime(collected_at, '%m/%d/%Y')
     previous_sequences = data.get('previous_sequences', {})
     similar_sequences = data.get('similar_sequences', [])
-    if similar_sequences:
-        return {'auto_approved': False}
+    for simseq in similar_sequences:
+        if simseq['distance'] < 0.01:
+            return {'auto_approved': False}
+        simseq_collected_at = simseq.get('collected_at', '')
+        if simseq_collected_at:
+            simseq_collected_at = \
+                datetime.strptime(simseq_collected_at, '%m/%d/%Y')
+            if (collected_at - simseq_collected_at).days < 365:
+                return {'auto_approved': False}
     for gene, seqs in previous_sequences.items():
         for seq in seqs:
             distance = seq['distance']
-            if distance > 0.02:
+            if distance > 0.035:
                 return {'auto_approved': False}
     return {'auto_approved': True}
 

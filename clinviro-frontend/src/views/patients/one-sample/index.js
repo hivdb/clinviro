@@ -21,6 +21,7 @@ import React from 'react';
 import Relay from 'react-relay/classic';
 import moment from 'moment';
 import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
+import FaCheckCircle from 'react-icons/lib/fa/check-circle';
 import {Row, Col} from 'react-flexbox-grid';
 import ExistingPatientSampleEditForm from '../sample-edit-form/existing-patient';
 import {isPatientVisitChanged} from '../comparisons';
@@ -220,10 +221,13 @@ class OnePatientSample extends React.Component {
          <OptionalRedirect to="/patients/new-sample">
            new sample creation page
          </OptionalRedirect> : null}
-        {!isApproved ?
+        {isApproved ?
+         <ErrorBox narrow IconComponent={FaCheckCircle} success>
+           This sample has been approved or auto-approved for reporting out.
+         </ErrorBox> :
          <ErrorBox narrow IconComponent={FaExclamationTriangle}>
            This sample has not been approved or auto-approved. Manual review is required.
-         </ErrorBox>: null}
+         </ErrorBox>}
         <h1>View patient visit &amp; sample</h1>
         <p>
           View and/or edit patient visit &amp; sample.
