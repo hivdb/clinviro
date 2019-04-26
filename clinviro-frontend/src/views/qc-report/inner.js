@@ -57,13 +57,20 @@ export default class QualityControlReport extends React.Component {
       <h1>Quality Control Report</h1>
       {report_type === 'posctl' ?
        <p><em>
-         This sequence has{' '}
+         This sample has{' '}
          <strong className={style.warning}>{auto_approved ? 'passed' : 'failed'}</strong>{' '}
          positive control test.{' '}
          {auto_approved ? 'At least one ' : 'All '}
          previous (passed) positive control
          {auto_approved ? ' was found with < 1.5% ' : 's have ≥ 1.5% '}
          amino acid difference.
+       </em></p>
+       : null}
+      {report_type === 'patient' ?
+       <p><em>
+         {auto_approved ?
+          'This sample has been approved or auto-approved for reporting out.' :
+          'This sample has not been approved or auto-approved. Further review is required.'}
        </em></p>
        : null}
       {is_regenerated_report ?

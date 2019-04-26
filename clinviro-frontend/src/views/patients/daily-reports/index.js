@@ -26,6 +26,7 @@ import FaWord from 'react-icons/lib/fa/file-word-o';
 import FaPDF from 'react-icons/lib/fa/file-pdf-o';
 import FaText from 'react-icons/lib/fa/file-text-o';
 import FaInfo from 'react-icons/lib/fa/info';
+import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
 
 import Button from '../../fragments/button';
 import Breadcrumb from '../../fragments/breadcrumb';
@@ -280,13 +281,15 @@ class DailyReports extends React.Component {
       }
     }, {
       name: 'testCode',
-      title: 'Test code',
+      title: 'Sample',
       valueDecorator: (_, {ptnum, samples}) => {
-        return samples.map(({id, visit: {id: vid}, testCode}, idx) => (
+        return samples.map(({id, visit: {id: vid}, testCode, isApproved}, idx) => (
           <div key={idx}>
             <Link
               to={`/patients/patient-${ptnum}/visits/${vid}/sample-${id}`}
+              title={isApproved ? undefined : 'This sample needs further review.'}
               className={style.link}>
+              {isApproved ? null : <FaExclamationTriangle />}
               {(testCode && testCode !== '-') ? testCode : 'Unknown'}
             </Link>
             &nbsp;
