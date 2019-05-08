@@ -70,7 +70,7 @@ export default class QualityControlReport extends React.Component {
        <p><em>
          {auto_approved ?
           'This sample has been approved or auto-approved for reporting out.' :
-          'This sample has not been approved or auto-approved. Further review is required.'}
+          'Further review is required.'}
        </em></p>
        : null}
       {is_regenerated_report ?

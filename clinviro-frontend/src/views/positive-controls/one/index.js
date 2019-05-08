@@ -146,7 +146,7 @@ class OnePositiveControl extends React.Component {
          }]} />
         {!isApproved ?
          <ErrorBox narrow IconComponent={FaExclamationTriangle}>
-           This sample has not been approved or auto-approved. Manual review is required.
+           This sample has not been approved or auto-approved. Further review is required.
          </ErrorBox>: null}
         <h1>View positive control</h1>
         <p>

@@ -226,7 +226,7 @@ class OnePatientSample extends React.Component {
            This sample has been approved or auto-approved for reporting out.
          </ErrorBox> :
          <ErrorBox narrow IconComponent={FaExclamationTriangle}>
-           This sample has not been approved or auto-approved. Manual review is required.
+           This sample has not been approved or auto-approved. Further review is required.
          </ErrorBox>}
         <h1>View patient visit &amp; sample</h1>
         <p>
