@@ -272,6 +272,8 @@ def count_geneseqs(sequences):
 
 def prepare_auto_approved(data):
     collected_at = data.get('collected_at', '')
+    if data['report_type'] == 'profsample':
+        collected_at = data.get('received_at', '')
     if collected_at:
         collected_at = datetime.strptime(collected_at, '%m/%d/%Y')
     previous_sequences = data.get('previous_sequences', {})
