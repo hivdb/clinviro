@@ -60,7 +60,7 @@ pytz==2019.1
 reportlab==3.5.23
 requests==2.22.0
 Rx==1.6.1
-sierrapy==0.2.2.dev0
+git+https://github.com/hivdb/sierra-client.git#egg=sierrapy&subdirectory=python
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
 six==1.12.0
