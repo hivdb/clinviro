@@ -22,8 +22,11 @@ import iso8601
 from datetime import datetime, timedelta
 from collections import namedtuple
 from subprocess import Popen, PIPE
+
+import editdistance
 from flask import current_app as app
 from flask.helpers import locked_cached_property
+
 from .sierra import align_sequences
 
 from . import (Sequence,
@@ -75,6 +78,30 @@ class BlastResult(namedtuple('BlastResultBase',
             return 'proficiency_sample'
         else:
             return 'positive_control'
+
+    def is_patient_similar_to(self, another_patient):
+        if not another_patient:
+            return False
+        if not self.patient_sample:
+            return False
+        patient = self.patient_sample.visit.patient
+        if patient == another_patient:
+            # same patient
+            return True
+        if editdistance.eval(patient.fullname, another_patient.fullname) < 2:
+            # only two characters difference
+            return True
+        mrids = {m.mrid for m in patient.medical_records}
+        another_mrids = {m.mrid for m in another_patient.medical_records}
+        if mrids & another_mrids:
+            # same MRN
+            return True
+        for mrid_a in mrids:
+            for mrid_b in another_mrids:
+                if editdistance.eval(mrid_a, mrid_b) < 1:
+                    # only one character difference in MRN
+                    return True
+        return False
 
     def get_aligned_seqs(self, gene):
         return getattr(self, '_aligned_seqs', {}).get(gene, ('', ''))

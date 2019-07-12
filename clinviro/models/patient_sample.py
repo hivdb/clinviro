@@ -161,11 +161,17 @@ class PatientSample(db.Model):
     def get_similar_sequences(self):
         if not self.amplifiable:
             return []
+        patient = None
         ptnum = None
         if self.visit and self.visit.patient:
-            ptnum = self.visit.patient.ptnum
+            patient = self.visit.patient
+            ptnum = patient.ptnum
         return self.sequence.get_similar_sequences(
-            self.entered_at, ptnum_exclude=ptnum)
+            self.entered_at, ptnum_exclude=ptnum, min_pident=97.5,
+            filter_func=lambda r: (
+                r.is_patient_similar_to(patient) or r.pident > 98.5
+            )
+        )
 
     def generate_reports(self, created_at,
                          is_regenerated_report=False,

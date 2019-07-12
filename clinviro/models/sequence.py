@@ -40,7 +40,8 @@ class Sequence(db.Model):
 
     def get_similar_sequences(self, entered_before=None,
                               remove_positive_controls=False,
-                              ptnum_exclude=None, min_pident=98.5):
+                              ptnum_exclude=None, min_pident=98.5,
+                              filter_func=None):
         total = Sequence.query.count()
         result = (app.models.blastdb
                   .query_sequence(self.naseq, min_pident, total))
@@ -70,4 +71,7 @@ class Sequence(db.Model):
             posctls.sort(key=lambda r: -r.pident)
             result = filtered + posctls[:10]
             result.sort(key=lambda r: -r.pident)
+        if filter_func:
+            # allow custom filter
+            result = [r for r in result if filter_func(r)]
         return list(result)
