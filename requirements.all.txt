@@ -15,7 +15,7 @@ click-datetime==0.2
 decorator==4.2.1
 elasticsearch==6.2.0
 filedepot==0.5.2
-Flask==0.12.2
+Flask==1.0
 Flask-Alembic==2.0.1
 Flask-Cors==3.0.3
 Flask-Elasticsearch==0.2.5
