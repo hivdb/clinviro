@@ -41,8 +41,8 @@ class NewPositiveControl extends React.Component {
 
   _getInitialState() {
     return {
-      note: 'Control G02',
-      lotNumber: '',
+      note: 'POSVQA',
+      lotNumber: '19017001',
       testCode: null,
       sequence: null,
       labnotes: '',
