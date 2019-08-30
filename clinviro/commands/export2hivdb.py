@@ -82,7 +82,7 @@ def sql_link_patient(patient, start_date, stop_date):
 
 def sql_enter_vnum(ptnum, collected_at, vnum):
     vnum = vnum.replace("'", "''")
-    return ('INSERT INTO _VNum'
+    return ('REPLACE INTO _VNum'
             ' (PtID, IsolateDate, VNum)'
             " SELECT ptid, '{cdate}', '{vnum}' FROM _clinviro_patients"
             " WHERE ptnum={ptnum};\n"
