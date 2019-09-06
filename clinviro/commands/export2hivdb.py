@@ -199,8 +199,8 @@ def sql_enter_isolate(ptnum, vnum, subtype, collected_at, gene,
             .format(
                 first_aa=first_aa,
                 last_aa=last_aa,
-                naseq=naseq.replace("'", "''"),
-                aaseq=aaseq.replace("'", "''")))
+                naseq=naseq.replace("'", "''").replace('-', '~'),
+                aaseq=aaseq.replace("'", "''").replace('-', '~')))
     sql += 'SET @sequence_id = LAST_INSERT_ID();\n'
 
     # enter tblInsertions
