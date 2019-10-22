@@ -46,7 +46,7 @@ passlib==1.7.1
 pdfminer.six==20170720
 pexpect==4.4.0
 pickleshare==0.7.4
-Pillow==5.1.0
+Pillow==6.2.0
 promise==2.1
 prompt-toolkit==1.0.15
 psycopg2-binary==2.7.4
