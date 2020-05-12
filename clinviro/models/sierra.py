@@ -93,9 +93,9 @@ drugResistance {
   commentsByTypes {
     mutationType
     comments {
-      triggeredAAs
       text
       boundMutation {
+        displayAAs
         position
       }
     }

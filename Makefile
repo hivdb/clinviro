@@ -1,10 +1,10 @@
 clinviro-frontend/build: $(shell find clinviro-frontend -not -path "clinviro-frontend/build/*" -a -not -path "clinviro-frontend/node_modules/*" -a -type f)
-	@cd clinviro-frontend && npm install && npm run build
+	@cd clinviro-frontend && yarn install && yarn build
 
 force-build:
 	@docker build . --force-rm --no-cache -t hivdb/clinviro:latest
 
-build:
+build: requirements.txt
 	@docker build . -t hivdb/clinviro:latest
 
 # following are development commands, do not use them in production
@@ -23,6 +23,9 @@ devdb:
 		--volume=$(shell pwd)/initdb.d:/docker-entrypoint-initdb.d \
 		postgres:9.6
 
+init_devdb:
+	@pipenv run flask db upgrade
+
 deves:
 	@docker rm -f clinviro-deves 2>/dev/null || true
 	@docker run \
@@ -32,13 +35,13 @@ deves:
 		elasticsearch:5-alpine
 
 sync-deves:
-	@FLASK_APP=clinviro/__init__.py flask patients create_index --autoremove
+	@pipenv run flask patients create-index --autoremove
 
 sync-blastdb:
-	@FLASK_APP=clinviro/__init__.py flask makeblastdb
+	@pipenv run flask makeblastdb
 
 sync-schema:
-	@FLASK_APP=clinviro/__init__.py flask export_relay_schema clinviro-frontend/schema.json
+	@pipenv run flask export-relay-schema clinviro-frontend/schema.json
 	@rm -r clinviro-frontend/node_modules/.cache 2>/dev/null || true
 
 psql-devdb:
@@ -55,17 +58,20 @@ dumpdb-without-patients:
 	@echo '`local/clinviro_dump-without_patients.sql` created.'
 
 blastdb:
-	@FLASK_APP=clinviro/__init__.py flask makeblastdb
+	@pipenv run flask makeblastdb
 
 shell:
-	@FLASK_APP=clinviro/__init__.py flask shell
+	@pipenv run flask shell
 
 run-frontend: sync-schema
-	@cd clinviro-frontend; npm start
+	@cd clinviro-frontend; yarn start
 
 _run:
-	@gunicorn -w 4 -b 127.0.0.1:5000 --worker-class aiohttp.worker.GunicornWebWorker clinviro:aioapp
+	@pipenv run gunicorn -w 4 -b 127.0.0.1:5000 --worker-class aiohttp.worker.GunicornWebWorker clinviro:aioapp
+
+requirements.txt: Pipfile Pipfile.lock
+	@pipenv lock --requirements > requirements.txt
 
 run: sync-blastdb sync-schema _run
 
-.PHONY: force-build build console devdb psql-devdb dumpdb psql-devdb-migrate dumpdb-without-patients blastdb shell run _run
+.PHONY: force-build build console devdb psql-devdb dumpdb psql-devdb-migrate dumpdb-without-patients blastdb shell run _run init_devdb

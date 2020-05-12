@@ -17,6 +17,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Relay from 'react-relay/classic';
 import ReactDOM from 'react-dom';
 import useRelay from 'react-router-relay';
@@ -40,6 +41,12 @@ environment.injectNetworkLayer(new Relay.DefaultNetworkLayer(URL, {
 
 
 class _RouteComponent extends React.Component {
+
+  static propTypes = {
+    viewer: PropTypes.shape({
+      userAuthenticated: PropTypes.bool.isRequired
+    }).isRequired
+  }
 
   componentWillMount() {
     const {viewer: {userAuthenticated}} = this.props;

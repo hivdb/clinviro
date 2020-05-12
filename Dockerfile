@@ -1,40 +1,40 @@
-FROM node:8 AS builder
+FROM node:12 AS builder
 ENV LANG C.UTF-8
 WORKDIR /app
-COPY clinviro-frontend/package*.json /app/
-RUN npm install
+COPY clinviro-frontend/package.json clinviro-frontend/yarn.lock /app/
+RUN yarn install
 COPY clinviro-frontend /app
-RUN npm run build
+RUN yarn build
 
 FROM ubuntu:bionic AS pybuilder
 ENV LANG C.UTF-8
-COPY requirements.all.txt /tmp/
+COPY requirements.txt /tmp/
 RUN apt-get update -q && \
     apt-get install -qy \
-      python3.6 postgresql-client-10 \
-      git python3.6-dev build-essential tar \
+      python3.7 postgresql-client-10 \
+      git python3.7-dev build-essential tar \
       libpq-dev xz-utils curl libffi-dev \
       libfreetype6-dev libjpeg-dev libwebp-dev \
       libpng-dev liblcms2-dev libopenjp2-7-dev zlib1g-dev \
       libxml2-dev libxslt1-dev && \
-    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
-    pip3.6 wheel -r /tmp/requirements.all.txt
+    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.7 - && \
+    pip3.7 wheel -r /tmp/requirements.txt
 
 FROM ubuntu:bionic
 ENV LANG C.UTF-8
-COPY requirements.all.txt /tmp/
+COPY requirements.txt /tmp/
 COPY --from=pybuilder /root/.cache /root/.cache
 ARG BLASTVERSION=2.7.1
 ARG LEGOVERSION=1.0.1
 RUN apt-get update -q && \
     apt-get install --no-install-recommends texlive -qy && \
     apt-get install -qy \
-      python3.6 postgresql-client-10 bash cron \
+      python3.7 postgresql-client-10 bash cron \
       pandoc nginx-full lmodern netcat-traditional \
-      git tar curl python3.6-distutils && \
-    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.6 - && \
-    pip3.6 install -r /tmp/requirements.all.txt && \
-    rm -r /tmp/requirements.all.txt && \
+      git tar curl python3.7-distutils && \
+    curl -Ls https://bootstrap.pypa.io/get-pip.py | python3.7 - && \
+    pip3.7 install -r /tmp/requirements.txt && \
+    rm -r /tmp/requirements.txt && \
     rm -rf /root/.cache && \
     curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLASTVERSION}/ncbi-blast-${BLASTVERSION}+-x64-linux.tar.gz -o /tmp/blast.tar.gz && \
     cd /tmp; tar xvf blast.tar.gz && \
@@ -53,7 +53,7 @@ RUN echo "5 */1 * * * /app/crontab-blast.sh" > /tmp/_cron && \
     echo "4 4 * * * /app/crontab-es.sh" >> /tmp/_cron && \
     echo "3 3 * * 7 /app/crontab-lego.sh" >> /tmp/_cron && \
     echo "0 0 * * * /app/crontab-logrotate.sh" >> /tmp/_cron && \
-    ln -s python3.6 /usr/bin/python && \
+    ln -s python3.7 /usr/bin/python && \
     cat /tmp/_cron | crontab - && rm /tmp/_cron && \
     mkdir -p /app/logs
 WORKDIR /app

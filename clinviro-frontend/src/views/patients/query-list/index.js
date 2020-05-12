@@ -112,6 +112,9 @@ class PatientQueryList extends React.Component {
       </Button>
     </FormGroup>;
 
+    if (!connection) {
+      return null;
+    }
     const elements = connection.edges.map(({node}) => node);
 
     return <div>

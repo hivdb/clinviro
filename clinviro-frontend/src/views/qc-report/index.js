@@ -18,7 +18,6 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loader from 'react-loader';
 import {BACKEND_URL} from '../../constants';
 import QualityControlReport from './inner';
 import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
@@ -45,15 +44,18 @@ export default class QualityControlReportLoader extends React.Component {
     this._mounted = false;
   }
 
-  loadData({location: {query: {data_url}}}) {
+  async loadData({location: {query: {data_url}}}) {
     this.setState({data: null});
     if (!data_url.startsWith('blob:http')) {
       data_url = BACKEND_URL + data_url;
     }
-    fetch(data_url, {credentials: 'include'})
-    .then(resp => resp.json())
-    .then(data => this.setState({data}))
-    .catch(() => this.setState({hasError: true}));
+    try {
+      const resp = await fetch(data_url, {credentials: 'include'});
+      const data = await resp.json();
+      this.setState({data});
+    } catch (err) {
+      this.setState({hasError: true});
+    }
   }
 
   componentDidMount() {
@@ -72,14 +74,14 @@ export default class QualityControlReportLoader extends React.Component {
   render() {
     const {location: {query: {data_url, preview}}} = this.props;
     const {data, hasError} = this.state;
-    return <Loader loaded={data !== null || hasError}>
+    return <div>
       {hasError ?
        <ErrorBox
         IconComponent={FaExclamationTriangle}>
          Can not load quality control report from the <a href={data_url}>given URL</a>.
        </ErrorBox> :
-       <QualityControlReport {...{...data, preview}} />}
-    </Loader>;
+       (data !== null ? <QualityControlReport {...{...data, preview}} /> : null)}
+    </div>;
   }
 
 }

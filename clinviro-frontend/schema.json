@@ -1040,7 +1040,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -1056,7 +1056,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -1081,7 +1081,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.",
         "enumValues": null,
         "fields": [
           {
@@ -1168,7 +1168,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `Patient` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -1407,7 +1407,7 @@
         "possibleTypes": null
       },
       {
-        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^53 - 1) and 2^53 - 1 since represented in JSON as double-precision floating point numbers specifiedby [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point).",
+        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31 - 1) and 2^31 - 1 since represented in JSON as double-precision floating point numbers specifiedby [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point).",
         "enumValues": null,
         "fields": null,
         "inputFields": null,
@@ -1433,7 +1433,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -1449,7 +1449,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -1474,7 +1474,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `PatientVisit` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -1688,13 +1688,17 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "specimen type",
             "isDeprecated": false,
             "name": "specimenType",
             "type": {
-              "kind": "ENUM",
-              "name": "TBL_PATIENT_SAMPLES_SPECIMEN_TYPE",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "TBL_PATIENT_SAMPLES_SPECIMEN_TYPE",
+                "ofType": null
+              }
             }
           },
           {
@@ -1988,12 +1992,16 @@
             "isDeprecated": false,
             "name": "genes",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               }
             }
           },
@@ -2051,7 +2059,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "content type",
             "isDeprecated": false,
             "name": "contentType",
             "type": {
@@ -2063,7 +2071,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "report status",
             "isDeprecated": false,
             "name": "status",
             "type": {
@@ -2092,7 +2100,7 @@
         "possibleTypes": null
       },
       {
-        "description": "JSON String",
+        "description": "Allows use of a JSON String for input / output from the GraphQL schema.\n\nUse of this type is *not recommended* as you lose the benefits of having a defined, static\nschema (one of the key benefits of GraphQL).",
         "enumValues": null,
         "fields": null,
         "inputFields": null,
@@ -2373,7 +2381,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -2389,7 +2397,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -2414,7 +2422,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `Clinic` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -2565,7 +2573,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -2581,7 +2589,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -2606,7 +2614,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `Physician` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -2651,7 +2659,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -2667,7 +2675,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -2692,7 +2700,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `PositiveControl` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -2797,13 +2805,17 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "specimen type",
             "isDeprecated": false,
             "name": "specimenType",
             "type": {
-              "kind": "ENUM",
-              "name": "TBL_POSITIVE_CONTROLS_SPECIMEN_TYPE",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "TBL_POSITIVE_CONTROLS_SPECIMEN_TYPE",
+                "ofType": null
+              }
             }
           },
           {
@@ -2939,7 +2951,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -2955,7 +2967,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -2980,7 +2992,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `ProficiencySample` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -3246,7 +3258,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Pagination data for this connection.",
             "isDeprecated": false,
             "name": "pageInfo",
             "type": {
@@ -3262,7 +3274,7 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "Contains the nodes in this connection.",
             "isDeprecated": false,
             "name": "edges",
             "type": {
@@ -3287,7 +3299,7 @@
         "possibleTypes": null
       },
       {
-        "description": null,
+        "description": "A Relay edge containing a `AuditLog` and its cursor.",
         "enumValues": null,
         "fields": [
           {
@@ -3364,25 +3376,33 @@
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "operation type",
             "isDeprecated": false,
             "name": "operationType",
             "type": {
-              "kind": "ENUM",
-              "name": "TBL_AUDIT_LOGS_OPERATION_TYPE",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "TBL_AUDIT_LOGS_OPERATION_TYPE",
+                "ofType": null
+              }
             }
           },
           {
             "args": [],
             "deprecationReason": null,
-            "description": null,
+            "description": "operation target",
             "isDeprecated": false,
             "name": "target",
             "type": {
-              "kind": "ENUM",
-              "name": "TBL_AUDIT_LOGS_TARGET",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "TBL_AUDIT_LOGS_TARGET",
+                "ofType": null
+              }
             }
           },
           {

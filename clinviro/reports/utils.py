@@ -101,7 +101,8 @@ def get_comments(comments_by_types):
         muttype = comments_by_type['mutationType']
         for cmt in comments_by_type['comments']:
             result.append({
-                'triggered_aas': cmt.get('triggeredAAs', ''),
+                'triggered_aas':
+                    (cmt.get('boundMutation') or {}).get('displayAAs', ''),
                 'position':
                     (cmt.get('boundMutation') or {}).get('position', 0),
                 'text': cmt['text'],
