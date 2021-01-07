@@ -37,7 +37,7 @@ iso8601==0.1.12
 itsdangerous==0.24
 jedi==0.11.1
 Jinja2==2.10
-lxml==4.2.1
+lxml==4.6.2
 Mako==1.0.7
 MarkupSafe==1.0
 multidict==4.1.0
