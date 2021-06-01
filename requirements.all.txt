@@ -72,7 +72,7 @@ tqdm==4.20.0
 traitlets==4.3.2
 typing==3.6.4
 Unidecode==1.0.22
-urllib3==1.24.2
+urllib3==1.26.5
 voluptuous==0.11.1
 wcwidth==0.1.7
 Werkzeug==0.15.3
