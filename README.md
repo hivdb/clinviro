@@ -302,6 +302,51 @@ DELETE FROM "tbl_patients" p WHERE
   EXISTS (SELECT 1 FROM "ptnum_to_be_deleted" pd WHERE pd.ptnum=p.ptnum);
 ```
 
+### Delete proficiency samples
+
+#### Step 1: Specify target profSample ID(s):
+
+```sql
+SELECT [PROF_SAMPLE_ID] as id INTO TEMP TABLE profid_to_be_deleted;
+
+-- if you have more IDs
+INSERT INTO profid_to_be_deleted (id) VALUES (PROF_SAMPLE_ID_2);
+INSERT INTO profid_to_be_deleted (id) VALUES (PROF_SAMPLE_ID_3);
+...
+```
+
+#### Step 2: Store foreign keys:
+
+```sql
+SELECT sr.report_id as id
+  INTO TEMP TABLE report_to_be_deleted
+  FROM "tbl_proficiency_sample_reports" sr, "profid_to_be_deleted" d
+  WHERE sr.proficiency_sample_id=d.id;
+
+SELECT s.sequence_id as id
+  INTO TEMP TABLE seq_to_be_deleted
+  FROM "tbl_proficiency_samples" s, "profid_to_be_deleted" d
+  WHERE s.id=d.id;
+```
+
+#### Step 3: Deletion
+
+```sql
+DELETE FROM "tbl_proficiency_sample_reports" sr WHERE
+  EXISTS (
+    SELECT 1 FROM "profid_to_be_deleted" d WHERE d.id=sr.proficiency_sample_id
+  );
+
+DELETE FROM "tbl_reports" r WHERE
+  EXISTS (SELECT 1 FROM "report_to_be_deleted" rd WHERE rd.id=r.id);
+
+DELETE FROM "tbl_proficiency_samples" s WHERE
+  EXISTS (SELECT 1 FROM "profid_to_be_deleted" d WHERE d.id=s.id);
+
+DELETE FROM "tbl_sequences" seq WHERE
+  EXISTS (SELECT 1 FROM "seq_to_be_deleted" sqd WHERE sqd.id=seq.id);
+```
+
 Copyright and Disclaimer
 ------------------------
 
