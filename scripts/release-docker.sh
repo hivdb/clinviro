@@ -8,8 +8,8 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-docker pull node:8
-docker pull ubuntu:xenial
+docker pull node:12
+docker pull ubuntu:bionic
 docker build . -t hivdb/clinviro:latest
 docker tag hivdb/clinviro:latest hivdb/clinviro:$1
 
