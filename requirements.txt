@@ -18,7 +18,7 @@ graphene-sqlalchemy==2.0.0
 graphql-core==2.0
 graphql-relay==0.4.5
 gunicorn==19.7.1
-ipython==6.3.0
+ipython==7.16.3
 Jinja2==2.11.3
 passlib==1.7.1
 pdfminer.six==20170720
