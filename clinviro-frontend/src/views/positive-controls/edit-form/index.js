@@ -49,7 +49,7 @@ export default class PositiveControlEditForm extends React.Component {
   static defaultProps = {
     onReset: null,
     onSubmit: null,
-    note: 'POSVQA',
+    note: 'POSGO2',
     lotNumber: '19017001',
     testCode: null,
     sequence: null,
