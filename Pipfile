@@ -39,6 +39,7 @@ Werkzeug = "*"
 graphene-sqlalchemy = ">=2"
 graphql-relay = "<3"
 iso8601 = "*"
+gql = "==0.3"
 
 [requires]
 python_version = "3.9"
