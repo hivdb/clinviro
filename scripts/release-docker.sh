@@ -9,7 +9,8 @@ if [ -z "$1" ]; then
 fi
 
 docker pull node:12
-docker pull ubuntu:bionic
+docker pull python:3.9-bullseye AS pybuilder
+docker pull python:3.9-slim-bullseye
 docker build . -t hivdb/clinviro:latest
 docker tag hivdb/clinviro:latest hivdb/clinviro:$1
 

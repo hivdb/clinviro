@@ -41,4 +41,4 @@ graphql-relay = "<3"
 iso8601 = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
