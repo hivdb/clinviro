@@ -22,7 +22,6 @@ RUN pip3.9 wheel -r /tmp/requirements.txt
 FROM python:3.9-slim-bullseye
 ENV LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
 COPY requirements.txt /tmp/
-COPY --from=pybuilder /root/.cache /root/.cache
 ARG BLASTVERSION=2.7.1
 ARG LEGOVERSION=1.0.1
 RUN apt-get update -q && \
@@ -31,11 +30,7 @@ RUN apt-get update -q && \
       postgresql-client-13 bash cron \
       pandoc nginx-full lmodern netcat-traditional \
       git tar curl
-COPY --from=python:3.9-slim /usr/local/lib/python3.9/distutils /usr/lib/python3.9/distutils
-RUN pip3.9 install -r /tmp/requirements.txt && \
-    rm -r /tmp/requirements.txt && \
-    rm -rf /root/.cache && \
-    curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLASTVERSION}/ncbi-blast-${BLASTVERSION}+-x64-linux.tar.gz -o /tmp/blast.tar.gz && \
+RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${BLASTVERSION}/ncbi-blast-${BLASTVERSION}+-x64-linux.tar.gz -o /tmp/blast.tar.gz && \
     cd /tmp; tar xvf blast.tar.gz && \
     cp /tmp/ncbi-blast-${BLASTVERSION}+/bin/blastn /usr/local/bin && \
     cp /tmp/ncbi-blast-${BLASTVERSION}+/bin/makeblastdb /usr/local/bin && \
@@ -45,9 +40,11 @@ RUN pip3.9 install -r /tmp/requirements.txt && \
     cp /tmp/lego/lego /usr/local/bin/lego && \
     rm -rf /tmp/lego.tar.gz /tmp/lego && \
     mkdir -p /etc/lego && \
-    apt-get remove -qy curl git && \
-    apt-get autoremove -qy && \
     rm /etc/nginx/sites-enabled/*
+COPY --from=pybuilder /root/.cache /root/.cache
+RUN pip3.9 install -r /tmp/requirements.txt && \
+    rm -r /tmp/requirements.txt && \
+    rm -rf /root/.cache
 RUN echo "5 */1 * * * /app/crontab-blast.sh" > /tmp/_cron && \
     echo "4 4 * * * /app/crontab-es.sh" >> /tmp/_cron && \
     echo "3 3 * * 7 /app/crontab-lego.sh" >> /tmp/_cron && \
