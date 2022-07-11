@@ -73,7 +73,9 @@ async function getSequenceMeta(header, sequence) {
   const {data} = json;
   const genes = (
     data.viewer.sequenceAnalysis[0]
-    .availableGenes.map(({name}) => name)
+    .availableGenes
+      .map(({name}) => name)
+      .filter(name => ['PR', 'RT', 'IN'].includes(name))
   );
   const subtype = (
     data.viewer.sequenceAnalysis[0]
