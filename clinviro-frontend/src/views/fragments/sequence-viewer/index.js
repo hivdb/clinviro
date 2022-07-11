@@ -32,7 +32,7 @@ async function getMutations(sequence) {
         query getMutations($sequence: UnalignedSequenceInput!) {
           viewer {
             sequenceAnalysis(sequences: [$sequence]) {
-              alignedGeneSequences {
+              alignedGeneSequences(includeGenes: [PR, RT, IN]) {
                 gene { name }
                 mutations { shortText }
               }

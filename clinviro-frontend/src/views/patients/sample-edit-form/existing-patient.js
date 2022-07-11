@@ -37,7 +37,10 @@ async function getDRMs(sequences) {
           viewer {
             sequenceAnalysis(sequences: $sequences) {
               inputSequence { header }
-              DRMs: mutations(filterOptions: [DRM]) {
+              DRMs: mutations(
+                filterOptions: [DRM],
+                includeGenes: [PR, RT, IN]
+              ) {
                 gene { name }
                 position
                 AAs
@@ -122,7 +125,7 @@ async function getMutationComments(mutations) {
         query getMutationComments($mutations: [String!]!) {
           viewer {
             mutationsAnalysis(mutations: $mutations) {
-              drugResistance {
+              drugResistance(includeGenes: [PR, RT, IN]) {
                 gene { name }
                 commentsByTypes {
                   mutationType
