@@ -20,7 +20,7 @@ QUERY_SEQUENCE_ANALYSIS_SEQS_MUTS_ONLY = """
 inputSequence {
   header
 }
-alignedGeneSequences {
+alignedGeneSequences(includeGenes: [PR, RT, IN]) {
   gene {
     name
   }
@@ -35,11 +35,11 @@ alignedGeneSequences {
 """
 
 QUERY_SEQUENCE_ANALYSIS = """
-validationResults {
+validationResults(includeGenes: [PR, RT, IN]) {
   level
   message
 }
-alignedGeneSequences {
+alignedGeneSequences(includeGenes: [PR, RT, IN]) {
   gene {
     name
     mutationTypes
@@ -53,7 +53,7 @@ bestMatchingSubtype {
   displayWithoutDistance
   distancePcnt
 }
-drugResistance {
+drugResistance(includeGenes: [PR, RT, IN]) {
   version {
     text
     publishDate
