@@ -347,6 +347,51 @@ DELETE FROM "tbl_sequences" seq WHERE
   EXISTS (SELECT 1 FROM "seq_to_be_deleted" sqd WHERE sqd.id=seq.id);
 ```
 
+### Delete positive control samples
+
+#### Step 1: Specify target positiveControl ID(s):
+
+```sql
+SELECT [POSCTRL_ID] as id INTO TEMP TABLE posctrlid_to_be_deleted;
+
+-- if you have more IDs
+INSERT INTO posctrlid_to_be_deleted (id) VALUES (POSCTRL_ID_2);
+INSERT INTO posctrlid_to_be_deleted (id) VALUES (POSCTRL_ID_3);
+...
+```
+
+#### Step 2: Store foreign keys:
+
+```sql
+SELECT sr.report_id as id
+  INTO TEMP TABLE report_to_be_deleted
+  FROM "tbl_positive_control_reports" sr, "posctrlid_to_be_deleted" d
+  WHERE sr.positive_control_id=d.id;
+
+SELECT s.sequence_id as id
+  INTO TEMP TABLE seq_to_be_deleted
+  FROM "tbl_positive_controls" s, "posctrlid_to_be_deleted" d
+  WHERE s.id=d.id;
+```
+
+#### Step 3: Deletion
+
+```sql
+DELETE FROM "tbl_positive_control_reports" sr WHERE
+  EXISTS (
+    SELECT 1 FROM "posctrlid_to_be_deleted" d WHERE d.id=sr.positive_control_id
+  );
+
+DELETE FROM "tbl_reports" r WHERE
+  EXISTS (SELECT 1 FROM "report_to_be_deleted" rd WHERE rd.id=r.id);
+
+DELETE FROM "tbl_positive_controls" s WHERE
+  EXISTS (SELECT 1 FROM "posctrlid_to_be_deleted" d WHERE d.id=s.id);
+
+DELETE FROM "tbl_sequences" seq WHERE
+  EXISTS (SELECT 1 FROM "seq_to_be_deleted" sqd WHERE sqd.id=seq.id);
+```
+
 Copyright and Disclaimer
 ------------------------
 
