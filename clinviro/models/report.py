@@ -35,6 +35,7 @@ class Report(db.Model):
         ('docx', 'docx'),
         ('pdf', 'pdf'),
         ('json', 'json'),
+        ('txt', 'txt'),
     ]
 
     id = db.Column(

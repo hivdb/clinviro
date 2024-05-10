@@ -17,12 +17,14 @@
 from .json_generator import JSONGenerator
 from .pdf_generator import PDFGenerator
 from .docx_generator import DOCXGenerator
+from .txt_generator import TXTGenerator
 from .utils import prepare_data, prepare_posctl_data, prepare_profsample_data
 
 generators = [
     JSONGenerator(),
     PDFGenerator(),
-    DOCXGenerator()
+    DOCXGenerator(),
+    TXTGenerator()
 ]
 
 posctl_generators = [

@@ -68,7 +68,7 @@
             "args": [
               {
                 "defaultValue": null,
-                "description": null,
+                "description": "The ID of the object",
                 "name": "id",
                 "type": {
                   "kind": "NON_NULL",
@@ -82,7 +82,7 @@
               }
             ],
             "deprecationReason": null,
-            "description": "The ID of the object",
+            "description": null,
             "isDeprecated": false,
             "name": "node",
             "type": {

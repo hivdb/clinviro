@@ -20,6 +20,7 @@ devdb:
 	@docker run \
 		-d --name=clinviro-devdb \
 		--publish 127.0.0.1:5435:5432 \
+		--env POSTGRES_PASSWORD=clinviro \
 		--volume=$(shell pwd)/initdb.d:/docker-entrypoint-initdb.d \
 		postgres:9.6
 

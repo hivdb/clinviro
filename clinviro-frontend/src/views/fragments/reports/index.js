@@ -44,7 +44,7 @@ const REGENERATION_WARNING_MSG = (
 
 
 const CONTENT_TYPES = {
-  'patient_sample': ['pdf', 'docx', 'json'],
+  'patient_sample': ['pdf', 'docx', 'txt', 'json'],
   'proficiency_sample': ['pdf', 'json'],
   'positive_control': ['json']
 };
@@ -52,18 +52,21 @@ const CONTENT_TYPES = {
 const CONTENT_TYPE_LABELS = {
   'pdf': 'PDF',
   'docx': 'MS Word',
+  'txt': 'Plain Text',
   'json': 'QC report'
 };
 
 const CONTENT_TYPE_ICONS = {
   'pdf': FaPDF,
   'docx': FaWord,
+  'txt': FaText,
   'json': FaText
 };
 
 const CONTENT_TYPE_BTNSTYLE = {
   'pdf': 'primary',
   'docx': 'info2',
+  'txt': 'info',
   'json': 'info'
 };
 
