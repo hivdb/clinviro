@@ -7,7 +7,7 @@ elasticsearch==6.2.0
 filedepot==0.5.2
 Flask==1.0
 Flask-Alembic==2.0.1
-Flask-Cors==3.0.3
+Flask-Cors==3.0.9
 Flask-Elasticsearch==0.2.5
 Flask-GraphQL==1.4.1
 Flask-Login==0.4.1
