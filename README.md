@@ -302,6 +302,35 @@ DELETE FROM "tbl_patients" p WHERE
   EXISTS (SELECT 1 FROM "ptnum_to_be_deleted" pd WHERE pd.ptnum=p.ptnum);
 ```
 
+### Approve a new Postive Control lot
+
+When a new lot of Postive Control is added to the database, it will be in
+"pending" status. You can use the following SQL query to approve the initial
+sequence so the subsequent inputs of that lot will be compared to the initial
+sequence and the system can detect potential errors.
+
+The first step is to find out the corresponding `report_id` of the earliest
+input of that lot. You can use the following SQL query to find out the
+`report_id`:
+
+```sql
+SELECT * FROM
+  "tbl_positive_controls" posctl,
+  "tbl_positive_control_reports" posctl_r
+WHERE
+   lot_number=<LOT_NUMBER> AND
+   posctl.id = posctl_r.positive_control_id
+ORDER BY entered_at
+```
+
+Once you have the `report_id`, you can use the following SQL query to approve that lot:
+
+```sql
+UPDATE "tbl_reports"
+  SET status='approved'
+  WHERE id IN (<REPORT_ID>);
+```
+
 Copyright and Disclaimer
 ------------------------
 
