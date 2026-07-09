@@ -2,10 +2,10 @@ clinviro-frontend/build: $(shell find clinviro-frontend -not -path "clinviro-fro
 	@cd clinviro-frontend && yarn install && yarn build
 
 force-build:
-	@docker build . --force-rm --no-cache -t hivdb/clinviro:latest
+	@DOCKER_BUILDKIT=1 docker build . --platform linux/amd64 --force-rm --no-cache -t hivdb/clinviro:latest
 
 build: requirements.txt
-	@docker build . -t hivdb/clinviro:latest
+	@DOCKER_BUILDKIT=1 docker build . --platform linux/amd64 -t hivdb/clinviro:latest
 
 # following are development commands, do not use them in production
 # use docker image instead!

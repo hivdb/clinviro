@@ -133,13 +133,16 @@ class BaseReports extends React.Component {
   renderDownloadButton(type, child, key = 0, btnSize = 'small',
                        btnStyle = 'default', className = null) {
     child = child || <FaDownload />;
+    // Plain text reports should be downloaded (under their human-readable
+    // filename) rather than opened inline in the browser.
+    const forceDownload = type === 'txt';
     return url => {
       if (url) {
         return <Button
          {...{key, className}}
-         href={type !== 'json' ? (BACKEND_URL + url) : null}
+         href={type !== 'json' ? (BACKEND_URL + url + (forceDownload ? '?download=1' : '')) : null}
          to={type === 'json' ? `/quality-control-report?data_url=${encodeURIComponent(url)}` : null}
-         target="_blank"
+         target={forceDownload ? undefined : '_blank'}
          btnStyle={btnStyle}
          btnSize={btnSize}>{child}</Button>;
       } else if (btnSize === 'small') {
