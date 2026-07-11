@@ -50,12 +50,23 @@
 - Subtype: {{ sequence.subtype }}
 - Algorithm: {{ algorithm.name }} version {{ algorithm.version }} (last updated {{ algorithm.publish_date }})
 
+Sequence Quality Assessment
+---------------------------
+{%   if validation_results -%}
+{%     for vr in validation_results -%}
+- {{ textwrap(vr.level_label ~ ': ' ~ vr.message, subsequent_indent=2) }}
+{%     endfor -%}
+{%   else -%}
+There are no known sequence quality issues.
+{%   endif %}
 {%   for genedr in drug_resistance %}
 
 Drug Resistance Interpretation: {{ genedr.gene }}
 ----------------------------------
 
-{{     table_mutation_types(genedr) }}
+{%     for muttype in genedr.mutation_types -%}
+{{ muttype.label }}: {% for mut in genedr.mutations if mut.type == muttype.name %}{{ mut.text }}{% if not loop.last %}, {% endif %}{% else %}None{% endfor %}
+{%     endfor %}
 {%     for dcresult in genedr.drug_class_results %}
 {{       dcresult.drug_class.fullname }}:
 

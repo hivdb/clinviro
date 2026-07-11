@@ -22,6 +22,7 @@ import PatientReportHeader from './sections/patient-header';
 import ProficiencySampleReportHeader from './sections/proficiency-sample-header';
 import AmplifiableSec from './sections/amplifiable';
 import SeqSummarySec from './sections/sequence-summary';
+import ValidationSec from './sections/validation-report';
 import ResistanceSec from './sections/resistance-interpretation';
 import NotesSec from './sections/notes';
 import ResistDetailSec from './sections/resistance-detail';
@@ -93,6 +94,7 @@ export default class QualityControlReport extends React.Component {
        : null}
       <AmplifiableSec {...this.props} />
       <SeqSummarySec {...this.props} />
+      <ValidationSec {...this.props} />
       <ResistanceSec {...this.props} />
       {notes ? <NotesSec title="Notes">{notes}</NotesSec> : null}
       {labnotes ? <NotesSec title="Laboratory Notes">{labnotes}</NotesSec> : null}

@@ -63,10 +63,8 @@ def create_index(autoremove):
         index=INDEX,
         body={
             'mappings': {
-                'patient': {
-                    'properties': {
-                        'name': {'type': 'text'}
-                    }
+                'properties': {
+                    'name': {'type': 'text'}
                 }
             }
         }
@@ -84,7 +82,6 @@ def create_index(autoremove):
         actions = [
             {
                 '_index': INDEX,
-                '_type': 'patient',
                 '_id': pt.ptnum,
                 '_source': {
                     'name': pt.fullname

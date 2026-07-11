@@ -41,7 +41,11 @@ services:
     volumes:
       - /home/clinviro/data:/var/lib/postgresql/data
   es:
-    image: elasticsearch:5.4-alpine
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
 ```
 
 The varibles:

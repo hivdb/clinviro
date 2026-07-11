@@ -22,7 +22,7 @@ import {Link} from 'react-router';
 import classNames from 'classnames';
 import style from './style.css';
 
-const BUTTON_STYLES = ['default', 'primary', 'info', 'info2'];
+const BUTTON_STYLES = ['default', 'primary', 'info', 'info2', 'warning'];
 const BUTTON_SIZES = ['normal', 'large', 'small'];
 
 

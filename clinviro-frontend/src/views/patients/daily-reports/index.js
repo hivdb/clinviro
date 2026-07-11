@@ -22,7 +22,6 @@ import Relay from 'react-relay/classic';
 import {Link} from 'react-router';
 import moment from 'moment';
 import copy from 'copy-to-clipboard';
-import FaWord from 'react-icons/lib/fa/file-word-o';
 import FaPDF from 'react-icons/lib/fa/file-pdf-o';
 import FaText from 'react-icons/lib/fa/file-text-o';
 import FaInfo from 'react-icons/lib/fa/info';
@@ -55,17 +54,17 @@ class ReportButtons extends React.Component {
       visit: {id: visitId}, latestReports} = this.props;
     let qcurl = getReportURL(latestReports, 'json');
     let pdfurl = getReportURL(latestReports, 'pdf');
-    let wordurl = getReportURL(latestReports, 'docx');
+    let txturl = getReportURL(latestReports, 'txt');
     let detailurl = `/patients/patient-${ptnum}/visits/${visitId}/sample-${sampleId}/reports`;
     return <div className={style.reportButtons}>
       {pdfurl ? <Button
         title="Download PDF report"
         btnStyle="primary" to={pdfurl} className={style.icon}
         btnSize="small" target="_blank"><FaPDF /></Button> : null}
-      {wordurl ? <Button
-        title="Download Word report" 
-        btnStyle="info2" to={wordurl} className={style.icon}
-        btnSize="small" target="_blank"><FaWord /></Button> : null}
+      {txturl ? <Button
+        title="Download plain text report"
+        btnStyle="warning" href={`${txturl}?download=1`} className={style.icon}
+        btnSize="small"><FaText /></Button> : null}
       {qcurl ? <Button
         title="View QC report"
         btnStyle="info" to={qcurl} className={style.icon}

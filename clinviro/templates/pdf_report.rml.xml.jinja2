@@ -153,6 +153,21 @@
       </para>
       {{ hr() }}
 
+      <condPageBreak height="2in" />
+      <h2 style="h2">Sequence Quality Assessment</h2>
+      {% if validation_results -%}
+        <ul bulletFontSize="6" bulletOffsetY="-3" bulletType="bullet">
+          {% for vr in validation_results -%}
+            <li>
+              <para style="normal"><b>{{ vr.level_label }}:</b> {{ vr.message|e }}</para>
+            </li>
+          {% endfor -%}
+        </ul>
+      {% else -%}
+        <para style="normal">There are no known sequence quality issues.</para>
+      {% endif -%}
+      {{ hr() }}
+
       {% for genedr in drug_resistance -%}
         <condPageBreak height="2.8in" />
         <h2 style="h2">

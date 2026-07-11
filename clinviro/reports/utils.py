@@ -111,6 +111,37 @@ def get_comments(comments_by_types):
     return result
 
 
+# Sequence-quality validation levels reported by Sierra (e.g. APOBEC
+# hypermutation, unusual mutations, frameshifts). Ordered/labelled to match
+# the Stanford HIVDB website rendering.
+VALIDATION_LEVEL_LABELS = {
+    'CRITICAL': 'Critical',
+    'SEVERE_WARNING': 'Severe warning',
+    'WARNING': 'Warning',
+    'NOTE': 'Note'
+}
+VALIDATION_LEVEL_ORDER = ['CRITICAL', 'SEVERE_WARNING', 'WARNING', 'NOTE']
+
+
+def get_validation_results(validation_results):
+    results = []
+    for vr in validation_results or []:
+        level = vr['level']
+        if level in ('OK', 'APPROVED'):
+            continue
+        results.append({
+            'level': level,
+            'level_label': VALIDATION_LEVEL_LABELS.get(
+                level, level.replace('_', ' ').capitalize()),
+            'message': vr['message']
+        })
+    results.sort(key=lambda r: (
+        VALIDATION_LEVEL_ORDER.index(r['level'])
+        if r['level'] in VALIDATION_LEVEL_ORDER
+        else len(VALIDATION_LEVEL_ORDER)))
+    return results
+
+
 def get_mutation_type_label(drug_class, muttype):
     if muttype == 'Other':
         return 'Other Mutations'
@@ -305,6 +336,8 @@ def prepare_sequence_data(sequence, similar_sequence,
     ), [])
     return {
         'amplifiable': True,
+        'validation_results': get_validation_results(
+            data.get('validationResults')),
         'algorithm': {
             'name': 'HIVDB',
             'version': version['text'],

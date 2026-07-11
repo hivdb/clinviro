@@ -3,6 +3,7 @@
 @value btn-primary-bg-color, btn-primary-bg-hover-color, inverse-main-text-color from '../../../colors.css';
 @value btn-info-bg-color, btn-info-bg-hover-color from '../../../colors.css';
 @value btn-info2-bg-color, btn-info2-bg-hover-color from '../../../colors.css';
+@value btn-warning-bg-color, btn-warning-bg-hover-color from '../../../colors.css';
 
 :local(.btn.largeSzBtn) {
   line-height: 2;
@@ -81,6 +82,18 @@
   background-color: btn-info2-bg-hover-color;
   border-color: btn-info2-bg-hover-color;
   color: inverse-main-text-color;
+}
+
+:local(.btn.warningBtn), :local(.btn.warningBtn:disabled:hover) {
+  background-color: btn-warning-bg-color;
+  border-color: btn-warning-bg-color;
+  color: main-text-color;
+}
+
+:local(.btn.warningBtn:hover) {
+  background-color: btn-warning-bg-hover-color;
+  border-color: btn-warning-bg-hover-color;
+  color: main-text-color;
 }
 
 :local(.btn.marRight) {

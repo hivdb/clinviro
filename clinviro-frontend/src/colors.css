@@ -22,6 +22,8 @@
 @value shadow: #7c6b50;
 @value teak: #AEA266;
 @value buddhagold: #cba800;
+@value selectiveyellow: #f3b417;
+@value gamboge: #dd9e0a;
 @value softamber: #D4CFB4;
 @value cararra: #F0F0E8;
 @value pampas: #F1F0E9;
@@ -68,6 +70,8 @@
   btn-info-bg-hover-color: pictonblue;
   btn-info2-bg-color: matisse;
   btn-info2-bg-hover-color: curiousblue;
+  btn-warning-bg-color: selectiveyellow;
+  btn-warning-bg-hover-color: gamboge;
   dialog-bg-color: tutu;
   dialog-close-fg-color: dustygray;
   dialog-close-fg-hover-color: thunder;

@@ -128,6 +128,7 @@ def register_depot(app: Flask) -> Flask:
     from flask import request
     from werkzeug import Response
     from depot.manager import DepotManager
+    from depot.utils import make_content_disposition
     from flask_login import login_required
 
     try:
@@ -152,19 +153,15 @@ def register_depot(app: Flask) -> Flask:
             app.depot_middleware(request.environ, fake_start_response)
         response = Response(**kwargs)
         if request.args.get('download'):
-            # Force a download instead of opening inline in the browser.
-            # filedepot already sets a "Content-Disposition: inline;
-            # filename=..." header (with the human-readable filename stored
-            # on the file); we only switch the disposition to "attachment"
-            # so the browser downloads it under that name.
-            cd = response.headers.get('Content-Disposition', '')
-            if cd.startswith('inline'):
-                cd = 'attachment' + cd[len('inline'):]
-            elif cd:
-                cd = 'attachment; ' + cd
+            try:
+                filename = DepotManager.get_file(path).filename
+            except (IOError, ValueError):
+                filename = None
+            if filename:
+                response.headers['Content-Disposition'] = \
+                    make_content_disposition('attachment', filename)
             else:
-                cd = 'attachment'
-            response.headers['Content-Disposition'] = cd
+                response.headers['Content-Disposition'] = 'attachment'
         return response
 
     return app

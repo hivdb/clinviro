@@ -49,7 +49,7 @@ const TEST_CODE_OPTIONS = [{
   label: 'PR + RT + IN',
   deprecated: true
 }];
-const BACKEND_URL = window.__NODE_ENV === 'production' ? '' : 'http://localhost:5000';
+const BACKEND_URL = window.__NODE_ENV === 'production' ? '' : 'http://localhost:4999';
 const PROFICIENCY_SAMPLE_SOURCES = ['CAP', 'VQA'];
 
 export {

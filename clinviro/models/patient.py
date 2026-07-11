@@ -69,7 +69,6 @@ class Patient(db.Model):
             return
         return app.es.index(
             index='patient-index',
-            doc_type='patient',
             id=self.ptnum,
             body={
                 'name': self.fullname
@@ -86,7 +85,6 @@ class Patient(db.Model):
             }
         es_patients = app.es.search(
             index='patient-index',
-            doc_type='patient',
             body={
                 'from': offset,
                 'size': limit,
@@ -111,8 +109,14 @@ class Patient(db.Model):
         patients = cls.query.filter(cls.ptnum.in_(ptnums)).all()
         patients.sort(key=lambda pt: ptnums.index(pt.ptnum))
 
+        # ES >= 7 returns hits.total as an object {'value', 'relation'}
+        # instead of a bare integer.
+        total = es_patients['hits']['total']
+        if isinstance(total, dict):
+            total = total['value']
+
         return {
-            'total': es_patients['hits']['total'],
+            'total': total,
             'scores': scores,
             'patients': patients
         }

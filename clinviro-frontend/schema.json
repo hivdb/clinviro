@@ -2129,6 +2129,12 @@
             "description": null,
             "isDeprecated": false,
             "name": "json"
+          },
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "txt"
           }
         ],
         "fields": null,

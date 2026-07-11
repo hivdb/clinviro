@@ -33,7 +33,10 @@ deves:
 		-d --name=clinviro-deves \
 		--publish 127.0.0.1:9200:9200 \
 		--publish 127.0.0.1:9300:9300 \
-		elasticsearch:5-alpine
+		--env discovery.type=single-node \
+		--env xpack.security.enabled=false \
+		--env "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
+		docker.elastic.co/elasticsearch/elasticsearch:7.17.4
 
 sync-deves:
 	@pipenv run flask patients create-index --autoremove
@@ -68,7 +71,7 @@ run-frontend: sync-schema
 	@cd clinviro-frontend; yarn start
 
 _run:
-	@pipenv run gunicorn -w 4 -b 127.0.0.1:5000 --worker-class aiohttp.worker.GunicornWebWorker clinviro:aioapp
+	@pipenv run gunicorn -w 4 -b 127.0.0.1:4999 -b '[::1]:4999' --worker-class aiohttp.worker.GunicornWebWorker clinviro:aioapp
 
 requirements.txt: Pipfile Pipfile.lock
 	@pipenv lock --requirements > requirements.txt

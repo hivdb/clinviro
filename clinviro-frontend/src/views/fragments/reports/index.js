@@ -66,7 +66,7 @@ const CONTENT_TYPE_ICONS = {
 const CONTENT_TYPE_BTNSTYLE = {
   'pdf': 'primary',
   'docx': 'info2',
-  'txt': 'info',
+  'txt': 'warning',
   'json': 'info'
 };
 
