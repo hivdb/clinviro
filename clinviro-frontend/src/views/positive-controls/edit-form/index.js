@@ -50,7 +50,7 @@ export default class PositiveControlEditForm extends React.Component {
     onReset: null,
     onSubmit: null,
     note: 'ANCHOR control',
-    lotNumber: '250809',
+    lotNumber: '262228',
     testCode: null,
     sequence: null,
     labnotes: '',
