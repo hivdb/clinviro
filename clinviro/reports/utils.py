@@ -129,6 +129,11 @@ def get_validation_results(validation_results):
         level = vr['level']
         if level in ('OK', 'APPROVED'):
             continue
+        # Suppress "positions were not sequenced or aligned" messages —
+        # these are expected for partial sequences (e.g. AVRT only covers
+        # PR + RT codons 1-240) and are not clinically actionable.
+        if 'not sequenced or aligned' in vr['message']:
+            continue
         results.append({
             'level': level,
             'level_label': VALIDATION_LEVEL_LABELS.get(
